@@ -1,7 +1,6 @@
 E:\github\marmoset\marmofeiji\marmofeiji\bin\marmofeiji.dll.config
 E:\github\marmoset\marmofeiji\marmofeiji\bin\marmofeiji.dll
 E:\github\marmoset\marmofeiji\marmofeiji\bin\marmofeiji.pdb
-E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.csprojAssemblyReference.cache
 E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.csproj.CoreCompileInputs.cache
 E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.dll
 E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.pdb
