@@ -9,9 +9,7 @@
     import Scene = marmoset.Scene
     import Matrix = marmoset.Matrix
     import Vect = marmoset.Vect
-
  
-
     export class Mars3Dmesh extends marmoset.Mesh {
 
         public tAlbedo: TextureRes

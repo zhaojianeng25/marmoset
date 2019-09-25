@@ -151,7 +151,6 @@ var mars3D;
                 gl.bindTexture(gl.TEXTURE_2D, null);
                 //   gl.bindRenderbuffer(gl.RENDERBUFFER, null);
                 GlReset.resetBasePrarame(gl);
-                MarmosetLightVo.tempRect._uvTextureRes.texture = this.depthFBO.depthTexture;
             }
         };
         MarmosetLightVo.prototype.fract = function (value) {

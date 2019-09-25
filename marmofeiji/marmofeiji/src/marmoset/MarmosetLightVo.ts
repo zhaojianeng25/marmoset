@@ -177,8 +177,7 @@
                 //   gl.bindRenderbuffer(gl.RENDERBUFFER, null);
                 GlReset.resetBasePrarame(gl);
 
-
-                MarmosetLightVo.tempRect._uvTextureRes.texture = this.depthFBO.depthTexture
+ 
             }
         }
 

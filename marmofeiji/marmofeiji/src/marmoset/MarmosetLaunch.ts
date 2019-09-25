@@ -24,28 +24,19 @@
             Laya.stage.scaleMode = "full"
             Laya.stage.bgColor = "#232628";
 
-  
-
-
+   
 
             Pan3d.Scene_data.ossRoot = "https://webpan.oss-cn-shanghai.aliyuncs.com/";
             Pan3d.Scene_data.fileuiRoot = "res/";
             Pan3d.Scene_data.fileRoot = Pan3d.Scene_data.ossRoot + "baseedit/";
-
-
-
+ 
             Pan3d.Engine.init(this._canvas);
-
-
             var topBox: Laya.Box = new Laya.Box()
             Laya.stage.addChild(topBox)
 
             var midBox: Laya.Box = new Laya.Box()
             Laya.stage.addChild(midBox)
-
-
-
-
+ 
             var picA: Laya.Image = new Laya.Image("res/ui/icon/lyf_64x.png");
             Laya.stage.addChild(picA)
             picA.scale(0.5, 0.5)

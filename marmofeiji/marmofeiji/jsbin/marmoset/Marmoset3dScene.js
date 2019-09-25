@@ -32,13 +32,8 @@ var mars3D;
             if (bfun === void 0) { bfun = null; }
             var _this = _super.call(this, value, bfun) || this;
             _this.selectId = 0;
-            mars3D.MarmosetModel.getInstance().initData();
             _this.addEvents();
-            //this.addBaseChar();
-            //joelamp
-            //benjamin
-            //karen1
-            //karen2
+            mars3D.MarmosetModel.getInstance().initData();
             mars3D.MarmosetModel.getInstance().viewFileName = "karen1.mview";
             var rootpath = "pan/marmoset/feiji/6_14/";
             LoadManager.getInstance().load(Scene_data.fileuiRoot + rootpath + "outshder.txt", LoadManager.XML_TYPE, function (outstr) {
@@ -57,8 +52,6 @@ var mars3D;
             ProgrmaManager.getInstance().registe(LineDisplayShader.LineShader, new LineDisplayShader);
             this.sceneManager = new EdItorSceneManager();
             this.sceneManager.addDisplay(new GridLineSprite());
-            mars3D.MarmosetLightVo.tempRect = new depth.DepthRectSprite();
-            this.sceneManager.addDisplay(mars3D.MarmosetLightVo.tempRect);
             this.mianpian = new mars3D.PicShowDiplay3dSprite();
             this.mianpian.scale = 2;
             this.sceneManager.addDisplay(this.mianpian);

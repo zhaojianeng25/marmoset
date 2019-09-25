@@ -12,8 +12,7 @@ module mars3D {
     import TextureRes = Pan3d.TextureRes
     import Scene_data = Pan3d.Scene_data
 
-
-
+     
 
     export class PicShowDiplay3dShader extends Shader3D {
         static PicShowDiplay3dShader: string = "PicShowDiplay3dShader";

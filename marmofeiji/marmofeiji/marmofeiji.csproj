@@ -41,16 +41,17 @@
     <TypeScriptCompile Include="libs\change.d.ts" />
     <TypeScriptCompile Include="libs\h5web.d.ts" />
     <TypeScriptCompile Include="libs\LayaAir.d.ts" />
-    <TypeScriptCompile Include="src\base\DepthRectSprite.ts" />
-    <TypeScriptCompile Include="src\marmoset\depth\DepthRectSprite.ts" />
-    <TypeScriptCompile Include="src\marmoset\depth\DetphTestRectSprite.ts" />
-    <TypeScriptCompile Include="src\marmoset\marmoset.d.ts" />
+    <TypeScriptCompile Include="src\base\BaseSprite.ts" />
+    <TypeScriptCompile Include="src\base\dis\DepthRectSprite.ts" />
+    <TypeScriptCompile Include="src\base\dis\DetphTestRectSprite.ts" />
+    <TypeScriptCompile Include="src\base\mormosetlib\Marmoset.d.ts" />
     <TypeScriptCompile Include="src\marmoset\Marmoset3dScene.ts" />
     <TypeScriptCompile Include="src\marmoset\MarmosetLaunch.ts" />
     <TypeScriptCompile Include="src\marmoset\MarmosetLightVo.ts" />
-    <TypeScriptCompile Include="src\marmoset\MarmosetModel.ts" />
-    <TypeScriptCompile Include="src\marmoset\Mars3Dmesh.ts" />
+    <TypeScriptCompile Include="src\base\mormosetlib\MarmosetModel.ts" />
+    <TypeScriptCompile Include="src\base\mormosetlib\Mars3Dmesh.ts" />
     <TypeScriptCompile Include="src\marmoset\PicShowDiplay3dSprite.ts" />
+    <TypeScriptCompile Include="src\TextEditStart.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

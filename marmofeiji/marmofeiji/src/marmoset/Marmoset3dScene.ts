@@ -21,21 +21,11 @@ module mars3D {
   
     export class Marmoset3dScene extends Laya3dSprite {
 
-       
         public constructor(value: string, bfun: Function = null) { //"res/ui/icon/512.jpg"
             super(value, bfun)
+            this.addEvents();
 
             MarmosetModel.getInstance().initData();
- 
-            this.addEvents();
-            //this.addBaseChar();
-
-            //joelamp
-            //benjamin
-            //karen1
-            //karen2
- 
-
             MarmosetModel.getInstance().viewFileName = "karen1.mview"
 
             var rootpath: string = "pan/marmoset/feiji/6_14/";
@@ -60,8 +50,7 @@ module mars3D {
             this.sceneManager = new EdItorSceneManager()
    
             this.sceneManager.addDisplay(new GridLineSprite())
-            MarmosetLightVo.tempRect= new depth.DepthRectSprite()
-            this.sceneManager.addDisplay(MarmosetLightVo.tempRect)
+    
    
 
             this.mianpian = new PicShowDiplay3dSprite()
