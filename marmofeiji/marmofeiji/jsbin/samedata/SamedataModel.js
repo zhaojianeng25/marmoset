@@ -2,6 +2,7 @@ var same;
 (function (same) {
     var Scene_data = Pan3d.Scene_data;
     var LoadManager = Pan3d.LoadManager;
+    var SceneManager = Pan3d.SceneManager;
     var MarmosetModel = mars3D.MarmosetModel;
     var MarmosetLightVo = mars3D.MarmosetLightVo;
     var SamePicSprite = same.SamePicSprite;
@@ -20,14 +21,11 @@ var same;
             this.initmosort();
         };
         SamedataModel.initmosort = function () {
-            this.mianpian = new SamePicSprite();
-            this.mianpian.scale = 10;
-            Pan3d.SceneManager.getInstance().addDisplay(this.mianpian);
-            MarmosetLightVo.tempRect = new depth.DepthRectSprite();
-            Pan3d.SceneManager.getInstance().addDisplay(MarmosetLightVo.tempRect);
-            Pan3d.SceneManager.getInstance().ready = true;
-            mars3D.MarmosetModel.getInstance().initData();
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext;
+            mars3D.MarmosetModel.getInstance().initData();
+            SceneManager.getInstance().addDisplay(new SamePicSprite());
+            SceneManager.getInstance().addDisplay(new same.BaseCavanRectSprite);
+            SceneManager.getInstance().ready = true;
             MarmosetModel.getInstance().viewFileName = "karen1.mview";
             var rootpath = "pan/marmoset/feiji/6_14/";
             LoadManager.getInstance().load(Scene_data.fileuiRoot + rootpath + "outshder.txt", LoadManager.XML_TYPE, function (outstr) {
@@ -72,7 +70,7 @@ var same;
             gl.clearColor(255 / 255, 0, 0, 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
             win.LayerManager.getInstance().update();
-            Pan3d.SceneManager.getInstance().update();
+            SceneManager.getInstance().update();
         };
         return SamedataModel;
     }());

@@ -1,6 +1,7 @@
 ﻿module same {
     import Scene_data = Pan3d.Scene_data;
     import LoadManager = Pan3d.LoadManager;
+    import SceneManager = Pan3d.SceneManager;
     import MarmosetModel = mars3D.MarmosetModel;
     import MarmosetLightVo = mars3D.MarmosetLightVo;
     import SamePicSprite = same.SamePicSprite;
@@ -10,34 +11,21 @@
             mainpan3d_me.canvas = $caves;
             Pan3d.Scene_data.fileRoot = "res/";
             Pan3d.Engine.init($caves);
-
             window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame
             if (requestAnimationFrame) {
                 requestAnimationFrame(SamedataModel.step);
             }
-
             SamedataModel.resetSize();
-
-
             this.initmosort()
         }
         private static mianpian: SamePicSprite;
         private static initmosort(): void {
-
-
-            this.mianpian = new SamePicSprite()
-            this.mianpian.scale = 10;
-            Pan3d.SceneManager.getInstance().addDisplay(this.mianpian)
-
-            MarmosetLightVo.tempRect = new depth.DepthRectSprite()
-            Pan3d.SceneManager.getInstance().addDisplay(MarmosetLightVo.tempRect)
-
-
-            Pan3d.SceneManager.getInstance().ready = true
+            window["webgl"] = Pan3d.Scene_data.context3D.renderContext
             mars3D.MarmosetModel.getInstance().initData();
 
-            window["webgl"] = Pan3d.Scene_data.context3D.renderContext
-
+            SceneManager.getInstance().addDisplay(new SamePicSprite())
+            SceneManager.getInstance().addDisplay(new BaseCavanRectSprite)
+            SceneManager.getInstance().ready = true
 
             MarmosetModel.getInstance().viewFileName = "karen1.mview"
             var rootpath: string = "pan/marmoset/feiji/6_14/";
@@ -82,13 +70,12 @@
             Pan3d.TimeUtil.update();
             Pan3d.Engine.resetSize()
             Pan3d.Scene_data.context3D.update();
-
             let gl = Pan3d.Scene_data.context3D.renderContext
             gl.clearColor(255 / 255, 0, 0, 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
             win.LayerManager.getInstance().update();
 
-           Pan3d.SceneManager.getInstance().update()
+            SceneManager.getInstance().update()
  
 
         }

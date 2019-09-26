@@ -51,6 +51,7 @@
     <TypeScriptCompile Include="src\base\mormosetlib\MarmosetModel.ts" />
     <TypeScriptCompile Include="src\base\mormosetlib\Mars3Dmesh.ts" />
     <TypeScriptCompile Include="src\marmoset\PicShowDiplay3dSprite.ts" />
+    <TypeScriptCompile Include="src\samedata\BaseCavanRectSprite.ts" />
     <TypeScriptCompile Include="src\samedata\SamedataModel.ts" />
     <TypeScriptCompile Include="src\samedata\SamePicSprite.ts" />
   </ItemGroup>
