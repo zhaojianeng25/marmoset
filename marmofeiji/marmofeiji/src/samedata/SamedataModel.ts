@@ -3,6 +3,7 @@
     import LoadManager = Pan3d.LoadManager;
     import MarmosetModel = mars3D.MarmosetModel;
     import MarmosetLightVo = mars3D.MarmosetLightVo;
+    import SamePicSprite = same.SamePicSprite;
 
     export class SamedataModel {
         public static initCanvas($caves: HTMLCanvasElement): void {
@@ -20,11 +21,11 @@
 
             this.initmosort()
         }
-        private static mianpian: mars3D.PicShowDiplay3dSprite;
+        private static mianpian: SamePicSprite;
         private static initmosort(): void {
 
 
-            this.mianpian = new mars3D.PicShowDiplay3dSprite()
+            this.mianpian = new SamePicSprite()
             this.mianpian.scale = 10;
             Pan3d.SceneManager.getInstance().addDisplay(this.mianpian)
 

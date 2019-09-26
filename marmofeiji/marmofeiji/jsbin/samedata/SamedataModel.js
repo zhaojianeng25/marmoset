@@ -4,6 +4,7 @@ var same;
     var LoadManager = Pan3d.LoadManager;
     var MarmosetModel = mars3D.MarmosetModel;
     var MarmosetLightVo = mars3D.MarmosetLightVo;
+    var SamePicSprite = same.SamePicSprite;
     var SamedataModel = /** @class */ (function () {
         function SamedataModel() {
         }
@@ -19,7 +20,7 @@ var same;
             this.initmosort();
         };
         SamedataModel.initmosort = function () {
-            this.mianpian = new mars3D.PicShowDiplay3dSprite();
+            this.mianpian = new SamePicSprite();
             this.mianpian.scale = 10;
             Pan3d.SceneManager.getInstance().addDisplay(this.mianpian);
             MarmosetLightVo.tempRect = new depth.DepthRectSprite();
