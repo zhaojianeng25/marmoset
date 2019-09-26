@@ -136,154 +136,13 @@ module same {
 
                 "\n#define SHADOW_COMPARE(a,b) ((a) < (b) ? 1.0 : 0.0)\n" +
 
-                "struct ev{" +
-                "float eL[LIGHT_COUNT];" +
-                "};" +
 
-                "highp vec4 h(highp mat4 i,highp vec3 p){" +
-                "return i[0] * p.x + (i[1] * p.y + (i[2] * p.z + i[3]));" +
-                " } " +
-
-                "highp float hJ(highp vec3 G) {\n" +
-                "return  G.x ;\n" +
-                "}\n" +
-
-                "float hK(sampler2D hL, highp vec2 hA, highp float H) {" +
-                "highp float G = hJ(texture2D(hL, hA.xy).xyz);" +
-                "return SHADOW_COMPARE(H,G);" +
-                "}" +
-
-                "highp float hN(sampler2D hL, highp vec3 hA, float hO) {\n" +
-                "highp vec2 l = uShadowKernelRotation * hO;\n" +
-                "float s;\n" +
-                "s = hK(hL, hA.xy + l, hA.z);\n" +
-                "s += hK(hL, hA.xy - l, hA.z);\n" +
-                "s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
-                "s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
-                "s *= 0.25;\n" +
-                "return s * s;\n" +
-                "}\n" +
-
-                "void eB(out ev ss, float hO){" +
-                "highp vec3 hP[SHADOW_COUNT];" +
-                "vec3 hu = gl_FrontFacing ? dC : -dC;" +
-                "for (int k = 0; k < SHADOW_COUNT; ++k) {" +
-                "vec4 hQ = uShadowTexelPadProjections[k];" +
-                "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
-                "hR*=.0005+0.5 * hO;" +
-                //      "highp vec4 hS = h(uShadowMatrices[2], dv);" +
-                "highp vec4 hS =uShadowMatrices[2]* vec4(dv, 1.0);" +
-                "hP[2] = hS.xyz / hS.w;" +
-
-                "}" +
-                "float m;\n" +
-                "\n#if SHADOW_COUNT > 0 \n" +
-                "m = hN(tDepth0, hP[0], hO);" +
-                "ss.eL[0] = m;" +
-                "\n#endif\n" +
-                "\n#if SHADOW_COUNT > 1\n" +
-                "m = hN(tDepth1, hP[1], hO);" +
-                "ss.eL[1] =m;" +
-                "\n#endif\n" +
-                "\n#if SHADOW_COUNT > 2\n" +
-                "m = hN(tDepth2, hP[2], hO);\n" +
-                "ss.eL[2] =m;\n" +
-                "\n#endif\n" +
-                "}" +
-
-                "vec3 dG(vec3 c){return c*c;}" +
-
-                "vec3 dJ(vec3 n) {" +
-                "vec3 hn = dA;" +
-                "vec3 ho = dB;" +
-                "vec3 hu = dC;" +
-                "n = 2.0 * n - vec3(1.0);" +
-                "return normalize(hn * n.x + ho * n.y + hu * n.z);" +
-                "}" +
-
-
-                "vec3 ej(vec3 fJ) {" +
-                "\n#define c(n) uDiffuseCoefficients[n].xyz\n" +
-                "vec3 G=(c(0)+fJ.y*((c(1)+c(4)*fJ.x)+c(5)*fJ.z))+fJ.x*(c(3)+c(7)*fJ.z)+c(2)*fJ.z;" +
-                "\n#undef c\n" +
-                " return G.xyz;" +
-                " }" +
-
-                " vec3 em(vec3 fJ, float dQ) {" +
-                " fJ /= dot(vec3(1.0), abs(fJ));" +
-                "vec2 fU = abs(fJ.zx) - vec2(1.0, 1.0);" +
-                "vec2 fV = vec2(fJ.x < 0.0 ? fU.x : -fU.x, fJ.z < 0.0 ? fU.y : -fU.y);" +
-                "vec2 fW = (fJ.y < 0.0) ? fV : fJ.xz;" +
-                "fW = vec2(0.5 * (254.0 / 256.0), 0.125 * 0.5 * (254.0 / 256.0)) * fW + vec2(0.5, 0.125 * 0.5);" +
-                "float fX = fract(7.0 * dQ);" +
-                "fW.y += 0.125 * (7.0 * dQ - fX); vec2 fY = fW + vec2(0.0, 0.125);" +
-                "vec4 fZ = mix(texture2D(tSkySpecular, fW), texture2D(tSkySpecular, fY), fX);" +
-                "vec3 r = fZ.xyz * (7.0 * fZ.w);" +
-                "return r * r; " +
-
-                " }" +
-
-                "float en(vec3 fJ,vec3 hc){" +
-                "float hd = dot(fJ, hc);" +
-                "hd =  1.0 + uHorizonOcclude * hd;" +
-                "hd = clamp(hd, 0.0, 1.0 );" +
-                "return hd * hd;" +
-
-                "}" +
-
-
-                "vec4 mathdepthuv(highp mat4 i,highp vec3 p){" +
-                "vec4 outVec4 =i*vec4(p,1.0) ;" +
-                "outVec4.xyz =outVec4.xyz/outVec4.w ;" +
-                "vec4 outColorVec4 =texture2D(tDepthTexture,outVec4.xy*0.5+0.5); " +
-                "return  outColorVec4;" +
-                " } " +
 
                 "void main(void) " +
                 "{ " +
 
-                "vec4 m=texture2D(tAlbedo,d);" +
-                "vec3 dF=dG(m.xyz);" +
-                "float e = m.w;" +
-                "vec3 dI=dJ(texture2D(tNormal, d).xyz);" +
-                "vec3 dO=normalize(uCameraPosition-dv);" +
-                "m=texture2D(tReflectivity,d);" +
 
-                "vec3 dP = dG(m.xyz);" +
-                "float dQ=m.w;" +
-                "float dR = dQ;" +
-
-                "vec3 ei=ej(dI);" +
-
-                "vec3 ek=reflect(-dO,dI);" +
-
-                "vec3 el=em(ek,dQ);" +
-
-                "el*=en(ek,dC);" +
-
-
-                "highp float eo = 10.0 / log2(dQ * 0.968 + 0.03);" +
-                "eo *= eo;" +
-                "float eu = eo * (1.0 / (8.0 * 3.1415926)) + (4.0 / (8.0 * 3.1415926));" +
-                "eu = min(eu, 1.0e3);" +
-
-                "ev eA; \n" +
-                "eB(eA, 4.0 / 2048.0);" +
-                //   #define SHADOW_KERNEL(4.0 / 2048.0)
-
-                "vec4 depthvinfo=mathdepthuv(depthViewMatrix3D,vPos);" +
-                "vec4 lightvo=depthViewMatrix3D *vec4(vPos, 1.0);" +
-
-                "lightvo.xyz=lightvo.zzz/lightvo.w  ;\n " +
-                "depthvinfo.xyz=(depthvinfo.xxx-0.5)*2.0 ;\n " +
-
-                "gl_FragColor =vec4(0.5,0.5,0.5,1.0); " +
-                "if (depthvinfo.z>(lightvo.z-0.00001)) { " +
-                "gl_FragColor =vec4(1.0,1.0,1.0,1.0); " +
-
-                "}  " +
-
-                //    "gl_FragColor =vec4(eA.eL[2], eA.eL[2], eA.eL[2], 1.0); " +
+                "gl_FragColor =vec4(1.0,0.0,0.0,1.0); " +
 
 
 
@@ -344,8 +203,6 @@ module same {
 
         private drawTempMesh(mesh: Mars3Dmesh): void {
             if (mesh.tAlbedo && mesh.tNormal && mesh.tReflectivity) {
-
-
                 this.makeTbnBuff(mesh)
                 var gl = Scene_data.context3D.renderContext;
                 Scene_data.context3D.setProgram(this.program);
@@ -364,66 +221,10 @@ module same {
                 if (materialsSp["uSkyMatrix"]) {
                     Scene_data.context3D.setVcMatrix4fv(this.shader, "uSkyMatrix", materialsSp["uSkyMatrix"]);
                 }
-                if (materialsSp["uCameraPosition"]) {
-                    Scene_data.context3D.setVc3fv(this.shader, "uCameraPosition", [materialsSp["uCameraPosition"][0], materialsSp["uCameraPosition"][1], materialsSp["uCameraPosition"][2]]);
-                }
-
-                if (materialsSp["uDiffuseCoefficients"]) {
-                    Scene_data.context3D.setVc4fv(this.shader, "uDiffuseCoefficients", materialsSp["uDiffuseCoefficients"]);
-                }
-                if (materialsSp["tSkySpecular"]) {
-                    Scene_data.context3D.setRenderTexture(this.shader, "tSkySpecular", materialsSp["tSkySpecular"], 3);
-                }
-                if (materialsSp["horizonOcclude"]) {
-                    Scene_data.context3D.setVc1fv(this.shader, "uHorizonOcclude", [materialsSp["horizonOcclude"]]);
-                }
-
-                if (materialsSp["uShadowTexelPadProjections"]) {
-                    Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", materialsSp["uShadowTexelPadProjections"]);
-                }
-                if (materialsSp["uShadowMatrices"]) {
-
-                    Scene_data.context3D.setVcMatrix4fv(this.shader, "uShadowMatrices", materialsSp["uShadowMatrices"]);
-
-                }
-                if (materialsSp["uShadowKernelRotation"]) {
-                    Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
-                }
-
-
-
-                Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", mesh.tAlbedo.texture, 0);
-                Scene_data.context3D.setRenderTexture(this.shader, "tNormal", mesh.tNormal.texture, 1);
-                Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", mesh.tReflectivity.texture, 2);
-                Scene_data.context3D.setRenderTexture(this.shader, "tSkySpecular", MarmosetModel.tSkySpecularTexture, 3);
-
-                if (MarmosetLightVo.marmosetLightVo && MarmosetLightVo.marmosetLightVo.depthFBO && MarmosetLightVo.marmosetLightVo.depthFBO.texture) {
-
-                    //  console.log(MarmosetLightVo.marmosetLightVo.depthFBO.depthBuffer)
-                    //   console.log(MarmosetLightVo.marmosetLightVo.depthFBO.texture)
-
-                    Scene_data.context3D.setRenderTexture(this.shader, "tDepthTexture", MarmosetLightVo.marmosetLightVo.depthFBO.depthTexture, 4); //深度贴图
-                    if (MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D) {
-
-
-                        Scene_data.context3D.setVcMatrix4fv(this.shader, "depthViewMatrix3D", MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D);  //深度矩阵
-
-                        //  console.log(MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D)
-                        //  console.log(materialsSp["finalTransformBuffer"])
-                        //  console.log("-------")
-
-
-                    }
-
-
-                }
-
-
 
                 gl.disable(gl.CULL_FACE);
                 gl.cullFace(gl.FRONT);
                 Scene_data.context3D.setCullFaceModel(0)
-
                 Scene_data.context3D.setVa(0, 3, mesh.objData.vertexBuffer);
                 Scene_data.context3D.setVa(1, 2, mesh.objData.uvBuffer);
                 Scene_data.context3D.setVa(2, 3, mesh.objData.tangentBuffer);
