@@ -1,24 +1,24 @@
-var scenemos;
-(function (scenemos) {
+var same;
+(function (same) {
     var Scene_data = Pan3d.Scene_data;
     var LoadManager = Pan3d.LoadManager;
     var MarmosetModel = mars3D.MarmosetModel;
     var MarmosetLightVo = mars3D.MarmosetLightVo;
-    var TextEditStart = /** @class */ (function () {
-        function TextEditStart() {
+    var SamedataModel = /** @class */ (function () {
+        function SamedataModel() {
         }
-        TextEditStart.initCanvas = function ($caves) {
+        SamedataModel.initCanvas = function ($caves) {
             mainpan3d_me.canvas = $caves;
             Pan3d.Scene_data.fileRoot = "res/";
             Pan3d.Engine.init($caves);
             window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
             if (requestAnimationFrame) {
-                requestAnimationFrame(TextEditStart.step);
+                requestAnimationFrame(SamedataModel.step);
             }
-            TextEditStart.resetSize();
+            SamedataModel.resetSize();
             this.initmosort();
         };
-        TextEditStart.initmosort = function () {
+        SamedataModel.initmosort = function () {
             this.mianpian = new mars3D.PicShowDiplay3dSprite();
             this.mianpian.scale = 10;
             Pan3d.SceneManager.getInstance().addDisplay(this.mianpian);
@@ -40,7 +40,7 @@ var scenemos;
                 });
             });
         };
-        TextEditStart.resetSize = function () {
+        SamedataModel.resetSize = function () {
             if (mainpan3d_me.canvas) {
                 mainpan3d_me.canvas.width = document.body.clientWidth;
                 mainpan3d_me.canvas.height = document.body.clientHeight;
@@ -48,11 +48,11 @@ var scenemos;
                 win.LayerManager.getInstance().resize();
             }
         };
-        TextEditStart.step = function (timestamp) {
-            requestAnimationFrame(TextEditStart.step);
-            TextEditStart.upFrame();
+        SamedataModel.step = function (timestamp) {
+            requestAnimationFrame(SamedataModel.step);
+            SamedataModel.upFrame();
         };
-        TextEditStart.upDataLightShadow = function () {
+        SamedataModel.upDataLightShadow = function () {
             if (!MarmosetLightVo.marmosetLightVo) {
                 if (window["uShadowMatrices"]) {
                     MarmosetLightVo.marmosetLightVo = new MarmosetLightVo();
@@ -62,7 +62,7 @@ var scenemos;
                 MarmosetLightVo.marmosetLightVo.update(MarmosetModel.meshItem);
             }
         };
-        TextEditStart.upFrame = function () {
+        SamedataModel.upFrame = function () {
             this.upDataLightShadow();
             Pan3d.TimeUtil.update();
             Pan3d.Engine.resetSize();
@@ -73,8 +73,8 @@ var scenemos;
             win.LayerManager.getInstance().update();
             Pan3d.SceneManager.getInstance().update();
         };
-        return TextEditStart;
+        return SamedataModel;
     }());
-    scenemos.TextEditStart = TextEditStart;
-})(scenemos || (scenemos = {}));
-//# sourceMappingURL=TextEditStart.js.map
+    same.SamedataModel = SamedataModel;
+})(same || (same = {}));
+//# sourceMappingURL=SamedataModel.js.map

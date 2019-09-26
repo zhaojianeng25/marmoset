@@ -1,10 +1,10 @@
-﻿module scenemos {
+﻿module same {
     import Scene_data = Pan3d.Scene_data;
     import LoadManager = Pan3d.LoadManager;
     import MarmosetModel = mars3D.MarmosetModel;
     import MarmosetLightVo = mars3D.MarmosetLightVo;
 
-    export  class TextEditStart {
+    export class SamedataModel {
         public static initCanvas($caves: HTMLCanvasElement): void {
             mainpan3d_me.canvas = $caves;
             Pan3d.Scene_data.fileRoot = "res/";
@@ -12,10 +12,10 @@
 
             window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame
             if (requestAnimationFrame) {
-                requestAnimationFrame(TextEditStart.step);
+                requestAnimationFrame(SamedataModel.step);
             }
 
-            TextEditStart.resetSize();
+            SamedataModel.resetSize();
 
 
             this.initmosort()
@@ -64,8 +64,8 @@
             }
         }
         private static step(timestamp): void {
-            requestAnimationFrame(TextEditStart.step);
-            TextEditStart.upFrame()
+            requestAnimationFrame(SamedataModel.step);
+            SamedataModel.upFrame()
         }
         public static upDataLightShadow(): void {
             if (!MarmosetLightVo.marmosetLightVo) {
@@ -87,10 +87,8 @@
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
             win.LayerManager.getInstance().update();
 
-            Pan3d.SceneManager.getInstance().update()
-
-
-
+           Pan3d.SceneManager.getInstance().update()
+ 
 
         }
 
