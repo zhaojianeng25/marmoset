@@ -112,9 +112,7 @@ var mars3D;
         };
         Marmoset3dScene.prototype.upDataLightShadow = function () {
             if (!mars3D.MarmosetLightVo.marmosetLightVo) {
-                if (window["uShadowMatrices"]) {
-                    mars3D.MarmosetLightVo.marmosetLightVo = new mars3D.MarmosetLightVo();
-                }
+                mars3D.MarmosetLightVo.marmosetLightVo = new mars3D.MarmosetLightVo();
             }
             else {
                 mars3D.MarmosetLightVo.marmosetLightVo.update(mars3D.MarmosetModel.meshItem);

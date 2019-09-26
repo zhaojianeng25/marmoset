@@ -2518,35 +2518,31 @@ marmoset = {};
             , u = Matrix.mul(Matrix.empty(), d.matrix, u);
         m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
 
-
-        window["mview"] = q
+        var materialsSp = this
+        materialsSp["mview"] = q
         m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
-        window["uSkyMatrix"] = u
+        materialsSp["uSkyMatrix"] = u
 
         u = Matrix.mulPoint(Vect.empty(), d.matrix, c.transform[12], c.transform[13], c.transform[14]);
         m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
-        window["uCameraPosition"] = u
+        materialsSp["uCameraPosition"] = u
 
         m.uniform3fv(p.uFresnel, this.fresnel);
         m.uniform1f(p.uAlphaTest, this.alphaTest);
         m.uniform1f(p.uHorizonOcclude, this.horizonOcclude);
-        window["horizonOcclude"] = this.horizonOcclude
+        materialsSp["horizonOcclude"] = this.horizonOcclude
 
         m.uniform1f(p.uHorizonSmoothing, this.horizonSmoothing);
         m.uniform4fv(p.uDiffuseCoefficients, e.diffuseCoefficients);
 
-        window["uDiffuseCoefficients"] = e.diffuseCoefficients;
-
-        //window["uShadowMatrices"]=d.finalTransformBuffer;
-
-
-        window["uShadowMatrices"] = []
+        materialsSp["uDiffuseCoefficients"] = e.diffuseCoefficients;
+ 
+        materialsSp["uShadowMatrices"] = []
         for (var kt = d.finalTransformBuffer.length - 16; kt < d.finalTransformBuffer.length; kt++) {
-
-            window["uShadowMatrices"].push(d.finalTransformBuffer[kt])
+            materialsSp["uShadowMatrices"].push(d.finalTransformBuffer[kt])
         }
-        window["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
-        window["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
+        materialsSp["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
+        materialsSp["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
 
 
         0 < d.count && (m.uniform4fv(p.uLightPositions, d.positionBuffer),

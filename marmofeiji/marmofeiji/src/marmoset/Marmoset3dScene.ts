@@ -138,9 +138,9 @@ module mars3D {
      
         public upDataLightShadow(): void {
             if (!MarmosetLightVo.marmosetLightVo) {
-                if (window["uShadowMatrices"]) {
+                
                     MarmosetLightVo.marmosetLightVo = new MarmosetLightVo();
-                }
+              
             } else {
                 MarmosetLightVo.marmosetLightVo.update(MarmosetModel.meshItem);
             }

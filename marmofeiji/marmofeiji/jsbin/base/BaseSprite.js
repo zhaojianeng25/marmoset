@@ -1,1 +1,1 @@
-//# sourceMappingURL=baseSprite.js.map
+//# sourceMappingURL=BaseSprite.js.map

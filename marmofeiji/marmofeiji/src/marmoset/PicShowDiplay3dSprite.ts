@@ -352,36 +352,38 @@ module mars3D {
                 viewM.prepend(Scene_data.cam3D.cameraMatrix)
                 viewM.prepend(this.posMatrix)
 
+                var materialsSp = mesh.materials
+
                 Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", viewM.m);
-                if (window["mview"]) {
-                    Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", window["mview"]);
+                if (materialsSp["mview"]) {
+                    Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", materialsSp["mview"]);
                 }
-                if (window["uSkyMatrix"]) {
-                    Scene_data.context3D.setVcMatrix4fv(this.shader, "uSkyMatrix", window["uSkyMatrix"]);
+                if (materialsSp["uSkyMatrix"]) {
+                    Scene_data.context3D.setVcMatrix4fv(this.shader, "uSkyMatrix", materialsSp["uSkyMatrix"]);
                 }
-                if (window["uCameraPosition"]) {
-                    Scene_data.context3D.setVc3fv(this.shader, "uCameraPosition", [window["uCameraPosition"][0], window["uCameraPosition"][1], window["uCameraPosition"][2]]);
-                }
-
-                if (window["uDiffuseCoefficients"]) {
-                    Scene_data.context3D.setVc4fv(this.shader, "uDiffuseCoefficients", window["uDiffuseCoefficients"]);
-                }
-                if (window["tSkySpecular"]) {
-                    Scene_data.context3D.setRenderTexture(this.shader, "tSkySpecular", window["tSkySpecular"], 3);
-                }
-                if (window["horizonOcclude"]) {
-                    Scene_data.context3D.setVc1fv(this.shader, "uHorizonOcclude", [window["horizonOcclude"]]);
+                if (materialsSp["uCameraPosition"]) {
+                    Scene_data.context3D.setVc3fv(this.shader, "uCameraPosition", [materialsSp["uCameraPosition"][0], materialsSp["uCameraPosition"][1], materialsSp["uCameraPosition"][2]]);
                 }
 
-                if (window["uShadowTexelPadProjections"]) {
-                    Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", window["uShadowTexelPadProjections"]);
+                if (materialsSp["uDiffuseCoefficients"]) {
+                    Scene_data.context3D.setVc4fv(this.shader, "uDiffuseCoefficients", materialsSp["uDiffuseCoefficients"]);
                 }
-                if (window["uShadowMatrices"]) {
+                if (materialsSp["tSkySpecular"]) {
+                    Scene_data.context3D.setRenderTexture(this.shader, "tSkySpecular", materialsSp["tSkySpecular"], 3);
+                }
+                if (materialsSp["horizonOcclude"]) {
+                    Scene_data.context3D.setVc1fv(this.shader, "uHorizonOcclude", [materialsSp["horizonOcclude"]]);
+                }
+
+                if (materialsSp["uShadowTexelPadProjections"]) {
+                    Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", materialsSp["uShadowTexelPadProjections"]);
+                }
+                if (materialsSp["uShadowMatrices"]) {
         
-                    Scene_data.context3D.setVcMatrix4fv(this.shader, "uShadowMatrices", window["uShadowMatrices"]);
+                    Scene_data.context3D.setVcMatrix4fv(this.shader, "uShadowMatrices", materialsSp["uShadowMatrices"]);
           
                 }
-                if (window["uShadowKernelRotation"]) {
+                if (materialsSp["uShadowKernelRotation"]) {
                     Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
                 }
                 
@@ -404,7 +406,7 @@ module mars3D {
                         Scene_data.context3D.setVcMatrix4fv(this.shader, "depthViewMatrix3D", MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D);  //深度矩阵
 
                       //  console.log(MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D)
-                      //  console.log(window["finalTransformBuffer"])
+                      //  console.log(materialsSp["finalTransformBuffer"])
                       //  console.log("-------")
                    
 
