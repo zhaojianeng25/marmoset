@@ -22,10 +22,10 @@ var mars3D;
     var Vect = marmoset.Vect;
     var Mars3Dmesh = /** @class */ (function (_super) {
         __extends(Mars3Dmesh, _super);
-        function Mars3Dmesh(gl, modeInfo, material, c) {
+        function Mars3Dmesh(gl, modeInfo, materials, c) {
             var _this = _super.call(this, gl, modeInfo, c) || this;
             _this.modeInfo = modeInfo;
-            _this.material = material;
+            _this.materials = materials;
             return _this;
         }
         Mars3Dmesh.prototype.setAlbedoUrl = function (value) {

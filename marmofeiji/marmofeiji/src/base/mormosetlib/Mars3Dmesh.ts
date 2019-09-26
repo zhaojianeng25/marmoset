@@ -13,11 +13,11 @@
     export class Mars3Dmesh extends marmoset.Mesh {
 
         public modeInfo: any
-        public material: any
-        public constructor(gl: any, modeInfo: any, material: any, c: any) {
+        public materials: any
+        public constructor(gl: any, modeInfo: any, materials: any, c: any) {
             super(gl, modeInfo, c)
             this.modeInfo = modeInfo;
-            this.material = material;
+            this.materials = materials;
         }
 
         public tAlbedo: TextureRes

@@ -1,5 +1,5 @@
 marmoset = {};
-(function(marmoset) {
+(function (marmoset) {
     'use strict';
     function AnimatedObject(a, b, c) {
         this.name = b.partName;
@@ -26,7 +26,7 @@ marmoset = {};
             c = b.animatedProperties.length;
             for (var d = 0; d < c; ++d) {
                 var e = b.animatedProperties[d]
-                  , f = new AnimatedProperty;
+                    , f = new AnimatedProperty;
                 f.name = e.name;
                 this.animatedProperties.push(f);
                 "Red" != f.name || this.redProperty || (this.redProperty = f);
@@ -50,7 +50,7 @@ marmoset = {};
         this.keyframesSharedBufferUShorts = this.keyframesSharedBufferFloats = this.keyFramesByteStream = 0;
         if (a = a.get(b.file))
             this.keyFramesByteStream = new ByteStream(a.data),
-            this.unPackKeyFrames();
+                this.unPackKeyFrames();
         this.animatedLocalTransform = new AnimatedTransform(this);
         this.hasTransform = this.animatedLocalTransform.hasTranslation || this.animatedLocalTransform.hasRotation || this.animatedLocalTransform.hasScale;
         this.cachedWorldTransform0 = Matrix.identity();
@@ -61,22 +61,22 @@ marmoset = {};
         this.cachedFrameUse3 = this.cachedFrameUse2 = this.cachedFrameUse1 = this.cachedFrameUse0 = 0;
         this.useFixedLocalTransform = this.useFixedWorldTransform = !1
     }
-    AnimatedObject.prototype.setFixedWorldTransform = function(a) {
+    AnimatedObject.prototype.setFixedWorldTransform = function (a) {
         this.useFixedWorldTransform = !0;
         Matrix.copy(this.cachedWorldTransform0, a)
     }
-    ;
-    AnimatedObject.prototype.setFixedLocalTransform = function(a) {
+        ;
+    AnimatedObject.prototype.setFixedLocalTransform = function (a) {
         this.useFixedLocalTransform = !0;
         this.animatedLocalTransform.lockTransform = !0;
         Matrix.copy(this.animatedLocalTransform.cachedmatrix0, a)
     }
-    ;
-    AnimatedObject.prototype.getCachedWorldTransform = function(a) {
+        ;
+    AnimatedObject.prototype.getCachedWorldTransform = function (a) {
         return this.useFixedWorldTransform ? 0 : a == this.cachedFrame0 ? this.cachedmatrix0 : a == this.cachedFrame1 ? this.cachedmatrix1 : a == this.cachedFrame2 ? this.cachedmatrix2 : a == this.cachedFrame3 ? this.cachedmatrix3 : 0
     }
-    ;
-    AnimatedObject.prototype.getFreeCachedWorldTransform = function(a) {
+        ;
+    AnimatedObject.prototype.getFreeCachedWorldTransform = function (a) {
         if (this.useFixedWorldTransform)
             return 0;
         this.cachedFrameUse0--;
@@ -85,33 +85,33 @@ marmoset = {};
         this.cachedFrameUse3--;
         if (this.cachedFrameUse0 <= this.cachedFrameUse1 && this.cachedFrameUse0 <= this.cachedFrameUse2 && this.cachedFrameUse0 <= this.cachedFrameUse3)
             return this.cachedFrame0 = a,
-            this.cachedFrameUse0 = 0,
-            this.cachedWorldTransform0;
+                this.cachedFrameUse0 = 0,
+                this.cachedWorldTransform0;
         if (this.cachedFrameUse1 <= this.cachedFrameUse0 && this.cachedFrameUse1 <= this.cachedFrameUse2 && this.cachedFrameUse1 <= this.cachedFrameUse3)
             return this.cachedFrame1 = a,
-            this.cachedFrameUse1 = 0,
-            this.cachedWorldTransform1;
+                this.cachedFrameUse1 = 0,
+                this.cachedWorldTransform1;
         if (this.cachedFrameUse2 <= this.cachedFrameUse0 && this.cachedFrameUse2 <= this.cachedFrameUse1 && this.cachedFrameUse2 <= this.cachedFrameUse3)
             return this.cachedFrame2 = a,
-            this.cachedFrameUse2 = 0,
-            this.cachedWorldTransform2;
+                this.cachedFrameUse2 = 0,
+                this.cachedWorldTransform2;
         this.cachedFrame3 = a;
         this.cachedFrameUse3 = 0;
         return this.cachedWorldTransform3
     }
-    ;
-    AnimatedObject.prototype.unPackKeyFrames = function() {
+        ;
+    AnimatedObject.prototype.unPackKeyFrames = function () {
         if (this.keyFramesByteStream) {
             var a = new Float32Array(this.keyFramesByteStream.bytes.buffer)
-              , b = new Uint32Array(this.keyFramesByteStream.bytes.buffer)
-              , c = new Uint16Array(this.keyFramesByteStream.bytes.buffer)
-              , d = new Uint8Array(this.keyFramesByteStream.bytes.buffer);
+                , b = new Uint32Array(this.keyFramesByteStream.bytes.buffer)
+                , c = new Uint16Array(this.keyFramesByteStream.bytes.buffer)
+                , d = new Uint8Array(this.keyFramesByteStream.bytes.buffer);
             this.keyframesSharedBufferFloats = a;
             this.keyframesSharedBufferUShorts = b;
             for (var a = 0, b = b[0], a = 1 + b, b = this.animatedProperties.length, e = 0; e < b; e++) {
                 var f = this.animatedProperties[e]
-                  , g = 2 + 2 * e
-                  , h = 2 * g;
+                    , g = 2 + 2 * e
+                    , h = 2 * g;
                 f.keyframeBufferStartIndexFloat = a;
                 f.numKeyframes = c[g];
                 f.keyframePackingType = d[h + 2];
@@ -119,42 +119,42 @@ marmoset = {};
                 f.indexFloatSkip = 0;
                 f.indexUShortSkip = 0;
                 0 < f.numKeyframes && (0 == f.keyframePackingType ? (f.bytesPerKeyFrame = 16,
-                f.indexFloatSkip = 4,
-                f.indexUShortSkip = 8,
-                f.valueOffsetFloat = 0,
-                f.weighInOffsetFloat = 1,
-                f.weighOutOffsetFloat = 2,
-                f.frameIndexOffsetUShort = 6,
-                f.interpolationOffsetUShort = 7) : 1 == f.keyframePackingType ? (f.bytesPerKeyFrame = 8,
-                f.indexFloatSkip = 2,
-                f.indexUShortSkip = 4,
-                f.valueOffsetFloat = 0,
-                f.weighInOffsetFloat = 0,
-                f.weighOutOffsetFloat = 0,
-                f.frameIndexOffsetUShort = 2,
-                f.interpolationOffsetUShort = 3) : 2 == f.keyframePackingType && (f.bytesPerKeyFrame = 4,
-                f.indexFloatSkip = 1,
-                f.indexUShortSkip = 2,
-                f.valueOffsetFloat = 0,
-                f.weighInOffsetFloat = 0,
-                f.weighOutOffsetFloat = 0,
-                f.frameIndexOffsetUShort = 0,
-                f.interpolationOffsetUShort = 0));
+                    f.indexFloatSkip = 4,
+                    f.indexUShortSkip = 8,
+                    f.valueOffsetFloat = 0,
+                    f.weighInOffsetFloat = 1,
+                    f.weighOutOffsetFloat = 2,
+                    f.frameIndexOffsetUShort = 6,
+                    f.interpolationOffsetUShort = 7) : 1 == f.keyframePackingType ? (f.bytesPerKeyFrame = 8,
+                        f.indexFloatSkip = 2,
+                        f.indexUShortSkip = 4,
+                        f.valueOffsetFloat = 0,
+                        f.weighInOffsetFloat = 0,
+                        f.weighOutOffsetFloat = 0,
+                        f.frameIndexOffsetUShort = 2,
+                        f.interpolationOffsetUShort = 3) : 2 == f.keyframePackingType && (f.bytesPerKeyFrame = 4,
+                            f.indexFloatSkip = 1,
+                            f.indexUShortSkip = 2,
+                            f.valueOffsetFloat = 0,
+                            f.weighInOffsetFloat = 0,
+                            f.weighOutOffsetFloat = 0,
+                            f.frameIndexOffsetUShort = 0,
+                            f.interpolationOffsetUShort = 0));
                 a += f.numKeyframes * f.indexFloatSkip
             }
         }
     }
-    ;
-    AnimatedObject.prototype.setupSkinningRig = function(a, b, c, d) {
+        ;
+    AnimatedObject.prototype.setupSkinningRig = function (a, b, c, d) {
         var e = Matrix.identity()
-          , f = Matrix.identity()
-          , g = a.animatedObjects[b]
-          , h = c * g.modelPartFPS
-          , h = h - Math.floor(h);
+            , f = Matrix.identity()
+            , g = a.animatedObjects[b]
+            , h = c * g.modelPartFPS
+            , h = h - Math.floor(h);
         c = Math.floor(a.getObjectAnimationFramePercent(g, c));
         var g = c + 1
-          , k = 1 - h
-          , l = d.skinningClusters.length;
+            , k = 1 - h
+            , l = d.skinningClusters.length;
         if (0 < l)
             for (var n = 0; n < l; n++) {
                 var m = d.skinningClusters[n];
@@ -164,25 +164,25 @@ marmoset = {};
                     m[p] = e[p] * k + f[p] * h
             }
     }
-    ;
-    AnimatedObject.prototype.evaluateLocalTransformAtFramePercent = function(a, b, c, d) {
+        ;
+    AnimatedObject.prototype.evaluateLocalTransformAtFramePercent = function (a, b, c, d) {
         if (this.useFixedLocalTransform)
             Matrix.copy(b, this.animatedLocalTransform.cachedmatrix0);
         else {
             var e = 0;
             d && (e = this.animatedLocalTransform.getCachedTransform(a));
             e ? Matrix.copy(b, e) : ((e = this.animatedLocalTransform.getFreeCachedTransform(a)) ? (this.animatedLocalTransform.evaluateMatrix(e, this.totalFrames, a, c),
-            Matrix.copy(b, e)) : this.animatedLocalTransform.evaluateMatrix(b, this.totalFrames, a, c),
-            0 != this.turnTableSpin && (a = Matrix.rotation(Matrix.empty(), this.turnTableSpin, 1),
-            Matrix.mul(b, b, a)))
+                Matrix.copy(b, e)) : this.animatedLocalTransform.evaluateMatrix(b, this.totalFrames, a, c),
+                0 != this.turnTableSpin && (a = Matrix.rotation(Matrix.empty(), this.turnTableSpin, 1),
+                    Matrix.mul(b, b, a)))
         }
     }
-    ;
-    AnimatedObject.prototype.hasAnimatedTransform = function() {
+        ;
+    AnimatedObject.prototype.hasAnimatedTransform = function () {
         var a = this.animatedLocalTransform;
         return a.TX && 1 < a.TX.numKeyframes || a.TY && 1 < a.TY.numKeyframes || a.TZ && 1 < a.TZ.numKeyframes || a.RX && 1 < a.RX.numKeyframes || a.RY && 1 < a.RY.numKeyframes || a.RZ && 1 < a.RZ.numKeyframes || a.SX && 1 < a.SX.numKeyframes || a.SY && 1 < a.SY.numKeyframes || a.SZ && 1 < a.SZ.numKeyframes ? !0 : !1
     }
-    ;
+        ;
     function AnimatedProperty() {
         this.currentValue = 0;
         this.keyframeBufferStartIndexFloat = -1;
@@ -190,10 +190,10 @@ marmoset = {};
         this.lastFramePercent = -10;
         this.enable = !0;
         this.name = "NONE";
-        this.splineKF0 = new KeyFrame(0,0);
-        this.splineKF1 = new KeyFrame(0,0);
-        this.splineKF2 = new KeyFrame(0,0);
-        this.splineKF3 = new KeyFrame(0,0);
+        this.splineKF0 = new KeyFrame(0, 0);
+        this.splineKF1 = new KeyFrame(0, 0);
+        this.splineKF2 = new KeyFrame(0, 0);
+        this.splineKF3 = new KeyFrame(0, 0);
         this.debugMe = !0;
         this.debugString = "";
         this.lastSearchIndex = 1;
@@ -204,27 +204,27 @@ marmoset = {};
         this.splineKF3.frameIndex = 3;
         this.numKeyframes = 0
     }
-    AnimatedProperty.prototype.evaluateCurve = function(a, b) {
+    AnimatedProperty.prototype.evaluateCurve = function (a, b) {
         var c = this.splineKF1.frameIndex
-          , d = this.splineKF2.frameIndex
-          , e = this.splineKF1.value
-          , f = this.splineKF2.value
-          , g = c - (this.splineKF2.frameIndex - this.splineKF0.frameIndex)
-          , h = d - (this.splineKF1.frameIndex - this.splineKF3.frameIndex)
-          , k = e - (this.splineKF2.value - this.splineKF0.value) * this.splineKF1.weighOut
-          , l = f - (this.splineKF1.value - this.splineKF3.value) * this.splineKF2.weighIn;
+            , d = this.splineKF2.frameIndex
+            , e = this.splineKF1.value
+            , f = this.splineKF2.value
+            , g = c - (this.splineKF2.frameIndex - this.splineKF0.frameIndex)
+            , h = d - (this.splineKF1.frameIndex - this.splineKF3.frameIndex)
+            , k = e - (this.splineKF2.value - this.splineKF0.value) * this.splineKF1.weighOut
+            , l = f - (this.splineKF1.value - this.splineKF3.value) * this.splineKF2.weighIn;
         3 == this.splineKF1.interpolation && (g = c - (this.splineKF2.frameIndex - this.splineKF1.frameIndex),
-        k = e - this.splineKF1.weighOut);
+            k = e - this.splineKF1.weighOut);
         3 == this.splineKF2.interpolation && (h = d - (this.splineKF1.frameIndex - this.splineKF2.frameIndex),
-        l = f + this.splineKF2.weighIn);
+            l = f + this.splineKF2.weighIn);
         g = (a - g) / (c - g);
         c = (a - c) / (d - c);
         d = (a - d) / (h - d);
         h = e * (1 - c) + f * c;
         return ((k * (1 - g) + e * g) * (1 - c) + h * c) * (1 - c) + ((f * (1 - d) + l * d) * c + h * (1 - c)) * c
     }
-    ;
-    AnimatedProperty.prototype.evaluate = function(a, b, c) {
+        ;
+    AnimatedProperty.prototype.evaluate = function (a, b, c) {
         if (!c)
             return b;
         if (0 == this.numKeyframes)
@@ -234,7 +234,7 @@ marmoset = {};
         if (this.lastFramePercent == a)
             return this.lastValue;
         var d = this.keyframeBufferStartIndexFloat
-          , e = 2 * this.keyframeBufferStartIndexFloat;
+            , e = 2 * this.keyframeBufferStartIndexFloat;
         this.lastValue = b;
         this.lastFramePercent = a;
         if (2 == this.keyframePackingType) {
@@ -254,7 +254,7 @@ marmoset = {};
             return this.lastValue = a
         }
         var g = this.numKeyframes
-          , f = c.keyframesSharedBufferUShorts[e + this.frameIndexOffsetUShort];
+            , f = c.keyframesSharedBufferUShorts[e + this.frameIndexOffsetUShort];
         if (a >= c.keyframesSharedBufferUShorts[e + (g - 1) * this.indexUShortSkip + this.frameIndexOffsetUShort])
             return this.lastValue = c.keyframesSharedBufferFloats[d + (g - 1) * this.indexFloatSkip + this.valueOffsetFloat];
         if (a < f)
@@ -262,9 +262,9 @@ marmoset = {};
         this.lastSearchIndex < this.numKeyframes && a > c.keyframesSharedBufferUShorts[e + this.lastSearchIndex * this.indexUShortSkip + this.frameIndexOffsetUShort] && (this.lastSearchIndex = 1);
         for (var h = this.lastSearchIndex; h < g; h++) {
             var f = d + h * this.indexFloatSkip
-              , k = d + (h - 1) * this.indexFloatSkip
-              , l = e + h * this.indexUShortSkip
-              , n = e + (h - 1) * this.indexUShortSkip;
+                , k = d + (h - 1) * this.indexFloatSkip
+                , l = e + h * this.indexUShortSkip
+                , n = e + (h - 1) * this.indexUShortSkip;
             if (a >= c.keyframesSharedBufferUShorts[n + this.frameIndexOffsetUShort] && a <= c.keyframesSharedBufferUShorts[l + this.frameIndexOffsetUShort]) {
                 this.lastSearchIndex = h;
                 var m = c.keyframesSharedBufferUShorts[n + this.interpolationOffsetUShort];
@@ -282,80 +282,80 @@ marmoset = {};
                 }
                 if (1 == m || 3 == m) {
                     var p = m = !1
-                      , r = 0
-                      , s = c.keyframesSharedBufferFloats[k + this.valueOffsetFloat]
-                      , u = c.keyframesSharedBufferFloats[f + this.valueOffsetFloat]
-                      , q = 0
-                      , x = 0
-                      , n = c.keyframesSharedBufferUShorts[n + this.frameIndexOffsetUShort]
-                      , l = c.keyframesSharedBufferUShorts[l + this.frameIndexOffsetUShort]
-                      , w = 0
-                      , v = 1
-                      , t = 1
-                      , y = 1
-                      , E = 1
-                      , F = 1
-                      , A = 1
-                      , B = 1
-                      , z = 1;
+                        , r = 0
+                        , s = c.keyframesSharedBufferFloats[k + this.valueOffsetFloat]
+                        , u = c.keyframesSharedBufferFloats[f + this.valueOffsetFloat]
+                        , q = 0
+                        , x = 0
+                        , n = c.keyframesSharedBufferUShorts[n + this.frameIndexOffsetUShort]
+                        , l = c.keyframesSharedBufferUShorts[l + this.frameIndexOffsetUShort]
+                        , w = 0
+                        , v = 1
+                        , t = 1
+                        , y = 1
+                        , E = 1
+                        , F = 1
+                        , A = 1
+                        , B = 1
+                        , z = 1;
                     0 != this.weighInOffsetFloat && (t = c.keyframesSharedBufferFloats[k + this.weighInOffsetFloat],
-                    y = c.keyframesSharedBufferFloats[f + this.weighInOffsetFloat],
-                    A = c.keyframesSharedBufferFloats[k + this.weighOutOffsetFloat],
-                    B = c.keyframesSharedBufferFloats[f + this.weighOutOffsetFloat]);
+                        y = c.keyframesSharedBufferFloats[f + this.weighInOffsetFloat],
+                        A = c.keyframesSharedBufferFloats[k + this.weighOutOffsetFloat],
+                        B = c.keyframesSharedBufferFloats[f + this.weighOutOffsetFloat]);
                     1 < h && (m = !0,
-                    r = c.keyframesSharedBufferFloats[d + (h - 2) * this.indexFloatSkip + this.valueOffsetFloat],
-                    x = c.keyframesSharedBufferUShorts[e + (h - 2) * this.indexUShortSkip + this.frameIndexOffsetUShort],
-                    0 != this.weighInOffsetFloat && (v = c.keyframesSharedBufferFloats[d + (h - 2) * this.indexFloatSkip + this.weighInOffsetFloat],
-                    F = c.keyframesSharedBufferFloats[d + (h - 2) * this.indexFloatSkip + this.weighOutOffsetFloat]));
+                        r = c.keyframesSharedBufferFloats[d + (h - 2) * this.indexFloatSkip + this.valueOffsetFloat],
+                        x = c.keyframesSharedBufferUShorts[e + (h - 2) * this.indexUShortSkip + this.frameIndexOffsetUShort],
+                        0 != this.weighInOffsetFloat && (v = c.keyframesSharedBufferFloats[d + (h - 2) * this.indexFloatSkip + this.weighInOffsetFloat],
+                            F = c.keyframesSharedBufferFloats[d + (h - 2) * this.indexFloatSkip + this.weighOutOffsetFloat]));
                     h < g - 1 && (p = !0,
-                    q = c.keyframesSharedBufferFloats[d + (h + 1) * this.indexFloatSkip + this.valueOffsetFloat],
-                    w = c.keyframesSharedBufferUShorts[e + (h + 1) * this.indexUShortSkip + this.frameIndexOffsetUShort],
-                    0 != this.weighInOffsetFloat && (E = c.keyframesSharedBufferFloats[d + (h + 1) * this.indexFloatSkip + this.weighInOffsetFloat],
-                    z = c.keyframesSharedBufferFloats[d + (h + 1) * this.indexFloatSkip + this.weighOutOffsetFloat]));
+                        q = c.keyframesSharedBufferFloats[d + (h + 1) * this.indexFloatSkip + this.valueOffsetFloat],
+                        w = c.keyframesSharedBufferUShorts[e + (h + 1) * this.indexUShortSkip + this.frameIndexOffsetUShort],
+                        0 != this.weighInOffsetFloat && (E = c.keyframesSharedBufferFloats[d + (h + 1) * this.indexFloatSkip + this.weighInOffsetFloat],
+                            z = c.keyframesSharedBufferFloats[d + (h + 1) * this.indexFloatSkip + this.weighOutOffsetFloat]));
                     m && p ? (this.splineKF0.value = r,
-                    this.splineKF1.value = s,
-                    this.splineKF2.value = u,
-                    this.splineKF3.value = q,
-                    this.splineKF0.frameIndex = x,
-                    this.splineKF1.frameIndex = n,
-                    this.splineKF2.frameIndex = l,
-                    this.splineKF3.frameIndex = w,
-                    this.splineKF0.weighIn = v,
-                    this.splineKF0.weighOut = F,
-                    this.splineKF1.weighIn = t,
-                    this.splineKF1.weighOut = A,
-                    this.splineKF2.weighIn = y,
-                    this.splineKF2.weighOut = B,
-                    this.splineKF3.weighIn = E,
-                    this.splineKF3.weighOut = z) : (this.splineKF0.value = s,
-                    this.splineKF1.value = s,
-                    this.splineKF2.value = u,
-                    this.splineKF3.value = u,
-                    this.splineKF0.frameIndex = n,
-                    this.splineKF1.frameIndex = n,
-                    this.splineKF2.frameIndex = l,
-                    this.splineKF3.frameIndex = l,
-                    this.splineKF1.weighIn = t,
-                    this.splineKF2.weighIn = y,
-                    this.splineKF1.weighOut = A,
-                    this.splineKF2.weighOut = B,
-                    p ? (this.splineKF3.value = q,
-                    this.splineKF3.frameIndex = w,
-                    this.splineKF3.weighIn = E,
-                    this.splineKF3.weighOut = z) : (this.splineKF3.frameIndex++,
-                    this.splineKF3.value = this.splineKF1.value,
-                    this.splineKF3.weighIn = 1,
-                    this.splineKF3.weighOut = 1),
-                    m ? (this.splineKF0.value = r,
-                    this.splineKF0.frameIndex = x,
-                    this.splineKF0.weighIn = v,
-                    this.splineKF0.weighOut = F) : (this.splineKF0.value = this.splineKF2.value,
-                    this.splineKF0.weighIn = 1,
-                    this.splineKF0.weighOut = 1,
-                    0 < this.splineKF0.frameIndex ? this.splineKF0.frameIndex-- : (this.splineKF1.frameIndex++,
-                    this.splineKF2.frameIndex++,
-                    this.splineKF3.frameIndex++,
-                    a++)));
+                        this.splineKF1.value = s,
+                        this.splineKF2.value = u,
+                        this.splineKF3.value = q,
+                        this.splineKF0.frameIndex = x,
+                        this.splineKF1.frameIndex = n,
+                        this.splineKF2.frameIndex = l,
+                        this.splineKF3.frameIndex = w,
+                        this.splineKF0.weighIn = v,
+                        this.splineKF0.weighOut = F,
+                        this.splineKF1.weighIn = t,
+                        this.splineKF1.weighOut = A,
+                        this.splineKF2.weighIn = y,
+                        this.splineKF2.weighOut = B,
+                        this.splineKF3.weighIn = E,
+                        this.splineKF3.weighOut = z) : (this.splineKF0.value = s,
+                            this.splineKF1.value = s,
+                            this.splineKF2.value = u,
+                            this.splineKF3.value = u,
+                            this.splineKF0.frameIndex = n,
+                            this.splineKF1.frameIndex = n,
+                            this.splineKF2.frameIndex = l,
+                            this.splineKF3.frameIndex = l,
+                            this.splineKF1.weighIn = t,
+                            this.splineKF2.weighIn = y,
+                            this.splineKF1.weighOut = A,
+                            this.splineKF2.weighOut = B,
+                            p ? (this.splineKF3.value = q,
+                                this.splineKF3.frameIndex = w,
+                                this.splineKF3.weighIn = E,
+                                this.splineKF3.weighOut = z) : (this.splineKF3.frameIndex++ ,
+                                    this.splineKF3.value = this.splineKF1.value,
+                                    this.splineKF3.weighIn = 1,
+                                    this.splineKF3.weighOut = 1),
+                            m ? (this.splineKF0.value = r,
+                                this.splineKF0.frameIndex = x,
+                                this.splineKF0.weighIn = v,
+                                this.splineKF0.weighOut = F) : (this.splineKF0.value = this.splineKF2.value,
+                                    this.splineKF0.weighIn = 1,
+                                    this.splineKF0.weighOut = 1,
+                                    0 < this.splineKF0.frameIndex ? this.splineKF0.frameIndex-- : (this.splineKF1.frameIndex++ ,
+                                        this.splineKF2.frameIndex++ ,
+                                        this.splineKF3.frameIndex++ ,
+                                        a++)));
                     this.lastValue = a = this.evaluateCurve(a, b);
                     break
                 }
@@ -363,7 +363,7 @@ marmoset = {};
         }
         return this.lastValue
     }
-    ;
+        ;
     function AnimatedTransform(a) {
         var b = a.animatedProperties;
         this.TX = this.TY = this.TZ = this.RX = this.RY = this.RZ = this.SX = this.SY = this.SZ = 0;
@@ -385,59 +385,59 @@ marmoset = {};
         this.hasScale = this.SX && this.SY && this.SZ;
         this.lockTransform = !1
     }
-    AnimatedTransform.prototype.getTRSValue = function(a, b, c) {
+    AnimatedTransform.prototype.getTRSValue = function (a, b, c) {
         if (!b)
             return c;
         b.evaluate(a, c, this.hostObject);
         "" != b.debugString && (this.debugString += b.debugString);
         return b.lastValue
     }
-    ;
-    AnimatedTransform.prototype.evaluateMatrix = function(a, b, c, d) {
+        ;
+    AnimatedTransform.prototype.evaluateMatrix = function (a, b, c, d) {
         if (this.lockTransform)
             Matrix.copy(a, this.cachedmatrix0);
         else {
             var e = 0
-              , f = b = 0
-              , e = f = b = 0
-              , e = f = b = 1;
+                , f = b = 0
+                , e = f = b = 0
+                , e = f = b = 1;
             this.hasRotation ? (e = this.getTRSValue(c, this.RX, 0),
-            b = this.getTRSValue(c, this.RY, 0),
-            f = this.getTRSValue(c, this.RZ, 0),
-            d ? (this.matrix = Matrix.rotation(Matrix.empty(), f, 2),
-            d = Matrix.rotation(Matrix.empty(), e, 0),
-            Matrix.mul(d, d, this.matrix),
-            this.matrix = Matrix.rotation(Matrix.empty(), b, 1)) : (this.matrix = Matrix.rotation(Matrix.empty(), e, 0),
-            d = Matrix.rotation(Matrix.empty(), b, 1),
-            Matrix.mul(d, d, this.matrix),
-            this.matrix = Matrix.rotation(Matrix.empty(), f, 2)),
-            Matrix.mul(this.matrix, this.matrix, d)) : Matrix.copy(this.matrix, Matrix.identity());
+                b = this.getTRSValue(c, this.RY, 0),
+                f = this.getTRSValue(c, this.RZ, 0),
+                d ? (this.matrix = Matrix.rotation(Matrix.empty(), f, 2),
+                    d = Matrix.rotation(Matrix.empty(), e, 0),
+                    Matrix.mul(d, d, this.matrix),
+                    this.matrix = Matrix.rotation(Matrix.empty(), b, 1)) : (this.matrix = Matrix.rotation(Matrix.empty(), e, 0),
+                        d = Matrix.rotation(Matrix.empty(), b, 1),
+                        Matrix.mul(d, d, this.matrix),
+                        this.matrix = Matrix.rotation(Matrix.empty(), f, 2)),
+                Matrix.mul(this.matrix, this.matrix, d)) : Matrix.copy(this.matrix, Matrix.identity());
             this.hasTranslation && (b = this.getTRSValue(c, this.TX, 0),
-            f = this.getTRSValue(c, this.TY, 0),
-            e = this.getTRSValue(c, this.TZ, 0),
-            this.matrix[12] = b,
-            this.matrix[13] = f,
-            this.matrix[14] = e);
+                f = this.getTRSValue(c, this.TY, 0),
+                e = this.getTRSValue(c, this.TZ, 0),
+                this.matrix[12] = b,
+                this.matrix[13] = f,
+                this.matrix[14] = e);
             this.hasScale && (b = this.getTRSValue(c, this.SX, 1),
-            f = this.getTRSValue(c, this.SY, 1),
-            e = this.getTRSValue(c, this.SZ, 1),
-            this.matrix[0] *= b,
-            this.matrix[4] *= f,
-            this.matrix[8] *= e,
-            this.matrix[1] *= b,
-            this.matrix[5] *= f,
-            this.matrix[9] *= e,
-            this.matrix[2] *= b,
-            this.matrix[6] *= f,
-            this.matrix[10] *= e,
-            this.matrix[3] *= b,
-            this.matrix[7] *= f,
-            this.matrix[11] *= e);
+                f = this.getTRSValue(c, this.SY, 1),
+                e = this.getTRSValue(c, this.SZ, 1),
+                this.matrix[0] *= b,
+                this.matrix[4] *= f,
+                this.matrix[8] *= e,
+                this.matrix[1] *= b,
+                this.matrix[5] *= f,
+                this.matrix[9] *= e,
+                this.matrix[2] *= b,
+                this.matrix[6] *= f,
+                this.matrix[10] *= e,
+                this.matrix[3] *= b,
+                this.matrix[7] *= f,
+                this.matrix[11] *= e);
             Matrix.copy(a, this.matrix)
         }
     }
-    ;
-    AnimatedTransform.prototype.clearCachedTransforms = function() {
+        ;
+    AnimatedTransform.prototype.clearCachedTransforms = function () {
         this.cachedFrame3 = this.cachedFrame2 = this.cachedFrame1 = this.cachedFrame0 = -1;
         this.cachedFrameUse3 = this.cachedFrameUse2 = this.cachedFrameUse1 = this.cachedFrameUse0 = 0;
         this.TX && (this.TX.lastFramePercent = -10);
@@ -451,12 +451,12 @@ marmoset = {};
         this.SZ && (this.SZ.lastFramePercent = -10);
         this.lockTransform = !1
     }
-    ;
-    AnimatedTransform.prototype.getCachedTransform = function(a) {
+        ;
+    AnimatedTransform.prototype.getCachedTransform = function (a) {
         return this.lockTransform ? 0 : this.cachedFrame0 == a ? this.cachedmatrix0 : this.cachedFrame1 == a ? this.cachedmatrix1 : this.cachedFrame2 == a ? this.cachedmatrix2 : this.cachedFrame3 == a ? this.cachedmatrix3 : 0
     }
-    ;
-    AnimatedTransform.prototype.getFreeCachedTransform = function(a) {
+        ;
+    AnimatedTransform.prototype.getFreeCachedTransform = function (a) {
         if (this.lockTransform)
             return 0;
         this.cachedFrameUse0--;
@@ -465,21 +465,21 @@ marmoset = {};
         this.cachedFrameUse3--;
         if (this.cachedFrameUse0 <= this.cachedFrameUse1 && this.cachedFrameUse0 <= this.cachedFrameUse2 && this.cachedFrameUse0 <= this.cachedFrameUse3 || this.cachedFrame0 == a)
             return this.cachedFrame0 = a,
-            this.cachedFrameUse0 = 0,
-            this.cachedmatrix0;
+                this.cachedFrameUse0 = 0,
+                this.cachedmatrix0;
         if (this.cachedFrameUse1 <= this.cachedFrameUse0 && this.cachedFrameUse1 <= this.cachedFrameUse2 && this.cachedFrameUse1 <= this.cachedFrameUse3 || this.cachedFrame1 == a)
             return this.cachedFrame1 = a,
-            this.cachedFrameUse1 = 0,
-            this.cachedmatrix1;
+                this.cachedFrameUse1 = 0,
+                this.cachedmatrix1;
         if (this.cachedFrameUse2 <= this.cachedFrameUse0 && this.cachedFrameUse2 <= this.cachedFrameUse1 && this.cachedFrameUse2 <= this.cachedFrameUse3 || this.cachedFrame2 == a)
             return this.cachedFrame2 = a,
-            this.cachedFrameUse2 = 0,
-            this.cachedmatrix2;
+                this.cachedFrameUse2 = 0,
+                this.cachedmatrix2;
         this.cachedFrame3 = a;
         this.cachedFrameUse3 = 0;
         return this.cachedmatrix3
     }
-    ;
+        ;
     function Animation(a, b) {
         this.originalFPS = 1;
         this.name = b.name;
@@ -492,7 +492,7 @@ marmoset = {};
         this.debugString = "";
         if (b.animatedObjects)
             for (var c = b.animatedObjects.length, d = 0; d < c; ++d) {
-                var e = new AnimatedObject(a,b.animatedObjects[d],d);
+                var e = new AnimatedObject(a, b.animatedObjects[d], d);
                 this.animatedObjects.push(e);
                 this.debugString += e.debugString
             }
@@ -502,7 +502,7 @@ marmoset = {};
         this.turnTableObjects = [];
         this.cameraObjects = []
     }
-    Animation.prototype.evaluateModelPartTransformAtFrame = function(a, b, c, d) {
+    Animation.prototype.evaluateModelPartTransformAtFrame = function (a, b, c, d) {
         Matrix.copy(c, Matrix.identity());
         for (var e = 0; 100 > e; e++) {
             var f = this.animatedObjects[a];
@@ -519,49 +519,49 @@ marmoset = {};
                     break
                 } else
                     g = Matrix.identity(),
-                    f.evaluateLocalTransformAtFramePercent(b, g, !1, d),
-                    Matrix.mul(c, g, c),
-                    a == f.parentIndex && (e = 100),
-                    a = f.parentIndex
+                        f.evaluateLocalTransformAtFramePercent(b, g, !1, d),
+                        Matrix.mul(c, g, c),
+                        a == f.parentIndex && (e = 100),
+                        a = f.parentIndex
             }
         }
     }
-    ;
-    Animation.prototype.lerpModelPartTransform = function(a, b, c, d) {
+        ;
+    Animation.prototype.lerpModelPartTransform = function (a, b, c, d) {
         var e = this.animatedObjects[a];
         if (e.useFixedWorldTransform)
             Matrix.copy(c, e.cachedWorldTransform0);
         else {
             var f = b * e.modelPartFPS
-              , f = f - Math.floor(f)
-              , g = Math.floor(this.getObjectAnimationFramePercent(e, b))
-              , h = g + 1
-              , k = b = 0;
+                , f = f - Math.floor(f)
+                , g = Math.floor(this.getObjectAnimationFramePercent(e, b))
+                , h = g + 1
+                , k = b = 0;
             d && (b = e.getCachedWorldTransform(g),
-            k = e.getCachedWorldTransform(h));
+                k = e.getCachedWorldTransform(h));
             b || ((b = e.getFreeCachedWorldTransform(g)) || (b = Matrix.identity()),
-            this.evaluateModelPartTransformAtFrame(a, g, b, d));
+                this.evaluateModelPartTransformAtFrame(a, g, b, d));
             k || ((k = e.getFreeCachedWorldTransform(h)) || (k = Matrix.identity()),
-            this.evaluateModelPartTransformAtFrame(a, h, k, d));
+                this.evaluateModelPartTransformAtFrame(a, h, k, d));
             a = 1 - f;
             for (d = 0; 16 > d; d++)
                 c[d] = b[d] * a + k[d] * f
         }
     }
-    ;
-    Animation.prototype.getModelPartTransform = function(a, b, c, d) {
+        ;
+    Animation.prototype.getModelPartTransform = function (a, b, c, d) {
         this.lerpModelPartTransform(a, b, c, d)
     }
-    ;
-    Animation.prototype.getAnimatedLocalTransform = function(a, b, c, d) {
+        ;
+    Animation.prototype.getAnimatedLocalTransform = function (a, b, c, d) {
         a = this.animatedObjects[a];
         var e = this.animatedObjects[a.parentIndex]
-          , f = e.modelPartIndex != e.id
-          , g = Matrix.identity();
+            , f = e.modelPartIndex != e.id
+            , g = Matrix.identity();
         this.getModelPartTransform(a.modelPartIndex, b, g, d);
         if (f) {
             var f = Matrix.identity()
-              , h = Matrix.identity();
+                , h = Matrix.identity();
             this.getModelPartTransform(e.modelPartIndex, b, f, d);
             Matrix.invert(h, f);
             Matrix.mul(c, h, g);
@@ -571,16 +571,16 @@ marmoset = {};
         } else
             Matrix.copy(c, g)
     }
-    ;
-    Animation.prototype.isVisibleAtFramePercent = function(a, b) {
+        ;
+    Animation.prototype.isVisibleAtFramePercent = function (a, b) {
         for (var c = a, d = 0, e = 0; 100 > e; e++) {
             d = this.animatedObjects[c];
             if (d.visibleProperty) {
                 d.visibleProperty.evaluate(b, 1, d);
                 if ("" != d.debugString || "" != d.visibleProperty.debugString)
                     return this.debugString += d.debugString,
-                    this.debugString += d.visibleProperty.debugString,
-                    !1;
+                        this.debugString += d.visibleProperty.debugString,
+                        !1;
                 if (0 == d.visibleProperty.lastValue)
                     return !1
             }
@@ -589,18 +589,18 @@ marmoset = {};
         }
         return !0
     }
-    ;
-    Animation.prototype.getWorldTransform = function(a, b, c, d, e) {
+        ;
+    Animation.prototype.getWorldTransform = function (a, b, c, d, e) {
         a = this.animatedObjects[a];
         if (a.useFixedWorldTransform)
             Matrix.copy(c, a.cachedWorldTransform0);
         else {
             var f = this.getObjectAnimationFramePercent(a, b)
-              , g = Matrix.identity();
+                , g = Matrix.identity();
             a.evaluateLocalTransformAtFramePercent(f, g, !0, e);
             if (f = a.modelPartIndex != a.id) {
                 var f = Matrix.identity()
-                  , h = Matrix.identity();
+                    , h = Matrix.identity();
                 Matrix.copy(h, g);
                 this.getAnimatedLocalTransform(a.id, b, f);
                 Matrix.mul(g, f, h)
@@ -609,25 +609,25 @@ marmoset = {};
             if (a.parentIndex != a.id)
                 for (var k = a.parentIndex, l = 0; 100 > l; l++)
                     a = this.animatedObjects[k],
-                    f = this.getObjectAnimationFramePercent(a, b),
-                    g = Matrix.identity(),
-                    a.evaluateLocalTransformAtFramePercent(f, g, !0, e),
-                    (f = a.modelPartIndex != a.id) ? (f = Matrix.identity(),
-                    this.getAnimatedLocalTransform(a.id, b, f),
-                    h = Matrix.identity(),
-                    Matrix.mul(h, g, c),
-                    Matrix.mul(c, f, h)) : (h = Matrix.identity(),
-                    Matrix.copy(h, c),
-                    Matrix.mul(c, g, h)),
-                    k == a.parentIndex && (l = 100),
-                    k = a.parentIndex;
+                        f = this.getObjectAnimationFramePercent(a, b),
+                        g = Matrix.identity(),
+                        a.evaluateLocalTransformAtFramePercent(f, g, !0, e),
+                        (f = a.modelPartIndex != a.id) ? (f = Matrix.identity(),
+                            this.getAnimatedLocalTransform(a.id, b, f),
+                            h = Matrix.identity(),
+                            Matrix.mul(h, g, c),
+                            Matrix.mul(c, f, h)) : (h = Matrix.identity(),
+                                Matrix.copy(h, c),
+                                Matrix.mul(c, g, h)),
+                        k == a.parentIndex && (l = 100),
+                        k = a.parentIndex;
             c[12] *= d;
             c[13] *= d;
             c[14] *= d
         }
     }
-    ;
-    Animation.prototype.hasParentInHierarchy = function(a, b) {
+        ;
+    Animation.prototype.hasParentInHierarchy = function (a, b) {
         for (var c = a.parentIndex, d = 0; 100 > d; d++) {
             a = this.animatedObjects[c];
             if (a.id == b)
@@ -637,8 +637,8 @@ marmoset = {};
         }
         return !1
     }
-    ;
-    Animation.prototype.hasParentTypeInHierarchy = function(a, b) {
+        ;
+    Animation.prototype.hasParentTypeInHierarchy = function (a, b) {
         for (var c = a.parentIndex, d = 0; 100 > d; d++) {
             a = this.animatedObjects[c];
             if (a.sceneObjectType == b)
@@ -648,8 +648,8 @@ marmoset = {};
         }
         return !1
     }
-    ;
-    Animation.prototype.searchAnimationUpHierarchy = function(a) {
+        ;
+    Animation.prototype.searchAnimationUpHierarchy = function (a) {
         for (var b = a.id, c = 0; 100 > c; c++) {
             a = this.animatedObjects[b];
             if (a.animatedLocalTransform && (a.hasAnimatedTransform() || a.id != a.modelPartIndex && this.searchAnimationUpHierarchy(this.animatedObjects[a.modelPartIndex])))
@@ -659,53 +659,53 @@ marmoset = {};
         }
         return !1
     }
-    ;
-    Animation.prototype.hasAnimationInHierarchy = function(a) {
+        ;
+    Animation.prototype.hasAnimationInHierarchy = function (a) {
         return this.searchAnimationUpHierarchy(a) || a.id != a.modelPartIndex && this.searchAnimationUpHierarchy(this.animatedObjects[a.modelPartIndex]) || this.hasParentTypeInHierarchy(a, "TurnTableSO") || this.hasParentTypeInHierarchy(a, "CameraSO") || "CameraSO" == a.sceneObjectType ? !0 : !1
     }
-    ;
-    Animation.prototype.getObjectAnimationFramePercent = function(a, b) {
+        ;
+    Animation.prototype.getObjectAnimationFramePercent = function (a, b) {
         if (0 == this.totalFrames || 0 == a.animationLength)
             return 0;
         if (a.endTime == this.totalSeconds)
             return b * a.modelPartFPS;
         var c = b / a.animationLength
-          , c = Math.floor(c);
+            , c = Math.floor(c);
         b -= a.animationLength * c;
         c = b * a.modelPartFPS;
         c >= a.totalFrames + 1 && (c = a.totalFrames);
         return c
     }
-    ;
+        ;
     function Archive(a) {
         this.files = [];
-        for (a = new ByteStream(a); !a.empty(); ) {
+        for (a = new ByteStream(a); !a.empty();) {
             var b = {};
             b.name = a.readCString();
             b.type = a.readCString();
             var c = a.readUint32()
-              , d = a.readUint32()
-              , e = a.readUint32();
+                , d = a.readUint32()
+                , e = a.readUint32();
             b.data = a.readBytes(d);
             if (!(b.data.length < d)) {
                 if (c & 1 && (b.data = this.decompress(b.data, e),
-                null === b.data))
+                    null === b.data))
                     continue;
                 this.files[b.name] = b
             }
         }
     }
-    Archive.prototype.get = function(a) {
+    Archive.prototype.get = function (a) {
         return this.files[a]
     }
-    ;
-    Archive.prototype.extract = function(a) {
+        ;
+    Archive.prototype.extract = function (a) {
         var b = this.files[a];
         delete this.files[a];
         return b
     }
-    ;
-    Archive.prototype.checkSignature = function(a) {
+        ;
+    Archive.prototype.checkSignature = function (a) {
         if (!a)
             return !1;
         var b = this.get(a.name + ".sig");
@@ -722,39 +722,39 @@ marmoset = {};
         d.setBytes(b[0]);
         return d.powmod(65537, a).toInt32() != c ? !1 : !0
     }
-    ;
-    Archive.prototype.decompress = function(a, b) {
+        ;
+    Archive.prototype.decompress = function (a, b) {
         var c = new Uint8Array(b)
-          , d = 0
-          , e = new Uint32Array(4096)
-          , f = new Uint32Array(4096)
-          , g = 256
-          , h = a.length
-          , k = 0
-          , l = 1
-          , n = 0
-          , m = 1;
+            , d = 0
+            , e = new Uint32Array(4096)
+            , f = new Uint32Array(4096)
+            , g = 256
+            , h = a.length
+            , k = 0
+            , l = 1
+            , n = 0
+            , m = 1;
         c[d++] = a[0];
         for (var p = 1; ; p++) {
             m = p + (p >> 1);
             if (m + 1 >= h)
                 break;
             var n = a[m + 1]
-              , m = a[m]
-              , r = p & 1 ? n << 4 | m >> 4 : (n & 15) << 8 | m;
+                , m = a[m]
+                , r = p & 1 ? n << 4 | m >> 4 : (n & 15) << 8 | m;
             if (r < g)
                 if (256 > r)
                     n = d,
-                    m = 1,
-                    c[d++] = r;
+                        m = 1,
+                        c[d++] = r;
                 else
-                    for (var n = d, m = f[r], r = e[r], s = r + m; r < s; )
+                    for (var n = d, m = f[r], r = e[r], s = r + m; r < s;)
                         c[d++] = c[r++];
             else if (r == g) {
                 n = d;
                 m = l + 1;
                 r = k;
-                for (s = k + l; r < s; )
+                for (s = k + l; r < s;)
                     c[d++] = c[r++];
                 c[d++] = c[k]
             } else
@@ -767,11 +767,11 @@ marmoset = {};
         }
         return d == b ? c : null
     }
-    ;
+        ;
     function BigInt(a) {
         this.digits = new Uint16Array(a || 0)
     }
-    BigInt.prototype.setBytes = function(a, b) {
+    BigInt.prototype.setBytes = function (a, b) {
         var c = (a.length + 1) / 2 | 0;
         this.digits = new Uint16Array(c);
         if (b)
@@ -782,26 +782,26 @@ marmoset = {};
                 this.digits[d] = a[2 * d] + 256 * a[2 * d + 1];
         this.trim()
     }
-    ;
-    BigInt.prototype.toInt32 = function() {
+        ;
+    BigInt.prototype.toInt32 = function () {
         var a = 0;
         0 < this.digits.length && (a = this.digits[0],
-        1 < this.digits.length && (a |= this.digits[1] << 16));
+            1 < this.digits.length && (a |= this.digits[1] << 16));
         return a
     }
-    ;
-    BigInt.prototype.lessThan = function(a) {
+        ;
+    BigInt.prototype.lessThan = function (a) {
         if (this.digits.length == a.digits.length)
             for (var b = this.digits.length - 1; 0 <= b; --b) {
                 var c = this.digits[b]
-                  , d = a.digits[b];
+                    , d = a.digits[b];
                 if (c != d)
                     return c < d
             }
         return this.digits.length < a.digits.length
     }
-    ;
-    BigInt.prototype.shiftRight = function() {
+        ;
+    BigInt.prototype.shiftRight = function () {
         for (var a = 0, b = this.digits, c = b.length - 1; 0 <= c; --c) {
             var d = b[c];
             b[c] = d >> 1 | a << 15;
@@ -809,8 +809,8 @@ marmoset = {};
         }
         this.trim()
     }
-    ;
-    BigInt.prototype.shiftLeft = function(a) {
+        ;
+    BigInt.prototype.shiftLeft = function (a) {
         if (0 < a) {
             var b = a / 16 | 0;
             a %= 16;
@@ -821,36 +821,36 @@ marmoset = {};
         }
         return new BigInt(this)
     }
-    ;
-    BigInt.prototype.bitCount = function() {
+        ;
+    BigInt.prototype.bitCount = function () {
         var a = 0;
         if (0 < this.digits.length)
-            for (var a = 16 * (this.digits.length - 1), b = this.digits[this.digits.length - 1]; b; )
+            for (var a = 16 * (this.digits.length - 1), b = this.digits[this.digits.length - 1]; b;)
                 b >>>= 1,
-                ++a;
+                    ++a;
         return a
     }
-    ;
-    BigInt.prototype.sub = function(a) {
+        ;
+    BigInt.prototype.sub = function (a) {
         var b = this.digits
-          , c = a.digits
-          , d = this.digits.length;
+            , c = a.digits
+            , d = this.digits.length;
         a = a.digits.length;
         for (var e = 0, f = 0; f < d; ++f) {
             var g = b[f]
-              , h = f < a ? c[f] : 0
-              , h = h + e
-              , e = h > g ? 1 : 0
-              , g = g + (e << 16);
+                , h = f < a ? c[f] : 0
+                , h = h + e
+                , e = h > g ? 1 : 0
+                , g = g + (e << 16);
             b[f] = g - h & 65535
         }
         this.trim()
     }
-    ;
-    BigInt.prototype.mul = function(a) {
+        ;
+    BigInt.prototype.mul = function (a) {
         for (var b = new BigInt(this.digits.length + a.digits.length), c = b.digits, d = 0; d < this.digits.length; ++d)
             for (var e = this.digits[d], f = 0; f < a.digits.length; ++f)
-                for (var g = e * a.digits[f], h = d + f; g; ) {
+                for (var g = e * a.digits[f], h = d + f; g;) {
                     var k = (g & 65535) + c[h];
                     c[h] = k & 65535;
                     g >>>= 16;
@@ -860,44 +860,44 @@ marmoset = {};
         b.trim();
         return b
     }
-    ;
-    BigInt.prototype.mod = function(a) {
+        ;
+    BigInt.prototype.mod = function (a) {
         if (0 >= this.digits.length || 0 >= a.digits.length)
             return new BigInt(0);
         var b = new BigInt(this.digits);
         if (!this.lessThan(a)) {
-            for (var c = new BigInt(a.digits), c = c.shiftLeft(b.bitCount() - c.bitCount()); !b.lessThan(a); )
+            for (var c = new BigInt(a.digits), c = c.shiftLeft(b.bitCount() - c.bitCount()); !b.lessThan(a);)
                 c.lessThan(b) && b.sub(c),
-                c.shiftRight();
+                    c.shiftRight();
             b.trim()
         }
         return b
     }
-    ;
-    BigInt.prototype.powmod = function(a, b) {
-        for (var c = new BigInt([1]), d = this.mod(b); a; )
+        ;
+    BigInt.prototype.powmod = function (a, b) {
+        for (var c = new BigInt([1]), d = this.mod(b); a;)
             a & 1 && (c = c.mul(d).mod(b)),
-            a >>>= 1,
-            d = d.mul(d).mod(b);
+                a >>>= 1,
+                d = d.mul(d).mod(b);
         return c
     }
-    ;
-    BigInt.prototype.trim = function() {
-        for (var a = this.digits.length; 0 < a && 0 == this.digits[a - 1]; )
+        ;
+    BigInt.prototype.trim = function () {
+        for (var a = this.digits.length; 0 < a && 0 == this.digits[a - 1];)
             --a;
         a != this.digits.length && (this.digits = this.digits.subarray(0, a))
     }
-    ;
+        ;
     function Bounds(a) {
         for (var b = 0; b < a.length; ++b) {
             var c = a[b].bounds;
             if (void 0 === this.min)
                 this.min = [c.min[0], c.min[1], c.min[2]],
-                this.max = [c.max[0], c.max[1], c.max[2]];
+                    this.max = [c.max[0], c.max[1], c.max[2]];
             else
                 for (var d = 0; 3 > d; ++d)
                     this.min[d] = Math.min(c.min[d], this.min[d]),
-                    this.max[d] = Math.max(c.max[d], this.max[d])
+                        this.max[d] = Math.max(c.max[d], this.max[d])
         }
         this.min = this.min ? this.min : [0, 0, 0];
         this.max = this.max ? this.max : [0, 0, 0];
@@ -905,7 +905,7 @@ marmoset = {};
         this.radius = [this.max[0] - this.center[0], this.max[1] - this.center[1], this.max[2] - this.center[2]];
         this.radiusDiagonal = Math.sqrt(this.radius[0] * this.radius[0] + this.radius[1] * this.radius[1] + this.radius[2] * this.radius[2])
     }
-    ;function Button(a) {
+    ; function Button(a) {
         this.name = "none";
         this.text = "default text";
         this.title = "none";
@@ -916,7 +916,7 @@ marmoset = {};
         this.updateAlphas = !0;
         this.linkedBackground = this.backgroundOffsetY = this.backgroundOffsetX = this.edgePixelsY = this.edgePixelsX = this.backgroundBottomMiddle = this.backgroundBottomRight = this.backgroundBottomLeft = this.backgroundMiddleMiddle = this.backgroundMiddleRight = this.backgroundMiddleLeft = this.backgroundTopMiddle = this.backgroundTopRight = this.backgroundTopLeft = this.backgroundMiddle = this.backgroundRight = this.backgroundLeft = 0
     }
-    Button.prototype.setBackground3x1 = function(a, b, c, d, e, f, g) {
+    Button.prototype.setBackground3x1 = function (a, b, c, d, e, f, g) {
         this.backgroundOffsetX = b;
         this.backgroundOffsetY = c;
         this.edgePixelsX = g;
@@ -928,8 +928,8 @@ marmoset = {};
         this.backgroundRight.linkedControl.style.zIndex = "0";
         this.setOpacity(this.defaultAlpha)
     }
-    ;
-    Button.prototype.setBackground3x3 = function(a, b, c, d, e, f, g, h, k, l, n, m, p, r) {
+        ;
+    Button.prototype.setBackground3x3 = function (a, b, c, d, e, f, g, h, k, l, n, m, p, r) {
         this.backgroundOffsetX = b;
         this.backgroundOffsetY = c;
         this.edgePixelsX = p;
@@ -954,19 +954,19 @@ marmoset = {};
         this.backgroundBottomMiddle.linkedControl.style.zIndex = "0";
         this.setOpacity(this.defaultAlpha)
     }
-    ;
-    Button.prototype.alignBackground = function() {
+        ;
+    Button.prototype.alignBackground = function () {
         var a = this.controlRect
-          , b = a.guiScreen
-          , c = b.left * (1 - a.getScreenXPercent())
-          , d = b.bottom * (1 - a.getScreenYPercent())
-          , e = b.width * a.getScreenWidthPercent()
-          , a = b.height * a.getScreenHeightPercent()
-          , d = d + this.backgroundOffsetY
-          , c = c + this.backgroundOffsetX;
+            , b = a.guiScreen
+            , c = b.left * (1 - a.getScreenXPercent())
+            , d = b.bottom * (1 - a.getScreenYPercent())
+            , e = b.width * a.getScreenWidthPercent()
+            , a = b.height * a.getScreenHeightPercent()
+            , d = d + this.backgroundOffsetY
+            , c = c + this.backgroundOffsetX;
         if (this.backgroundTopLeft && this.backgroundTopRight && this.backgroundTopMiddle && this.backgroundMiddleLeft && this.backgroundMiddleRight && this.backgroundMiddleMiddle && this.backgroundBottomLeft && this.backgroundBottomRight && this.backgroundBottomMiddle) {
             var b = e - 2 * this.edgePixelsX
-              , f = a - 2 * this.edgePixelsY;
+                , f = a - 2 * this.edgePixelsY;
             this.backgroundTopLeft.linkedControl.style.height = this.edgePixelsY + "px";
             this.backgroundTopMiddle.linkedControl.style.height = this.edgePixelsY + "px";
             this.backgroundTopRight.linkedControl.style.height = this.edgePixelsY + "px";
@@ -1009,22 +1009,22 @@ marmoset = {};
             this.backgroundTopRight.linkedControl.style.bottom = d + "px"
         }
         this.backgroundLeft && this.backgroundRight && this.backgroundMiddle && (e -= 2 * this.edgePixelsX,
-        this.backgroundLeft.linkedControl.style.bottom = d + "px",
-        this.backgroundMiddle.linkedControl.style.bottom = d + "px",
-        this.backgroundRight.linkedControl.style.bottom = d + "px",
-        this.backgroundLeft.linkedControl.style.height = a + "px",
-        this.backgroundMiddle.linkedControl.style.height = a + "px",
-        this.backgroundRight.linkedControl.style.height = a + "px",
-        this.backgroundLeft.linkedControl.style.width = this.edgePixelsX + "px",
-        this.backgroundMiddle.linkedControl.style.width = e + "px",
-        this.backgroundRight.linkedControl.style.width = this.edgePixelsX + "px",
-        this.backgroundLeft.linkedControl.style.left = c + "px",
-        c += this.edgePixelsX,
-        this.backgroundMiddle.linkedControl.style.left = c + "px",
-        this.backgroundRight.linkedControl.style.left = c + e + "px")
+            this.backgroundLeft.linkedControl.style.bottom = d + "px",
+            this.backgroundMiddle.linkedControl.style.bottom = d + "px",
+            this.backgroundRight.linkedControl.style.bottom = d + "px",
+            this.backgroundLeft.linkedControl.style.height = a + "px",
+            this.backgroundMiddle.linkedControl.style.height = a + "px",
+            this.backgroundRight.linkedControl.style.height = a + "px",
+            this.backgroundLeft.linkedControl.style.width = this.edgePixelsX + "px",
+            this.backgroundMiddle.linkedControl.style.width = e + "px",
+            this.backgroundRight.linkedControl.style.width = this.edgePixelsX + "px",
+            this.backgroundLeft.linkedControl.style.left = c + "px",
+            c += this.edgePixelsX,
+            this.backgroundMiddle.linkedControl.style.left = c + "px",
+            this.backgroundRight.linkedControl.style.left = c + e + "px")
     }
-    ;
-    Button.prototype.setOpacity = function(a) {
+        ;
+    Button.prototype.setOpacity = function (a) {
         this.controlRect.linkedControl.style.opacity = a;
         this.backgroundLeft && (this.backgroundLeft.linkedControl.style.opacity = a);
         this.backgroundRight && (this.backgroundRight.linkedControl.style.opacity = a);
@@ -1039,8 +1039,8 @@ marmoset = {};
         this.backgroundBottomRight && (this.backgroundBottomRight.linkedControl.style.opacity = a);
         this.backgroundBottomMiddle && (this.backgroundBottomMiddle.linkedControl.style.opacity = a)
     }
-    ;
-    Button.prototype.setBackgroundVisible = function(a) {
+        ;
+    Button.prototype.setBackgroundVisible = function (a) {
         this.backgroundLeft && this.backgroundLeft.showControl(a);
         this.backgroundRight && this.backgroundRight.showControl(a);
         this.backgroundMiddle && this.backgroundMiddle.showControl(a);
@@ -1054,98 +1054,98 @@ marmoset = {};
         this.backgroundBottomRight && this.backgroundBottomRight.showControl(a);
         this.backgroundBottomMiddle && this.backgroundBottomMiddle.showControl(a)
     }
-    ;
-    Button.prototype.setVisible = function(a) {
+        ;
+    Button.prototype.setVisible = function (a) {
         this.controlRect.showControl(a);
         this.setBackgroundVisible(a)
     }
-    ;
-    Button.prototype.linkControl = function(a) {
+        ;
+    Button.prototype.linkControl = function (a) {
         this.controlRect.linkedControl = a;
-        a.onmouseover = function() {
+        a.onmouseover = function () {
             this.updateAlphas && (this.setOpacity(this.focusAlpha),
-            this.controlRect.mouseOver = !0,
-            this.linkedBackground && this.linkedBackground.setOpacity(this.focusAlpha))
+                this.controlRect.mouseOver = !0,
+                this.linkedBackground && this.linkedBackground.setOpacity(this.focusAlpha))
         }
-        .bind(this);
-        a.onmouseout = function() {
+            .bind(this);
+        a.onmouseout = function () {
             this.updateAlphas && (this.setOpacity(this.defaultAlpha),
-            this.controlRect.mouseOver = !1,
-            this.linkedBackground && this.linkedBackground.setOpacity(this.defaultAlpha))
+                this.controlRect.mouseOver = !1,
+                this.linkedBackground && this.linkedBackground.setOpacity(this.defaultAlpha))
         }
-        .bind(this)
+            .bind(this)
     }
-    ;
+        ;
     function ByteStream(a) {
         this.bytes = new Uint8Array(a)
     }
-    ByteStream.prototype.empty = function() {
+    ByteStream.prototype.empty = function () {
         return 0 >= this.bytes.length
     }
-    ;
-    ByteStream.prototype.readCString = function() {
+        ;
+    ByteStream.prototype.readCString = function () {
         for (var a = this.bytes, b = a.length, c = 0; c < b; ++c)
             if (0 == a[c])
                 return a = String.fromCharCode.apply(null, this.bytes.subarray(0, c)),
-                this.bytes = this.bytes.subarray(c + 1),
-                a;
+                    this.bytes = this.bytes.subarray(c + 1),
+                    a;
         return null
     }
-    ;
-    ByteStream.prototype.asString = function() {
+        ;
+    ByteStream.prototype.asString = function () {
         for (var a = "", b = 0; b < this.bytes.length; ++b)
             a += String.fromCharCode(this.bytes[b]);
         return a
     }
-    ;
-    ByteStream.prototype.readBytes = function(a) {
+        ;
+    ByteStream.prototype.readBytes = function (a) {
         var b = this.bytes.subarray(0, a);
         this.bytes = this.bytes.subarray(a);
         return b
     }
-    ;
-    ByteStream.prototype.readUint32 = function() {
+        ;
+    ByteStream.prototype.readUint32 = function () {
         var a = this.bytes
-          , b = a[0] | a[1] << 8 | a[2] << 16 | a[3] << 24;
+            , b = a[0] | a[1] << 8 | a[2] << 16 | a[3] << 24;
         this.bytes = a.subarray(4);
         return b
     }
-    ;
-    ByteStream.prototype.readUint8 = function() {
+        ;
+    ByteStream.prototype.readUint8 = function () {
         var a = this.bytes
-          , b = a[0];
+            , b = a[0];
         this.bytes = a.subarray(1);
         return b
     }
-    ;
-    ByteStream.prototype.readUint16 = function() {
+        ;
+    ByteStream.prototype.readUint16 = function () {
         var a = this.bytes
-          , b = a[0] | a[1] << 8;
+            , b = a[0] | a[1] << 8;
         this.bytes = a.subarray(2);
         return b
     }
-    ;
-    ByteStream.prototype.readFloat32 = function() {
+        ;
+    ByteStream.prototype.readFloat32 = function () {
         var a = new Uint8Array(this.bytes)
-          , a = new Float32Array(a.buffer);
+            , a = new Float32Array(a.buffer);
         this.bytes = this.bytes.subarray(4);
         return a[0]
     }
-    ;
-    ByteStream.prototype.seekUint32 = function(a) {
+        ;
+    ByteStream.prototype.seekUint32 = function (a) {
         a = this.bytes.subarray(4 * a);
         return a[0] | a[1] << 8 | a[2] << 16 | a[3] << 24
     }
-    ;
-    ByteStream.prototype.seekFloat32 = function(a) {
+        ;
+    ByteStream.prototype.seekFloat32 = function (a) {
         a = new Uint8Array(this.bytes.subarray(4 * a));
         return (new Float32Array(a.buffer))[0]
     }
-    ;
-    ByteStream.prototype.getMatrix = function(a) {
-        return new Float32Array(this.bytes.buffer,64 * a,16)
+        ;
+    ByteStream.prototype.getMatrix = function (a) {
+        return new Float32Array(this.bytes.buffer, 64 * a, 16)
     }
-    ;
+        ;
     function ControlRect(a) {
         this.name = "none";
         this.title = "frame";
@@ -1161,138 +1161,138 @@ marmoset = {};
         this.guiScreen = a;
         this.id = this.callBack = this.linkedControl = 0
     }
-    ControlRect.prototype.getScreenWidth = function() {
+    ControlRect.prototype.getScreenWidth = function () {
         if (this.linkedControl)
             return this.guiScreen.width * this.getScreenWidthPercent()
     }
-    ;
-    ControlRect.prototype.getScreenHeight = function() {
+        ;
+    ControlRect.prototype.getScreenHeight = function () {
         if (this.linkedControl)
             return this.guiScreen.height * this.getScreenHeightPercent()
     }
-    ;
-    ControlRect.prototype.updateElement = function() {
+        ;
+    ControlRect.prototype.updateElement = function () {
         var a = this.linkedControl;
         if (a) {
             var b = this.guiScreen.left * (1 - this.getScreenXPercent())
-              , c = this.guiScreen.bottom * (1 - this.getScreenYPercent())
-              , d = this.guiScreen.width * this.getScreenWidthPercent()
-              , e = this.guiScreen.height * this.getScreenHeightPercent();
+                , c = this.guiScreen.bottom * (1 - this.getScreenYPercent())
+                , d = this.guiScreen.width * this.getScreenWidthPercent()
+                , e = this.guiScreen.height * this.getScreenHeightPercent();
             a.style.left = b + "px";
             a.style.bottom = c + "px";
             a.style.width = d + "px";
             a.style.height = e + "px"
         }
     }
-    ;
-    ControlRect.prototype.updateElement = function() {
+        ;
+    ControlRect.prototype.updateElement = function () {
         var a = this.linkedControl;
         if (a) {
             var b = this.guiScreen.left * (1 - this.getScreenXPercent())
-              , c = this.guiScreen.bottom * (1 - this.getScreenYPercent())
-              , d = this.guiScreen.width * this.getScreenWidthPercent()
-              , e = this.guiScreen.height * this.getScreenHeightPercent();
+                , c = this.guiScreen.bottom * (1 - this.getScreenYPercent())
+                , d = this.guiScreen.width * this.getScreenWidthPercent()
+                , e = this.guiScreen.height * this.getScreenHeightPercent();
             a.style.left = b + "px";
             a.style.bottom = c + "px";
             a.style.width = d + "px";
             a.style.height = e + "px"
         }
     }
-    ;
-    ControlRect.prototype.updateChildElements = function() {
+        ;
+    ControlRect.prototype.updateChildElements = function () {
         this.updateElement();
         for (var a = 0; a < this.childControlRects.length; a++)
             this.childControlRects[a].updateChildElements()
     }
-    ;
-    ControlRect.prototype.set = function(a, b, c, d) {
+        ;
+    ControlRect.prototype.set = function (a, b, c, d) {
         this.xPercent = a;
         this.yPercent = b;
         this.widthPercent = c;
         this.heightPercent = d
     }
-    ;
-    ControlRect.prototype.linkControl = function(a) {
+        ;
+    ControlRect.prototype.linkControl = function (a) {
         this.linkedControl = a;
-        a.onmouseover = function() {
+        a.onmouseover = function () {
             this.mouseOver = !0
         }
-        .bind(this);
-        a.onmouseout = function() {
+            .bind(this);
+        a.onmouseout = function () {
             this.mouseOver = !1
         }
-        .bind(this);
-        a.onmousedown = function() {
+            .bind(this);
+        a.onmousedown = function () {
             this.mouseDown = !0
         }
-        .bind(this);
-        a.onmouseup = function() {
+            .bind(this);
+        a.onmouseup = function () {
             this.mouseDown = !1
         }
-        .bind(this);
-        a.onclick = function() {
+            .bind(this);
+        a.onclick = function () {
             this.callBack && this.callBack(this);
             this.clicked = !0
         }
-        .bind(this)
+            .bind(this)
     }
-    ;
-    ControlRect.prototype.showControl = function(a) {
+        ;
+    ControlRect.prototype.showControl = function (a) {
         this.visible = a;
         this.linkedControl && (this.linkedControl.style.display = a ? "block" : "none")
     }
-    ;
-    ControlRect.prototype.setOpacity = function(a) {
+        ;
+    ControlRect.prototype.setOpacity = function (a) {
         this.opacity = a;
         this.linkedControl && (this.linkedControl.style.opacity = a)
     }
-    ;
-    ControlRect.prototype.hasChildControlRect = function(a) {
+        ;
+    ControlRect.prototype.hasChildControlRect = function (a) {
         for (var b = 0; b < this.childControlRects.length; b++)
             if (this.childControlRects[b] == a)
                 return !0;
         return !1
     }
-    ;
-    ControlRect.prototype.registerChildControlRect = function(a) {
+        ;
+    ControlRect.prototype.registerChildControlRect = function (a) {
         this.hasChildControlRect(a) || (this.childControlRects.push(a),
-        a.parentControlRect = this)
+            a.parentControlRect = this)
     }
-    ;
-    ControlRect.prototype.getScreenWidthPercent = function() {
+        ;
+    ControlRect.prototype.getScreenWidthPercent = function () {
         var a = this.widthPercent;
         this.parentControlRect && (a *= this.parentControlRect.getScreenWidthPercent());
         return a
     }
-    ;
-    ControlRect.prototype.getScreenHeightPercent = function() {
+        ;
+    ControlRect.prototype.getScreenHeightPercent = function () {
         var a = this.heightPercent;
         this.parentControlRect && (a *= this.parentControlRect.getScreenHeightPercent());
         return a
     }
-    ;
-    ControlRect.prototype.getScreenXPercent = function() {
+        ;
+    ControlRect.prototype.getScreenXPercent = function () {
         var a = this.xPercent;
         this.parentControlRect && (a *= this.parentControlRect.getScreenWidthPercent(),
-        a += this.parentControlRect.getScreenXPercent());
+            a += this.parentControlRect.getScreenXPercent());
         return a
     }
-    ;
-    ControlRect.prototype.getScreenYPercent = function() {
+        ;
+    ControlRect.prototype.getScreenYPercent = function () {
         var a = this.yPercent;
         this.parentControlRect && (a *= this.parentControlRect.getScreenHeightPercent(),
-        a += this.parentControlRect.getScreenYPercent());
+            a += this.parentControlRect.getScreenYPercent());
         return a
     }
-    ;
-    var prepareEmbedParams = function(a) {
+        ;
+    var prepareEmbedParams = function (a) {
         a = a || {};
         if (document.location.search)
             for (var b = document.location.search.substring(1).split("&"), c = 0; c < b.length; ++c) {
                 var d = b[c].split("=");
                 a[d[0]] = d[1]
             }
-        b = function(a) {
+        b = function (a) {
             if (a | 0)
                 return !0;
             for (var c = "true True TRUE yes Yes YES".split(" "), b = 0; b < c.length; ++b)
@@ -1300,7 +1300,7 @@ marmoset = {};
                     return !0;
             return !1
         }
-        ;
+            ;
         a.width = a.width || 800;
         a.height = a.height || 600;
         a.autoStart = b(a.autoStart);
@@ -1309,66 +1309,66 @@ marmoset = {};
         a.fullFrame = !a.pagePreset && a.fullFrame;
         return a
     }
-      , embed = function(a, b) {
-        var c;
-        b = prepareEmbedParams(b);
-        var d = b.thumbnailURL;
-        if (b.pagePreset) {
-            c = new WebViewer(b.width,b.height,a,!!d);
-            document.body.style.backgroundColor = "#d7e4da";
-            var e = document.createElement("div");
-            e.style.position = "relative";
-            e.style.backgroundColor = "#e4e7e4";
-            e.style.width = b.width + 12 + "px";
-            e.style.height = b.height + 6 + 16 + "px";
-            e.style.margin = "auto";
-            e.style.boxShadow = "3px 5px 12px 0px grey";
-            document.body.appendChild(e);
-            var f = document.createElement("div");
-            f.style.position = "relative";
-            f.style.left = "6px";
-            f.style.top = "6px";
-            e.appendChild(f);
-            f.appendChild(c.domRoot);
-            if (!c.mobile) {
-                e.style.resize = "both";
-                e.style.overflow = "hidden";
-                var g = [e.style.width, e.style.height]
-                  , h = function() {
-                    if (FullScreen.active())
-                        e.style.resize = "none";
-                    else if (e.style.resize = "both",
-                    g[0] != e.style.width || g[1] != e.style.height)
-                        g[0] = e.style.width,
-                        g[1] = e.style.height,
-                        c.resize(e.clientWidth - 12, e.clientHeight - 6 - 16);
-                    window.setTimeout(h, 100)
+        , embed = function (a, b) {
+            var c;
+            b = prepareEmbedParams(b);
+            var d = b.thumbnailURL;
+            if (b.pagePreset) {
+                c = new WebViewer(b.width, b.height, a, !!d);
+                document.body.style.backgroundColor = "#d7e4da";
+                var e = document.createElement("div");
+                e.style.position = "relative";
+                e.style.backgroundColor = "#e4e7e4";
+                e.style.width = b.width + 12 + "px";
+                e.style.height = b.height + 6 + 16 + "px";
+                e.style.margin = "auto";
+                e.style.boxShadow = "3px 5px 12px 0px grey";
+                document.body.appendChild(e);
+                var f = document.createElement("div");
+                f.style.position = "relative";
+                f.style.left = "6px";
+                f.style.top = "6px";
+                e.appendChild(f);
+                f.appendChild(c.domRoot);
+                if (!c.mobile) {
+                    e.style.resize = "both";
+                    e.style.overflow = "hidden";
+                    var g = [e.style.width, e.style.height]
+                        , h = function () {
+                            if (FullScreen.active())
+                                e.style.resize = "none";
+                            else if (e.style.resize = "both",
+                                g[0] != e.style.width || g[1] != e.style.height)
+                                g[0] = e.style.width,
+                                    g[1] = e.style.height,
+                                    c.resize(e.clientWidth - 12, e.clientHeight - 6 - 16);
+                            window.setTimeout(h, 100)
+                        };
+                    h()
+                }
+            } else
+                c = new WebViewer(b.fullFrame ? window.innerWidth : b.width, b.fullFrame ? window.innerHeight : b.height, a, !!d),
+                    document.body.appendChild(c.domRoot),
+                    b.fullFrame && (c.domRoot.style.position = "absolute",
+                        c.domRoot.style.left = c.domRoot.style.top = 0,
+                        window.addEventListener("resize", function () {
+                            FullScreen.active() || c.resize(window.innerWidth, window.innerHeight)
+                        }));
+            c.ui.setThumbnailURL(d);
+            b.autoStart && c.loadScene();
+            return c
+        }
+        , fetchThumbnail = function (a, b, c, d) {
+            var e = !1
+                , f = a + (-1 == a.indexOf("?") ? "?" : "&") + "thumb=1"
+                , g = function (a) {
+                    (a = (new Archive(a)).extract("thumbnail.jpg")) ? TextureCache.parseFile(a, b, d) : e ? c && c() : (e = !0,
+                        Network.fetchBinaryIncremental(f, g, c, 394240));
+                    return 0
                 };
-                h()
-            }
-        } else
-            c = new WebViewer(b.fullFrame ? window.innerWidth : b.width,b.fullFrame ? window.innerHeight : b.height,a,!!d),
-            document.body.appendChild(c.domRoot),
-            b.fullFrame && (c.domRoot.style.position = "absolute",
-            c.domRoot.style.left = c.domRoot.style.top = 0,
-            window.addEventListener("resize", function() {
-                FullScreen.active() || c.resize(window.innerWidth, window.innerHeight)
-            }));
-        c.ui.setThumbnailURL(d);
-        b.autoStart && c.loadScene();
-        return c
-    }
-      , fetchThumbnail = function(a, b, c, d) {
-        var e = !1
-          , f = a + (-1 == a.indexOf("?") ? "?" : "&") + "thumb=1"
-          , g = function(a) {
-            (a = (new Archive(a)).extract("thumbnail.jpg")) ? TextureCache.parseFile(a, b, d) : e ? c && c() : (e = !0,
-            Network.fetchBinaryIncremental(f, g, c, 394240));
-            return 0
-        };
-        Network.fetchBinaryIncremental(f, g, c, 65536)
-    }
-      , marmoset = "undefined" == typeof marmoset ? {} : marmoset;
+            Network.fetchBinaryIncremental(f, g, c, 65536)
+        }
+        , marmoset = "undefined" == typeof marmoset ? {} : marmoset;
     marmoset.embed = embed;
     marmoset.fetchThumbnail = fetchThumbnail;
     function Fog(a, b) {
@@ -1391,11 +1391,11 @@ marmoset = {};
         a.bufferData(a.ARRAY_BUFFER, c, a.STATIC_DRAW);
         a.bindBuffer(a.ARRAY_BUFFER, null)
     }
-    Fog.prototype.draw = function(a, b) {
+    Fog.prototype.draw = function (a, b) {
         var c = this.gl
-          , d = a.view
-          , e = d.projectionMatrix
-          , f = Matrix.empty();
+            , d = a.view
+            , e = d.projectionMatrix
+            , f = Matrix.empty();
         Matrix.mul(f, d.viewMatrix, d.projectionMatrix);
         Matrix.invert(f, d.viewProjectionMatrix);
         f = [e[10] + e[11], -e[14], -2 * e[11]];
@@ -1428,26 +1428,26 @@ marmoset = {};
                 c.uniform4fv(n.uFogLightSphere, h)
             } else {
                 var p = a.lights.getLightPos(h)
-                  , p = Matrix.mul4(Vect.empty(), a.lights.invMatrix, p[0], p[1], p[2], p[3])
-                  , m = a.lights.getLightDir(h)
-                  , m = Matrix.mulVec(Vect.empty(), a.lights.invMatrix, m[0], m[1], m[2]);
+                    , p = Matrix.mul4(Vect.empty(), a.lights.invMatrix, p[0], p[1], p[2], p[3])
+                    , m = a.lights.getLightDir(h)
+                    , m = Matrix.mulVec(Vect.empty(), a.lights.invMatrix, m[0], m[1], m[2]);
                 c.uniform4fv(n.uLightPosition, p);
                 c.uniform3fv(n.uLightColor, a.lights.getColor(h));
                 var p = 0.01745329251 * a.lights.spot[3 * h]
-                  , r = Math.cos(0.5 * p);
+                    , r = Math.cos(0.5 * p);
                 c.uniform4fv(n.uSpotParams, [-m[0], -m[1], -m[2], 0 < p ? r * r : 0]);
                 c.uniform4fv(n.uLightAttenuation, [a.lights.parameters[3 * h + 0], a.lights.parameters[3 * h + 1], a.lights.parameters[3 * h + 2], r]);
                 k && (k = Matrix.mul(Matrix.empty(), a.lights.finalTransformBuffer.subarray(16 * h), a.lights.matrix),
-                c.uniformMatrix4fv(n.uShadowProj, !1, k),
-                a.shadow.depthTextures[h].bind(l.samplers.uShadowMap),
-                h = 0,
-                1 < a.postRender.sampleCount && (h = a.postRender.currentSample() / a.postRender.sampleCount),
-                c.uniform1f(n.uDitherOffset, h),
-                c.uniform3fv(n.uAABBMin, a.bounds.min),
-                c.uniform3fv(n.uAABBMax, a.bounds.max),
-                h = Vect.lerp(Vect.empty(), a.bounds.min, a.bounds.max, 0.5),
-                k = Vect.distance(h, a.bounds.min),
-                c.uniform4f(n.uCylinder, h[0], h[1], h[2], k * k))
+                    c.uniformMatrix4fv(n.uShadowProj, !1, k),
+                    a.shadow.depthTextures[h].bind(l.samplers.uShadowMap),
+                    h = 0,
+                    1 < a.postRender.sampleCount && (h = a.postRender.currentSample() / a.postRender.sampleCount),
+                    c.uniform1f(n.uDitherOffset, h),
+                    c.uniform3fv(n.uAABBMin, a.bounds.min),
+                    c.uniform3fv(n.uAABBMax, a.bounds.max),
+                    h = Vect.lerp(Vect.empty(), a.bounds.min, a.bounds.max, 0.5),
+                    k = Vect.distance(h, a.bounds.min),
+                    c.uniform4f(n.uCylinder, h[0], h[1], h[2], k * k))
             }
             b.bind(l.samplers.tDepth);
             l = l.attribs.vCoord;
@@ -1460,56 +1460,56 @@ marmoset = {};
         }
         c.disable(c.BLEND)
     }
-    ;
-    Fog.prototype.complete = function() {
+        ;
+    Fog.prototype.complete = function () {
         return this.iblShader.complete() && this.dirShader.complete() && this.dirShaderShadow.complete() && this.spotShader.complete() && this.spotShaderShadow.complete() && this.omniShader.complete() && this.omniShaderShadow.complete()
     }
-    ;
+        ;
     function Framebuffer(a, b) {
         this.gl = a;
         this.fbo = a.createFramebuffer();
         a.bindFramebuffer(a.FRAMEBUFFER, this.fbo);
         b && (this.width = b.width, this.height = b.height, b.color0 && (this.color0 = b.color0,
-        a.framebufferTexture2D(a.FRAMEBUFFER, a.COLOR_ATTACHMENT0, a.TEXTURE_2D, this.color0.id, 0),
-        this.width = b.color0.desc.width,
-        this.height = b.color0.desc.height),
-        b.depth ? (this.depth = b.depth, a.framebufferTexture2D(a.FRAMEBUFFER, a.DEPTH_ATTACHMENT, a.TEXTURE_2D, this.depth.id, 0)) : (this.depthBuffer = b.depthBuffer,
-        b.createDepth && !this.depthBuffer && (this.depthBuffer = Framebuffer.createDepthBuffer(a, this.width, this.height)),
-        this.depthBuffer && (a.bindRenderbuffer(a.RENDERBUFFER, this.depthBuffer),
-        a.framebufferRenderbuffer(a.FRAMEBUFFER, a.DEPTH_ATTACHMENT, a.RENDERBUFFER, this.depthBuffer),
-        a.bindRenderbuffer(a.RENDERBUFFER, null))));
+            a.framebufferTexture2D(a.FRAMEBUFFER, a.COLOR_ATTACHMENT0, a.TEXTURE_2D, this.color0.id, 0),
+            this.width = b.color0.desc.width,
+            this.height = b.color0.desc.height),
+            b.depth ? (this.depth = b.depth, a.framebufferTexture2D(a.FRAMEBUFFER, a.DEPTH_ATTACHMENT, a.TEXTURE_2D, this.depth.id, 0)) : (this.depthBuffer = b.depthBuffer,
+                b.createDepth && !this.depthBuffer && (this.depthBuffer = Framebuffer.createDepthBuffer(a, this.width, this.height)),
+                this.depthBuffer && (a.bindRenderbuffer(a.RENDERBUFFER, this.depthBuffer),
+                    a.framebufferRenderbuffer(a.FRAMEBUFFER, a.DEPTH_ATTACHMENT, a.RENDERBUFFER, this.depthBuffer),
+                    a.bindRenderbuffer(a.RENDERBUFFER, null))));
         this.valid = b && b.ignoreStatus || a.checkFramebufferStatus(a.FRAMEBUFFER) == a.FRAMEBUFFER_COMPLETE;
         a.bindFramebuffer(a.FRAMEBUFFER, null)
     }
-    Framebuffer.createDepthBuffer = function(a, b, c) {
+    Framebuffer.createDepthBuffer = function (a, b, c) {
         var d = a.createRenderbuffer();
         a.bindRenderbuffer(a.RENDERBUFFER, d);
         a.renderbufferStorage(a.RENDERBUFFER, a.DEPTH_COMPONENT16, b, c);
         a.bindRenderbuffer(a.RENDERBUFFER, null);
         return d
     }
-    ;
-    Framebuffer.prototype.bind = function() {
+        ;
+    Framebuffer.prototype.bind = function () {
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.fbo);
         this.gl.viewport(0, 0, this.width, this.height)
     }
-    ;
-    Framebuffer.bindNone = function(a) {
+        ;
+    Framebuffer.bindNone = function (a) {
         a.bindFramebuffer(a.FRAMEBUFFER, null)
     }
-    ;
+        ;
     var FullScreen = {
-        support: function() {
+        support: function () {
             return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled)
         },
-        begin: function(a, b) {
+        begin: function (a, b) {
             var c = a.requestFullscreen || a.webkitRequestFullScreen || a.mozRequestFullScreen || a.msRequestFullscreen;
             if (c) {
-                var d = function() {
+                var d = function () {
                     FullScreen.active() || (document.removeEventListener("fullscreenchange", d),
-                    document.removeEventListener("webkitfullscreenchange", d),
-                    document.removeEventListener("mozfullscreenchange", d),
-                    document.removeEventListener("MSFullscreenChange", d));
+                        document.removeEventListener("webkitfullscreenchange", d),
+                        document.removeEventListener("mozfullscreenchange", d),
+                        document.removeEventListener("MSFullscreenChange", d));
                     b && b()
                 };
                 document.addEventListener("fullscreenchange", d);
@@ -1519,11 +1519,11 @@ marmoset = {};
                 c.bind(a)()
             }
         },
-        end: function() {
+        end: function () {
             var a = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
             a && a.bind(document)()
         },
-        active: function() {
+        active: function () {
             return !!(document.fullscreenElement || document.webkitIsFullScreen || document.mozFullScreenElement || document.msFullscreenElement)
         }
     };
@@ -1537,27 +1537,27 @@ marmoset = {};
         window.devicePixelRatio && (2 < window.devicePixelRatio ? a = 4 : 1 < window.devicePixelRatio && (a = 2));
         this.imageSetNumber = a
     }
-    GUIManager.prototype.setSize = function(a, b) {
+    GUIManager.prototype.setSize = function (a, b) {
         this.width = a;
         this.height = b;
         this.left = -a;
         this.bottom = -b;
         this.playbackControls && this.playbackControls.resize(this)
     }
-    ;
-    GUIManager.prototype.setupActiveView = function(a) {
+        ;
+    GUIManager.prototype.setupActiveView = function (a) {
         this.init || (this.init = !0,
-        this.ui = a,
-        a.viewer.scene.sceneAnimator && (this.playbackControls = new PlaybackControls(this),
-        this.playbackControls.resize(this)))
+            this.ui = a,
+            a.viewer.scene.sceneAnimator && (this.playbackControls = new PlaybackControls(this),
+                this.playbackControls.resize(this)))
     }
-    ;
-    GUIManager.prototype.updateElement = function(a) {
+        ;
+    GUIManager.prototype.updateElement = function (a) {
         var b = a.linkedControl;
         if (b) {
             var c = this.left * (1 - a.getScreenXPercent())
-              , d = this.bottom * (1 - a.getScreenYPercent())
-              , e = this.width * a.getScreenWidthPercent();
+                , d = this.bottom * (1 - a.getScreenYPercent())
+                , e = this.width * a.getScreenWidthPercent();
             a = this.height * a.getScreenHeightPercent();
             b.style.left = c + "px";
             b.style.bottom = d + "px";
@@ -1565,7 +1565,7 @@ marmoset = {};
             b.style.height = a + "px"
         }
     }
-    ;
+        ;
     function GUIRegion(a) {
         this.debugString = "GUIRegion";
         this.name = "Default";
@@ -1574,9 +1574,9 @@ marmoset = {};
         this.heightPercent = this.widthPercent = 1;
         this.guiScreen = a
     }
-    GUIRegion.prototype.addImageElement = function(a, b) {
+    GUIRegion.prototype.addImageElement = function (a, b) {
         var c = this.guiScreen.ui.menuCluster.contents
-          , d = document.createElement("input");
+            , d = document.createElement("input");
         a.linkControl(d);
         this.guiScreen.updateElement(a);
         d.type = "image";
@@ -1589,21 +1589,21 @@ marmoset = {};
         d.style.opacity = a.opacity;
         var e = new XMLHttpRequest;
         e.open("HEAD", d.src, !0);
-        e.onload = function(a) {
+        e.onload = function (a) {
             a.appendChild(this)
         }
-        .bind(d, c);
+            .bind(d, c);
         e.send();
         return d
     }
-    ;
-    GUIRegion.prototype.addImage = function(a) {
+        ;
+    GUIRegion.prototype.addImage = function (a) {
         var b = new ControlRect(this.guiScreen);
         this.addImageElement(b, a);
         return b
     }
-    ;
-    GUIRegion.prototype.addTextButton = function(a, b, c, d, e, f) {
+        ;
+    GUIRegion.prototype.addTextButton = function (a, b, c, d, e, f) {
         var g = new Button(this.guiScreen);
         g.name = "none";
         g.text = a;
@@ -1630,7 +1630,7 @@ marmoset = {};
         g.linkControl(c);
         return g
     }
-    ;
+        ;
     function GUIScreen(a) {
         this.init = !1;
         this.ui = a;
@@ -1641,27 +1641,27 @@ marmoset = {};
         window.devicePixelRatio && (2 < window.devicePixelRatio ? a = 4 : 1 < window.devicePixelRatio && (a = 2));
         this.imageSetNumber = a
     }
-    GUIScreen.prototype.setSize = function(a, b) {
+    GUIScreen.prototype.setSize = function (a, b) {
         this.width = a;
         this.height = b;
         this.left = -a;
         this.bottom = -b;
         this.playbackControls && this.playbackControls.resize(this)
     }
-    ;
-    GUIScreen.prototype.setupActiveView = function(a) {
+        ;
+    GUIScreen.prototype.setupActiveView = function (a) {
         this.init || (this.init = !0,
-        this.ui = a,
-        a.viewer.scene.sceneAnimator && (this.playbackControls = new PlaybackControls(this),
-        this.playbackControls.resize(this)))
+            this.ui = a,
+            a.viewer.scene.sceneAnimator && (this.playbackControls = new PlaybackControls(this),
+                this.playbackControls.resize(this)))
     }
-    ;
-    GUIScreen.prototype.updateElement = function(a) {
+        ;
+    GUIScreen.prototype.updateElement = function (a) {
         var b = a.linkedControl;
         if (b) {
             var c = this.left * (1 - a.getScreenXPercent())
-              , d = this.bottom * (1 - a.getScreenYPercent())
-              , e = this.width * a.getScreenWidthPercent();
+                , d = this.bottom * (1 - a.getScreenYPercent())
+                , e = this.width * a.getScreenWidthPercent();
             a = this.height * a.getScreenHeightPercent();
             b.style.left = c + "px";
             b.style.bottom = d + "px";
@@ -1669,7 +1669,7 @@ marmoset = {};
             b.style.height = a + "px"
         }
     }
-    ;
+        ;
     function Input(a) {
         this.onTap = [];
         this.onSingleTap = [];
@@ -1683,14 +1683,14 @@ marmoset = {};
         this.macHax = 0 <= navigator.platform.toUpperCase().indexOf("MAC");
         a && this.attach(a)
     }
-    Input.prototype.attach = function(a) {
+    Input.prototype.attach = function (a) {
         this.element = a;
-        var b = function(a) {
+        var b = function (a) {
             for (var b = 0; b < this.onAnything.length; ++b)
                 this.onAnything[b]();
             a.preventDefault()
         }
-        .bind(this);
+            .bind(this);
         this.mouseStates = [{
             pressed: !1,
             position: [0, 0],
@@ -1705,7 +1705,7 @@ marmoset = {};
             downPosition: [0, 0]
         }];
         this.lastTapPos = [0, 0];
-        a = function(a) {
+        a = function (a) {
             if (a.target === this.element) {
                 this.mouseDownCount++;
                 var d = this.mouseStates[a.button];
@@ -1718,14 +1718,14 @@ marmoset = {};
                 }
             }
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("mousedown", a);
-        a = function(a) {
+        a = function (a) {
             var d = this.mouseStates[a.button];
             if (d) {
                 var e = this.element.getBoundingClientRect()
-                  , f = a.clientX - e.left
-                  , e = a.clientY - e.top;
+                    , f = a.clientX - e.left
+                    , e = a.clientY - e.top;
                 d.pressed = !1;
                 d.position[0] = f;
                 d.position[1] = e;
@@ -1733,20 +1733,20 @@ marmoset = {};
                     for (var g = 0; g < this.onTap.length; ++g)
                         this.onTap[g](f, e);
                     this.needSingleClick = !0;
-                    window.setTimeout(function(a, c) {
+                    window.setTimeout(function (a, c) {
                         if (this.needSingleClick) {
                             for (var b = 0; b < this.onSingleTap.length; ++b)
                                 this.onSingleTap[b](a, c);
                             this.needSingleClick = !1
                         }
                     }
-                    .bind(this, f, e), 301);
+                        .bind(this, f, e), 301);
                     d = !1;
                     if (void 0 !== this.doubleClickTimer && (g = 8 > Math.abs(f - this.lastTapPos[0]) + Math.abs(e - this.lastTapPos[1]),
-                    300 > Date.now() - this.doubleClickTimer && g))
+                        300 > Date.now() - this.doubleClickTimer && g))
                         for (d = !0,
-                        this.needSingleClick = !1,
-                        g = 0; g < this.onDoubleTap.length; ++g)
+                            this.needSingleClick = !1,
+                            g = 0; g < this.onDoubleTap.length; ++g)
                             this.onDoubleTap[g](f, e);
                     this.doubleClickTimer = Date.now();
                     d && (this.doubleClickTimer = -1E9);
@@ -1756,16 +1756,16 @@ marmoset = {};
             }
             b(a)
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("mouseup", a);
-        a = function(a) {
+        a = function (a) {
             for (var d = !1, e = this.element.getBoundingClientRect(), f = 0; 3 > f; ++f) {
                 var g = this.mouseStates[f];
                 if (g.pressed) {
                     var d = a.clientX - e.left
-                      , h = a.clientY - e.top
-                      , k = d - g.position[0]
-                      , l = h - g.position[1];
+                        , h = a.clientY - e.top
+                        , k = d - g.position[0]
+                        , l = h - g.position[1];
                     g.position[0] = d;
                     g.position[1] = h;
                     if (2 == f && a.altKey)
@@ -1786,41 +1786,41 @@ marmoset = {};
             }
             d && b(a)
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("mousemove", a);
-        a = function(a) {
+        a = function (a) {
             var d = 0;
             a.deltaY ? (d = -0.4 * a.deltaY,
-            1 == a.deltaMode ? d *= 16 : 2 == a.deltaMode && (d *= this.element.clientHeight)) : a.wheelDelta ? d = this.macHax && 120 == Math.abs(a.wheelDelta) ? 0.08 * a.wheelDelta : 0.4 * a.wheelDelta : a.detail && (d = -10 * a.detail);
+                1 == a.deltaMode ? d *= 16 : 2 == a.deltaMode && (d *= this.element.clientHeight)) : a.wheelDelta ? d = this.macHax && 120 == Math.abs(a.wheelDelta) ? 0.08 * a.wheelDelta : 0.4 * a.wheelDelta : a.detail && (d = -10 * a.detail);
             for (var e = 0; e < this.onZoom.length; ++e)
                 this.onZoom[e](d);
             b(a)
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("mousewheel", a);
         this.element.addEventListener("DOMMouseScroll", a);
         this.element.addEventListener("wheel", a);
-        a = function(a) {
+        a = function (a) {
             for (var b = 0; b < this.mouseStates.length; ++b)
                 this.mouseStates[b].pressed = !1;
             a.preventDefault()
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("mouseleave", a);
-        this.element.addEventListener("contextmenu", function(a) {
+        this.element.addEventListener("contextmenu", function (a) {
             a.preventDefault()
         });
         this.touches = {};
         this.tapPossible = !1;
         this.touchCountFloor = 0;
-        a = function(a) {
+        a = function (a) {
             for (var d = this.element.getBoundingClientRect(), e = !1, f = 0; f < a.changedTouches.length; ++f)
                 if (a.target === this.element) {
                     var g = a.changedTouches[f]
-                      , e = {
-                        x: g.clientX - d.left,
-                        y: g.clientY - d.top
-                    };
+                        , e = {
+                            x: g.clientX - d.left,
+                            y: g.clientY - d.top
+                        };
                     e.startX = e.x;
                     e.startY = e.y;
                     this.touches[g.identifier] = e;
@@ -1832,36 +1832,36 @@ marmoset = {};
             d > this.touchCountFloor && (this.touchCountFloor = d);
             e && b(a)
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("touchstart", a);
-        a = function(a) {
+        a = function (a) {
             for (var d = !1, e = 0; e < a.changedTouches.length; ++e) {
                 var f = a.changedTouches[e]
-                  , g = this.touches[f.identifier];
+                    , g = this.touches[f.identifier];
                 if (g) {
                     if (this.tapPossible) {
                         var h = this.element.getBoundingClientRect()
-                          , d = f.clientX - h.left
-                          , h = f.clientY - h.top;
+                            , d = f.clientX - h.left
+                            , h = f.clientY - h.top;
                         if (24 > Math.max(Math.abs(d - g.startX), Math.abs(h - g.startY))) {
                             for (e = 0; e < this.onTap.length; ++e)
                                 this.onTap[e](d, h);
                             this.needSingleTap = !0;
-                            window.setTimeout(function(a, b) {
+                            window.setTimeout(function (a, b) {
                                 if (this.needSingleTap) {
                                     for (var c = 0; c < this.onSingleTap.length; ++c)
                                         this.onSingleTap[c](a, b);
                                     this.needSingleTap = !1
                                 }
                             }
-                            .bind(this, d, h), 501);
+                                .bind(this, d, h), 501);
                             g = !1;
                             if (void 0 !== this.doubleTapTimer) {
                                 var k = 24 > Math.max(Math.abs(d - this.lastTapPos[0]), Math.abs(h - this.lastTapPos[1]))
-                                  , l = 500 > Date.now() - this.doubleTapTimer;
+                                    , l = 500 > Date.now() - this.doubleTapTimer;
                                 if (k && l)
                                     for (g = !0,
-                                    e = 0; e < this.onDoubleTap.length; ++e)
+                                        e = 0; e < this.onDoubleTap.length; ++e)
                                         this.onDoubleTap[e](d, h)
                             }
                             this.doubleTapTimer = Date.now();
@@ -1880,22 +1880,22 @@ marmoset = {};
             0 >= e && (this.touchCountFloor = 0);
             d && b(a)
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("touchend", a);
         this.element.addEventListener("touchcancel", a);
         this.element.addEventListener("touchleave", a);
-        a = function(a) {
+        a = function (a) {
             for (var d = [], e = 0; e < a.touches.length; ++e)
                 a.touches[e].target === this.element && d.push(a.touches[e]);
             var f = this.element.getBoundingClientRect();
             if (1 == d.length && 1 >= this.touchCountFloor) {
                 var g = d[0]
-                  , h = this.touches[g.identifier];
+                    , h = this.touches[g.identifier];
                 if (h) {
                     var k = g.clientX - f.left
-                      , g = g.clientY - f.top
-                      , f = k - h.x
-                      , l = g - h.y;
+                        , g = g.clientY - f.top
+                        , f = k - h.x
+                        , l = g - h.y;
                     h.x = k;
                     h.y = g;
                     for (e = 0; e < this.onDrag.length; ++e)
@@ -1903,45 +1903,45 @@ marmoset = {};
                 }
             } else if (2 == d.length && 2 >= this.touchCountFloor) {
                 if (l = d[0],
-                e = this.touches[l.identifier],
-                g = d[1],
-                h = this.touches[g.identifier],
-                e && h) {
+                    e = this.touches[l.identifier],
+                    g = d[1],
+                    h = this.touches[g.identifier],
+                    e && h) {
                     var k = l.clientX - f.left
-                      , l = l.clientY - f.top
-                      , n = g.clientX - f.left
-                      , m = g.clientY - f.top
-                      , p = Math.sqrt((k - n) * (k - n) + (l - m) * (l - m))
-                      , r = Math.sqrt((e.x - h.x) * (e.x - h.x) + (e.y - h.y) * (e.y - h.y))
-                      , s = Math.abs(p - r)
-                      , f = (k - e.x + n - h.x) / 2
-                      , g = (l - e.y + m - h.y) / 2
-                      , u = Math.sqrt(f * f + g * g);
+                        , l = l.clientY - f.top
+                        , n = g.clientX - f.left
+                        , m = g.clientY - f.top
+                        , p = Math.sqrt((k - n) * (k - n) + (l - m) * (l - m))
+                        , r = Math.sqrt((e.x - h.x) * (e.x - h.x) + (e.y - h.y) * (e.y - h.y))
+                        , s = Math.abs(p - r)
+                        , f = (k - e.x + n - h.x) / 2
+                        , g = (l - e.y + m - h.y) / 2
+                        , u = Math.sqrt(f * f + g * g);
                     e.x = k;
                     e.y = l;
                     h.x = n;
                     h.y = m;
                     if (0 < s)
                         for (h = s / (s + u),
-                        e = 0; e < this.onZoom.length; ++e)
+                            e = 0; e < this.onZoom.length; ++e)
                             this.onZoom[e](2 * (p - r) * h);
                     if (0 < u)
                         for (h = u / (s + u),
-                        e = 0; e < this.onDrag.length; ++e)
+                            e = 0; e < this.onDrag.length; ++e)
                             this.onPan[e](f * h, g * h)
                 }
             } else if (3 <= d.length) {
                 for (e = r = p = n = l = 0; e < d.length; ++e)
                     g = d[e],
-                    h = this.touches[g.identifier],
-                    k = g.clientX - f.left,
-                    g = g.clientY - f.top,
-                    p += k,
-                    r += g,
-                    h && (l += h.x,
-                    n += h.y,
-                    h.x = k,
-                    h.y = g);
+                        h = this.touches[g.identifier],
+                        k = g.clientX - f.left,
+                        g = g.clientY - f.top,
+                        p += k,
+                        r += g,
+                        h && (l += h.x,
+                            n += h.y,
+                            h.x = k,
+                            h.y = g);
                 l /= d.length;
                 n /= d.length;
                 p /= d.length;
@@ -1951,19 +1951,19 @@ marmoset = {};
             }
             0 < d.length && b(a)
         }
-        .bind(this);
+            .bind(this);
         this.element.addEventListener("touchmove", a)
     }
-    ;
+        ;
     function KeyFrame(a, b) {
         a && b ? (this.frameIndex = b.frameIndex,
-        this.value = b.value,
-        this.interpolation = b.interpolation,
-        this.weighIn = b.weighIn,
-        this.weighOut = b.weighOut) : (this.interpolation = this.value = this.frameIndex = 0,
-        this.weighOut = this.weighIn = 1)
+            this.value = b.value,
+            this.interpolation = b.interpolation,
+            this.weighIn = b.weighIn,
+            this.weighOut = b.weighOut) : (this.interpolation = this.value = this.frameIndex = 0,
+                this.weighOut = this.weighIn = 1)
     }
-    ;function Lights(a, b) {
+    ; function Lights(a, b) {
         this.rotation = this.shadowCount = this.count = 0;
         this.positions = [];
         this.directions = [];
@@ -1999,86 +1999,86 @@ marmoset = {};
             c = this.positions.subarray(4 * d, 4 * d + 4);
             var e = this.directions.subarray(3 * d, 3 * d + 3);
             1 == this.matrixWeights[d] ? (Matrix.mul4(c, this.matrix, c[0], c[1], c[2], c[3]),
-            Matrix.mulVec(e, this.matrix, e[0], e[1], e[2])) : 2 == this.matrixWeights[d] && (Matrix.mul4(c, b.viewMatrix, c[0], c[1], c[2], c[3]),
-            Matrix.mulVec(e, b.viewMatrix, e[0], e[1], e[2]))
+                Matrix.mulVec(e, this.matrix, e[0], e[1], e[2])) : 2 == this.matrixWeights[d] && (Matrix.mul4(c, b.viewMatrix, c[0], c[1], c[2], c[3]),
+                    Matrix.mulVec(e, b.viewMatrix, e[0], e[1], e[2]))
         }
     }
-    Lights.prototype.getLightPos = function(a) {
+    Lights.prototype.getLightPos = function (a) {
         return this.positionBuffer.subarray(4 * a, 4 * a + 4)
     }
-    ;
-    Lights.prototype.setLightDistance = function(a, b) {
+        ;
+    Lights.prototype.setLightDistance = function (a, b) {
         0 >= b && (b = 1E-5);
         this.parameters[3 * a + 2] = 1 / b
     }
-    ;
-    Lights.prototype.setLightSpotAngle = function(a, b) {
+        ;
+    Lights.prototype.setLightSpotAngle = function (a, b) {
         0 >= b && (b = 1E-6);
         this.spot[3 * a] = b;
         var c = Math.sin(3.1415926 / 180 * b / 2);
         this.spot[3 * a + 2] = 1 / (c * c) * this.spot[3 * a + 1]
     }
-    ;
-    Lights.prototype.setLightSpotSharpness = function(a, b) {
+        ;
+    Lights.prototype.setLightSpotSharpness = function (a, b) {
         this.spot[3 * a + 1] = b;
         this.setLightSpotAngle(this.spot[3 * a])
     }
-    ;
-    Lights.prototype.setLightPos = function(a, b) {
+        ;
+    Lights.prototype.setLightPos = function (a, b) {
         this.positions[4 * a + 0] = b[0];
         this.positions[4 * a + 1] = b[1];
         this.positions[4 * a + 2] = b[2];
         var c = this.positions.subarray(4 * a, 4 * a + 4);
         1 == this.matrixWeights[a] ? Matrix.mul4(c, this.defaultmatrix, b[0], b[1], b[2], c[3]) : 2 == this.matrixWeights[a] && Matrix.mul4(c, this.defaultviewmatrix, b[0], b[1], b[2], c[3])
     }
-    ;
-    Lights.prototype.setLightDir = function(a, b) {
+        ;
+    Lights.prototype.setLightDir = function (a, b) {
         this.directions[3 * a + 0] = b[0];
         this.directions[3 * a + 1] = b[1];
         this.directions[3 * a + 2] = b[2];
         var c = this.directions.subarray(3 * a, 3 * a + 3);
         1 == this.matrixWeights[a] ? Matrix.mulVec(c, this.defaultmatrix, b[0], b[1], b[2]) : 2 == this.matrixWeights[a] && Matrix.mulVec(c, this.defaultviewmatrix, b[0], b[1], b[2])
     }
-    ;
-    Lights.prototype.getLightColor = function(a) {
+        ;
+    Lights.prototype.getLightColor = function (a) {
         return this.colors.subarray(3 * a, 3 * a + 3)
     }
-    ;
-    Lights.prototype.setLightColor = function(a, b) {
+        ;
+    Lights.prototype.setLightColor = function (a, b) {
         this.colors[3 * a + 0] = b[0];
         this.colors[3 * a + 1] = b[1];
         this.colors[3 * a + 2] = b[2]
     }
-    ;
-    Lights.prototype.getLightDir = function(a) {
+        ;
+    Lights.prototype.getLightDir = function (a) {
         return this.directionBuffer.subarray(3 * a, 3 * a + 3)
     }
-    ;
-    Lights.prototype.getColor = function(a) {
+        ;
+    Lights.prototype.getColor = function (a) {
         a *= 3;
         return [this.colors[a], this.colors[a + 1], this.colors[a + 2]]
     }
-    ;
-    Lights.prototype.update = function(a, b) {
+        ;
+    Lights.prototype.update = function (a, b) {
         var c = new Matrix.type(this.matrix);
         Matrix.rotation(this.matrix, this.rotation, 1);
         Matrix.transpose(this.invMatrix, this.matrix);
         for (var d = 0; d < this.count; ++d) {
             var e = this.positions.subarray(4 * d, 4 * d + 4)
-              , f = this.directions.subarray(3 * d, 3 * d + 3)
-              , g = this.getLightPos(d)
-              , h = this.getLightDir(d);
+                , f = this.directions.subarray(3 * d, 3 * d + 3)
+                , g = this.getLightPos(d)
+                , h = this.getLightDir(d);
             1 == this.matrixWeights[d] ? (g[0] = e[0],
-            g[1] = e[1],
-            g[2] = e[2],
-            g[3] = e[3],
-            h[0] = f[0],
-            h[1] = f[1],
-            h[2] = f[2]) : 2 == this.matrixWeights[d] ? (Matrix.mul4(g, a.transform, e[0], e[1], e[2], e[3]),
-            Matrix.mulVec(h, a.transform, f[0], f[1], f[2]),
-            Matrix.mul4(g, this.matrix, g[0], g[1], g[2], g[3]),
-            Matrix.mulVec(h, this.matrix, h[0], h[1], h[2])) : (Matrix.mul4(g, this.matrix, e[0], e[1], e[2], e[3]),
-            Matrix.mulVec(h, this.matrix, f[0], f[1], f[2]));
+                g[1] = e[1],
+                g[2] = e[2],
+                g[3] = e[3],
+                h[0] = f[0],
+                h[1] = f[1],
+                h[2] = f[2]) : 2 == this.matrixWeights[d] ? (Matrix.mul4(g, a.transform, e[0], e[1], e[2], e[3]),
+                    Matrix.mulVec(h, a.transform, f[0], f[1], f[2]),
+                    Matrix.mul4(g, this.matrix, g[0], g[1], g[2], g[3]),
+                    Matrix.mulVec(h, this.matrix, h[0], h[1], h[2])) : (Matrix.mul4(g, this.matrix, e[0], e[1], e[2], e[3]),
+                        Matrix.mulVec(h, this.matrix, f[0], f[1], f[2]));
             Vect.normalize(h, h)
         }
         for (var f = new Float32Array(this.finalTransformBuffer), g = Matrix.empty(), h = Matrix.empty(), k = Matrix.empty(), l = Vect.empty(), n = Vect.empty(), m = Vect.empty(), p = Vect.empty(), e = Vect.empty(), r = [], s = [], u = Matrix.create(0.5, 0, 0, 0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0.5, 0, 0, 0, 1), d = 0; d < this.count; ++d) {
@@ -2092,31 +2092,31 @@ marmoset = {};
             Matrix.set(g, p[0], p[1], p[2], -Vect.dot(p, l), m[0], m[1], m[2], -Vect.dot(m, l), n[0], n[1], n[2], -Vect.dot(n, l), 0, 0, 0, 1);
             for (l = 0; 8 > l; ++l)
                 e[0] = l & 1 ? b.max[0] : b.min[0],
-                e[1] = l & 2 ? b.max[1] : b.min[1],
-                e[2] = l & 4 ? b.max[2] : b.min[2],
-                Matrix.mulPoint(e, this.matrix, 1.005 * e[0], 1.005 * e[1], 1.005 * e[2]),
-                Matrix.mulPoint(e, g, e[0], e[1], e[2]),
-                0 == l ? (r[0] = s[0] = e[0],
-                r[1] = s[1] = e[1],
-                r[2] = s[2] = e[2]) : (r[0] = Math.min(r[0], e[0]),
-                r[1] = Math.min(r[1], e[1]),
-                r[2] = Math.min(r[2], e[2]),
-                s[0] = Math.max(s[0], e[0]),
-                s[1] = Math.max(s[1], e[1]),
-                s[2] = Math.max(s[2], e[2]));
+                    e[1] = l & 2 ? b.max[1] : b.min[1],
+                    e[2] = l & 4 ? b.max[2] : b.min[2],
+                    Matrix.mulPoint(e, this.matrix, 1.005 * e[0], 1.005 * e[1], 1.005 * e[2]),
+                    Matrix.mulPoint(e, g, e[0], e[1], e[2]),
+                    0 == l ? (r[0] = s[0] = e[0],
+                        r[1] = s[1] = e[1],
+                        r[2] = s[2] = e[2]) : (r[0] = Math.min(r[0], e[0]),
+                            r[1] = Math.min(r[1], e[1]),
+                            r[2] = Math.min(r[2], e[2]),
+                            s[0] = Math.max(s[0], e[0]),
+                            s[1] = Math.max(s[1], e[1]),
+                            s[2] = Math.max(s[2], e[2]));
             var l = -r[2]
-              , n = -s[2]
-              , q = this.spot[3 * d];
+                , n = -s[2]
+                , q = this.spot[3 * d];
             0 < q ? (l = Math.min(l, 1 / this.parameters[3 * d + 2]),
-            n = Math.max(0.04 * l, n),
-            Matrix.perspective(h, q, 1, n, l),
-            d < this.shadowCount && (l = 2 * -Math.tan(0.00872664625 * q),
-            this.shadowTexelPadProjections[4 * d + 0] = this.modelViewBuffer[16 * d + 2] * l,
-            this.shadowTexelPadProjections[4 * d + 1] = this.modelViewBuffer[16 * d + 6] * l,
-            this.shadowTexelPadProjections[4 * d + 2] = this.modelViewBuffer[16 * d + 10] * l,
-            this.shadowTexelPadProjections[4 * d + 3] = this.modelViewBuffer[16 * d + 14] * l)) : (Matrix.ortho(h, r[0], s[0], r[1], s[1], n, l),
-            d < this.shadowCount && (this.shadowTexelPadProjections[4 * d + 0] = this.shadowTexelPadProjections[4 * d + 1] = this.shadowTexelPadProjections[4 * d + 2] = 0,
-            this.shadowTexelPadProjections[4 * d + 3] = Math.max(s[0] - r[0], s[1] - r[1])));
+                n = Math.max(0.04 * l, n),
+                Matrix.perspective(h, q, 1, n, l),
+                d < this.shadowCount && (l = 2 * -Math.tan(0.00872664625 * q),
+                    this.shadowTexelPadProjections[4 * d + 0] = this.modelViewBuffer[16 * d + 2] * l,
+                    this.shadowTexelPadProjections[4 * d + 1] = this.modelViewBuffer[16 * d + 6] * l,
+                    this.shadowTexelPadProjections[4 * d + 2] = this.modelViewBuffer[16 * d + 10] * l,
+                    this.shadowTexelPadProjections[4 * d + 3] = this.modelViewBuffer[16 * d + 14] * l)) : (Matrix.ortho(h, r[0], s[0], r[1], s[1], n, l),
+                        d < this.shadowCount && (this.shadowTexelPadProjections[4 * d + 0] = this.shadowTexelPadProjections[4 * d + 1] = this.shadowTexelPadProjections[4 * d + 2] = 0,
+                            this.shadowTexelPadProjections[4 * d + 3] = Math.max(s[0] - r[0], s[1] - r[1])));
             Matrix.mul(k, h, g);
             Matrix.mul(k, u, k);
             Matrix.copyToBuffer(this.modelViewBuffer, 16 * d, g);
@@ -2141,12 +2141,12 @@ marmoset = {};
                         break
                     }
     }
-    ;
-    Lights.prototype.flagUpdateAnimatedLighting = function() {
+        ;
+    Lights.prototype.flagUpdateAnimatedLighting = function () {
         for (var a = 0; a < this.shadowCount; a++)
             this.shadowsNeedUpdate[a] = 1
     }
-    ;
+        ;
     function ListBox(a) {
         this.name = "none";
         this.text = "default text";
@@ -2174,32 +2174,32 @@ marmoset = {};
         this.selectionChangedCallback = 0;
         this.debugString = ""
     }
-    ListBox.prototype.linkControl = function(a) {
+    ListBox.prototype.linkControl = function (a) {
         this.controlRect.linkControl(a)
     }
-    ;
-    ListBox.prototype.spawnControl = function(a, b, c, d, e, f) {
+        ;
+    ListBox.prototype.spawnControl = function (a, b, c, d, e, f) {
         var g = this.guiScreen.imageSetNumber
-          , h = "backgroundTopLE" + g + "x.png"
-          , k = "backgroundTopM" + g + "x.png"
-          , l = "backgroundTopRE" + g + "x.png"
-          , n = "backgroundMiddleLE" + g + "x.png"
-          , m = "backgroundMiddleM" + g + "x.png"
-          , p = "backgroundMiddleRE" + g + "x.png"
-          , r = "backgroundBottomLE" + g + "x.png"
-          , s = "backgroundBottomM" + g + "x.png"
-          , u = "backgroundBottomRE" + g + "x.png"
-          , q = 3 * g
-          , x = "backgroundLE" + g + "x.png"
-          , w = "backgroundM" + g + "x.png"
-          , v = "backgroundRE" + g + "x.png"
-          , t = 2 * g
-          , y = "spacerLE" + g + "x.png"
-          , E = "spacerM" + g + "x.png"
-          , F = "spacerRE" + g + "x.png"
-          , g = 2 * g
-          , A = this.controlRect.guiScreen.width
-          , B = this.controlRect.guiScreen.height;
+            , h = "backgroundTopLE" + g + "x.png"
+            , k = "backgroundTopM" + g + "x.png"
+            , l = "backgroundTopRE" + g + "x.png"
+            , n = "backgroundMiddleLE" + g + "x.png"
+            , m = "backgroundMiddleM" + g + "x.png"
+            , p = "backgroundMiddleRE" + g + "x.png"
+            , r = "backgroundBottomLE" + g + "x.png"
+            , s = "backgroundBottomM" + g + "x.png"
+            , u = "backgroundBottomRE" + g + "x.png"
+            , q = 3 * g
+            , x = "backgroundLE" + g + "x.png"
+            , w = "backgroundM" + g + "x.png"
+            , v = "backgroundRE" + g + "x.png"
+            , t = 2 * g
+            , y = "spacerLE" + g + "x.png"
+            , E = "spacerM" + g + "x.png"
+            , F = "spacerRE" + g + "x.png"
+            , g = 2 * g
+            , A = this.controlRect.guiScreen.width
+            , B = this.controlRect.guiScreen.height;
         if (e) {
             e = this.textEntries.length;
             var z = c;
@@ -2243,19 +2243,19 @@ marmoset = {};
         this.spacerControl.linkedBackground = this.openBackground;
         for (c = 1; c < e; c++)
             a = this.labelPixelInset + this.textOffsetsX[c - 1],
-            b = this.labelPixelDrop + this.textOffsetsY[c - 1] - 4,
-            a /= this.localPixelsX,
-            b /= this.localPixelsY,
-            y = this.listBoxRegion.addTextButton(this.textEntries[c - 1], a, f * c - b, 1 - a, f, 0.5),
-            this.listBoxButtons.push(y),
-            y.linkedBackground = this.openBackground;
+                b = this.labelPixelDrop + this.textOffsetsY[c - 1] - 4,
+                a /= this.localPixelsX,
+                b /= this.localPixelsY,
+                y = this.listBoxRegion.addTextButton(this.textEntries[c - 1], a, f * c - b, 1 - a, f, 0.5),
+                this.listBoxButtons.push(y),
+                y.linkedBackground = this.openBackground;
         this.showList(!1);
         this.setupCallbacks()
     }
-    ;
-    ListBox.prototype.setControl = function(a, b, c, d, e, f) {
+        ;
+    ListBox.prototype.setControl = function (a, b, c, d, e, f) {
         var g = this.controlRect.guiScreen.width
-          , h = this.controlRect.guiScreen.height;
+            , h = this.controlRect.guiScreen.height;
         if (e) {
             e = this.textEntries.length;
             for (var k = 0; k < e; k++) {
@@ -2276,14 +2276,14 @@ marmoset = {};
         this.openBackground.alignBackground();
         this.closedBackground.alignBackground()
     }
-    ;
-    ListBox.prototype.addItem = function(a, b, c) {
+        ;
+    ListBox.prototype.addItem = function (a, b, c) {
         this.textEntries.push(a);
         this.textOffsetsX.push(b);
         this.textOffsetsY.push(c)
     }
-    ;
-    ListBox.prototype.showList = function(a) {
+        ;
+    ListBox.prototype.showList = function (a) {
         for (var b = this.listBoxButtons.length, c = 0; c < b; c++)
             this.listBoxButtons[c].setVisible(a);
         this.closed = !a;
@@ -2291,11 +2291,11 @@ marmoset = {};
         this.openBackground && this.openBackground.setVisible(a);
         this.closedBackground && this.closedBackground.setVisible(!a);
         a ? (this.defaultButton.linkedBackground = this.openBackground,
-        this.openBackground.setOpacity(1),
-        this.closedBackground.setOpacity(0.5)) : this.defaultButton.linkedBackground = this.closedBackground
+            this.openBackground.setOpacity(1),
+            this.closedBackground.setOpacity(0.5)) : this.defaultButton.linkedBackground = this.closedBackground
     }
-    ;
-    ListBox.prototype.selectItem = function(a) {
+        ;
+    ListBox.prototype.selectItem = function (a) {
         this.selectedItemText = this.textEntries[a];
         this.selectedIndex = a;
         this.defaultButton.controlRect.linkedControl.innerHTML = this.textEntries[this.selectedIndex];
@@ -2304,57 +2304,57 @@ marmoset = {};
         this.defaultButton.controlRect.yPercent = a;
         this.defaultButton.controlRect.updateElement()
     }
-    ;
-    ListBox.prototype.setupCallbacks = function() {
-        var a = function(a) {
+        ;
+    ListBox.prototype.setupCallbacks = function () {
+        var a = function (a) {
             if (this.closed) {
                 var b = this.closedBackground.controlRect.linkedControl
-                  , b = b.getBoundingClientRect()
-                  , c = a.clientX - b.left;
+                    , b = b.getBoundingClientRect()
+                    , c = a.clientX - b.left;
                 a = a.clientY - b.top;
                 c /= b.width;
                 b = a / b.height;
                 0 <= c && 1 >= c && 0 <= b && 1 >= b ? this.closedBackground.setOpacity(1) : this.closedBackground.setOpacity(0.5)
             } else
                 b = this.openBackground.controlRect.linkedControl,
-                b = b.getBoundingClientRect(),
-                c = a.clientX - b.left,
-                a = a.clientY - b.top,
-                c /= b.width,
-                b = a / b.height,
-                0 <= c && 1 >= c && 0 <= b && 1 >= b ? this.openBackground.setOpacity(1) : this.openBackground.setOpacity(0.5)
+                    b = b.getBoundingClientRect(),
+                    c = a.clientX - b.left,
+                    a = a.clientY - b.top,
+                    c /= b.width,
+                    b = a / b.height,
+                    0 <= c && 1 >= c && 0 <= b && 1 >= b ? this.openBackground.setOpacity(1) : this.openBackground.setOpacity(0.5)
         }
-        .bind(this);
-        this.defaultButton.controlRect.linkedControl.onclick = function() {
+            .bind(this);
+        this.defaultButton.controlRect.linkedControl.onclick = function () {
             this.closed ? this.showList(!0) : (this.showList(this.closed),
-            this.closedBackground.setOpacity(1),
-            this.defaultButton.setOpacity(1))
+                this.closedBackground.setOpacity(1),
+                this.defaultButton.setOpacity(1))
         }
-        .bind(this);
-        for (var b = function(a) {
+            .bind(this);
+        for (var b = function (a) {
             this.selectItem(a.id);
             this.showList(!1);
             this.defaultButton.setOpacity(0.5);
             this.selectionChangedCallback && this.selectionChangedCallback(this)
         }
-        .bind(this), c = function(a) {
-            a = this.listBoxButtons.length;
-            for (var b = 0; b < a; b++)
-                this.listBoxButtons[b].controlRect.mouseOver && (this.selectItem(b),
-                b = a,
-                this.selectionChangedCallback && this.selectionChangedCallback(this));
-            this.showList(!1)
-        }
-        .bind(this), d = this.listBoxButtons.length, e = 0; e < d; e++)
+            .bind(this), c = function (a) {
+                a = this.listBoxButtons.length;
+                for (var b = 0; b < a; b++)
+                    this.listBoxButtons[b].controlRect.mouseOver && (this.selectItem(b),
+                        b = a,
+                        this.selectionChangedCallback && this.selectionChangedCallback(this));
+                this.showList(!1)
+            }
+                .bind(this), d = this.listBoxButtons.length, e = 0; e < d; e++)
             this.listBoxButtons[e].controlRect.callBack = b,
-            this.listBoxButtons[e].controlRect.id = e,
-            this.listBoxButtons[e].controlRect.linkedControl.addEventListener("mousemove", a);
+                this.listBoxButtons[e].controlRect.id = e,
+                this.listBoxButtons[e].controlRect.linkedControl.addEventListener("mousemove", a);
         this.guiScreen.ui.viewer.input.element.addEventListener("mousemove", a);
         this.openBackground.controlRect.linkedControl.addEventListener("mousemove", a);
         this.closedBackground.controlRect.linkedControl.addEventListener("mousemove", a);
         this.guiScreen.ui.viewer.input.element.addEventListener("mousedown", c)
     }
-    ;
+        ;
     function Material(a, b, c) {
         this.gl = a;
         this.name = c.name;
@@ -2364,14 +2364,14 @@ marmoset = {};
             clamp: !!c.textureWrapClamp,
             mirror: !!c.textureWrapMirror
         }
-          , e = {
-            mipmap: d.mipmap,
-            clamp: d.clamp,
-            mirror: d.mirror,
-            nofilter: c.textureFilterNearest || !1
-        };
+            , e = {
+                mipmap: d.mipmap,
+                clamp: d.clamp,
+                mirror: d.mirror,
+                nofilter: c.textureFilterNearest || !1
+            };
         e.nofilter || (e.aniso = a.hints.mobile ? 2 : 4);
-		console.log(c.reflectivityTex, c.glossTex)
+        console.log(c.reflectivityTex, c.glossTex)
         this.textures = {
             albedo: a.textureCache.fromFilesMergeAlpha(b.get(c.albedoTex), b.get(c.alphaTex), e),
             reflectivity: a.textureCache.fromFilesMergeAlpha(b.get(c.reflectivityTex), b.get(c.glossTex), d),
@@ -2382,22 +2382,22 @@ marmoset = {};
         if (c.extrasTexCoordRanges)
             for (var f in c.extrasTexCoordRanges)
                 this.extrasTexCoordRanges[f] = new Float32Array(c.extrasTexCoordRanges[f].scaleBias);
-        this.textures.extras || (b = new Texture(a,{
+        this.textures.extras || (b = new Texture(a, {
             width: 1,
             height: 1
         }),
-        b.loadArray(new Uint8Array([255, 255, 255, 255])),
-        this.textures.extras = b);
+            b.loadArray(new Uint8Array([255, 255, 255, 255])),
+            this.textures.extras = b);
         var g = c.blendTint || [1, 1, 1];
         b = {
-            none: function() {
+            none: function () {
                 a.disable(a.BLEND)
             },
-            alpha: function() {
+            alpha: function () {
                 a.enable(a.BLEND);
                 a.blendFuncSeparate(a.SRC_ALPHA, a.ONE_MINUS_SRC_ALPHA, a.ONE_MINUS_DST_ALPHA, a.ONE)
             },
-            add: function() {
+            add: function () {
                 a.enable(a.BLEND);
                 a.blendColor(g[0], g[1], g[2], 1);
                 a.blendFunc(a.ONE, a.CONSTANT_COLOR)
@@ -2417,82 +2417,82 @@ marmoset = {};
         e = !1;
         0 < c.lightCount && d.push("#define LIGHT_COUNT " + c.lightCount);
         0 < c.shadowCount && (f = Math.min(c.lightCount, c.shadowCount),
-        this.usesRefraction && 8 >= a.limits.textureCount && (f = 2 < f ? 2 : f),
-        d.push("#define SHADOW_COUNT " + f));
+            this.usesRefraction && 8 >= a.limits.textureCount && (f = 2 < f ? 2 : f),
+            d.push("#define SHADOW_COUNT " + f));
         0 < c.alphaTest && d.push("#define ALPHA_TEST");
         this.blend === b.alpha ? d.push("#define TRANSPARENCY_DITHER") : this.blend === b.none && d.push("#define NOBLEND");
         a.hints.mobile && d.push("#define MOBILE");
         a.ext.textureDepth && d.push("#define SHADOW_NATIVE_DEPTH");
-        f = function(a) {
+        f = function (a) {
             return 1 / (2 / 3 * 3.1415962 * (a * a + a + 1))
         }
-        ;
+            ;
         c.useSkin && (d.push("#define SKIN"),
-        this.skinParams = c.skinParams || {
-            subdermisColor: [1, 1, 1],
-            transColor: [1, 0, 0, 1],
-            fresnelColor: [0.2, 0.2, 0.2, 0.5],
-            fresnelOcc: 1,
-            fresnelGlossMask: 1,
-            transSky: 0.5,
-            shadowBlur: 0.5,
-            normalSmooth: 0.5,
-            transScatter: 0,
-            transDepth: 0,
-            millimeterScale: 1
-        },
-        this.extrasTexCoordRanges.subdermisTex || d.push("#define SKIN_NO_SUBDERMIS_TEX"),
-        this.extrasTexCoordRanges.translucencyTex || d.push("#define SKIN_NO_TRANSLUCENCY_TEX"),
-        this.extrasTexCoordRanges.fuzzTex || d.push("#define SKIN_NO_FUZZ_TEX"),
-        void 0 === this.skinParams.version && (this.skinParams.version = 1),
-        2 == this.skinParams.version ? (d.push("#define SKIN_VERSION_2"),
-        this.skinParams.shadowBlur *= 4,
-        this.skinParams.shadowBlur = Math.min(this.skinParams.shadowBlur, 40),
-        this.skinParams.transIntegral = f(0.5 * this.skinParams.transScatter),
-        this.skinParams.fresnelIntegral = 1 / 3.14159 * (1 - 0.5 * this.skinParams.fresnelColor[3]),
-        this.skinParams.transSky = 0) : (d.push("#define SKIN_VERSION_1"),
-        this.skinParams.shadowBlur = 8 * Math.min(this.skinParams.shadowBlur, 1),
-        this.skinParams.transDepth = 0,
-        this.skinParams.transScatter = this.skinParams.transColor[3],
-        this.skinParams.transIntegral = 1 / 3.14159 * (1 - 0.5 * this.skinParams.transScatter),
-        this.skinParams.fresnelIntegral = 1 / 3.14159 * (1 - 0.5 * this.skinParams.fresnelColor[3]),
-        this.skinParams.transSky *= 1.25,
-        this.skinParams.transIntegral *= 1.25));
+            this.skinParams = c.skinParams || {
+                subdermisColor: [1, 1, 1],
+                transColor: [1, 0, 0, 1],
+                fresnelColor: [0.2, 0.2, 0.2, 0.5],
+                fresnelOcc: 1,
+                fresnelGlossMask: 1,
+                transSky: 0.5,
+                shadowBlur: 0.5,
+                normalSmooth: 0.5,
+                transScatter: 0,
+                transDepth: 0,
+                millimeterScale: 1
+            },
+            this.extrasTexCoordRanges.subdermisTex || d.push("#define SKIN_NO_SUBDERMIS_TEX"),
+            this.extrasTexCoordRanges.translucencyTex || d.push("#define SKIN_NO_TRANSLUCENCY_TEX"),
+            this.extrasTexCoordRanges.fuzzTex || d.push("#define SKIN_NO_FUZZ_TEX"),
+            void 0 === this.skinParams.version && (this.skinParams.version = 1),
+            2 == this.skinParams.version ? (d.push("#define SKIN_VERSION_2"),
+                this.skinParams.shadowBlur *= 4,
+                this.skinParams.shadowBlur = Math.min(this.skinParams.shadowBlur, 40),
+                this.skinParams.transIntegral = f(0.5 * this.skinParams.transScatter),
+                this.skinParams.fresnelIntegral = 1 / 3.14159 * (1 - 0.5 * this.skinParams.fresnelColor[3]),
+                this.skinParams.transSky = 0) : (d.push("#define SKIN_VERSION_1"),
+                    this.skinParams.shadowBlur = 8 * Math.min(this.skinParams.shadowBlur, 1),
+                    this.skinParams.transDepth = 0,
+                    this.skinParams.transScatter = this.skinParams.transColor[3],
+                    this.skinParams.transIntegral = 1 / 3.14159 * (1 - 0.5 * this.skinParams.transScatter),
+                    this.skinParams.fresnelIntegral = 1 / 3.14159 * (1 - 0.5 * this.skinParams.fresnelColor[3]),
+                    this.skinParams.transSky *= 1.25,
+                    this.skinParams.transIntegral *= 1.25));
         c.aniso && (d.push("#define ANISO"),
-        this.anisoParams = c.anisoParams || {
-            strength: 1,
-            tangent: [1, 0, 0],
-            integral: 0.5
-        },
-        this.extrasTexCoordRanges.anisoTex || d.push("#define ANISO_NO_DIR_TEX"));
+            this.anisoParams = c.anisoParams || {
+                strength: 1,
+                tangent: [1, 0, 0],
+                integral: 0.5
+            },
+            this.extrasTexCoordRanges.anisoTex || d.push("#define ANISO_NO_DIR_TEX"));
         c.microfiber && (d.push("#define MICROFIBER"),
-        this.microfiberParams = c.microfiberParams || {
-            fresnelColor: [0.2, 0.2, 0.2, 0.5],
-            fresnelOcc: 1,
-            fresnelGlossMask: 1
-        },
-        this.microfiberParams.fresnelIntegral = 1 / 3.14159 * (1 - 0.5 * this.microfiberParams.fresnelColor[3]),
-        this.extrasTexCoordRanges.fuzzTex || d.push("#define MICROFIBER_NO_FUZZ_TEX"));
+            this.microfiberParams = c.microfiberParams || {
+                fresnelColor: [0.2, 0.2, 0.2, 0.5],
+                fresnelOcc: 1,
+                fresnelGlossMask: 1
+            },
+            this.microfiberParams.fresnelIntegral = 1 / 3.14159 * (1 - 0.5 * this.microfiberParams.fresnelColor[3]),
+            this.extrasTexCoordRanges.fuzzTex || d.push("#define MICROFIBER_NO_FUZZ_TEX"));
         c.refraction && (d.push("#define REFRACTION"),
-        this.refractionParams = c.refractionParams || {
-            distantBackground: !1,
-            tint: [1, 1, 1],
-            useAlbedoTint: !1,
-            IOR: 1.5
-        },
-        this.extrasTexCoordRanges.refractionMaskTex || d.push("#define REFRACTION_NO_MASK_TEX"));
+            this.refractionParams = c.refractionParams || {
+                distantBackground: !1,
+                tint: [1, 1, 1],
+                useAlbedoTint: !1,
+                IOR: 1.5
+            },
+            this.extrasTexCoordRanges.refractionMaskTex || d.push("#define REFRACTION_NO_MASK_TEX"));
         c.vertexColor && (d.push("#define VERTEX_COLOR"),
-        c.vertexColorsRGB && d.push("#define VERTEX_COLOR_SRGB"),
-        c.vertexColorAlpha && d.push("#define VERTEX_COLOR_ALPHA"));
+            c.vertexColorsRGB && d.push("#define VERTEX_COLOR_SRGB"),
+            c.vertexColorAlpha && d.push("#define VERTEX_COLOR_ALPHA"));
         this.horizonSmoothing = c.horizonSmoothing || 0;
         0 < this.horizonSmoothing && d.push("#define HORIZON_SMOOTHING");
         c.unlitDiffuse && d.push("#define DIFFUSE_UNLIT");
         this.extrasTexCoordRanges.emissiveTex && (d.push("#define EMISSIVE"),
-        c.emissiveSecondaryUV && (d.push("#define EMISSIVE_SECONDARY_UV"),
-        e = !0));
+            c.emissiveSecondaryUV && (d.push("#define EMISSIVE_SECONDARY_UV"),
+                e = !0));
         this.extrasTexCoordRanges.aoTex && (d.push("#define AMBIENT_OCCLUSION"),
-        c.aoSecondaryUV && (d.push("#define AMBIENT_OCCLUSION_SECONDARY_UV"),
-        e = !0));
+            c.aoSecondaryUV && (d.push("#define AMBIENT_OCCLUSION_SECONDARY_UV"),
+                e = !0));
         c.tangentOrthogonalize && d.push("#define TSPACE_ORTHOGONALIZE");
         c.tangentNormalize && d.push("#define TSPACE_RENORMALIZE");
         c.tangentGenerateBitangent && d.push("#define TSPACE_COMPUTE_BITANGENT");
@@ -2505,159 +2505,159 @@ marmoset = {};
         this.wireShader = a.shaderCache.fromURLs("wirevert.glsl", "wirefrag.glsl");
         this.blend === b.alpha && (this.prepassShader = a.shaderCache.fromURLs("alphaprepassvert.glsl", "alphaprepassfrag.glsl"))
     }
-    Material.prototype.bind = function(a, b) {
+    Material.prototype.bind = function (a, b) {
         if (!this.complete())
             return !1;
         var c = a.view, d = a.lights, e = a.sky, f = a.shadow, g = a.stripData.active() ? this.stripShader : this.shader, h = this.skinParams, k = this.anisoParams, l = this.microfiberParams, n, m = this.gl, p = g.params, r = this.textures, s = g.samplers;
         g.bind();
         this.blend();
         var u = b.mesh.displayMatrix
-          , q = Matrix.mul(Matrix.empty(), c.viewMatrix, u)
-          , x = Matrix.mul(Matrix.empty(), c.projectionMatrix, c.viewMatrix)
-          , q = Matrix.mul(Matrix.empty(), c.projectionMatrix, q)
-          , u = Matrix.mul(Matrix.empty(), d.matrix, u);
+            , q = Matrix.mul(Matrix.empty(), c.viewMatrix, u)
+            , x = Matrix.mul(Matrix.empty(), c.projectionMatrix, c.viewMatrix)
+            , q = Matrix.mul(Matrix.empty(), c.projectionMatrix, q)
+            , u = Matrix.mul(Matrix.empty(), d.matrix, u);
         m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
-		window["mview"]=q
+
+
+        window["mview"] = q
         m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
-		window["uSkyMatrix"]=u
-		
+        window["uSkyMatrix"] = u
+
         u = Matrix.mulPoint(Vect.empty(), d.matrix, c.transform[12], c.transform[13], c.transform[14]);
         m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
-		window["uCameraPosition"]=u
-		
+        window["uCameraPosition"] = u
+
         m.uniform3fv(p.uFresnel, this.fresnel);
         m.uniform1f(p.uAlphaTest, this.alphaTest);
         m.uniform1f(p.uHorizonOcclude, this.horizonOcclude);
-		window["horizonOcclude"]=this.horizonOcclude
-		
+        window["horizonOcclude"] = this.horizonOcclude
+
         m.uniform1f(p.uHorizonSmoothing, this.horizonSmoothing);
         m.uniform4fv(p.uDiffuseCoefficients, e.diffuseCoefficients);
-		
-		window["uDiffuseCoefficients"]=e.diffuseCoefficients;
-		
-		//window["uShadowMatrices"]=d.finalTransformBuffer;
-		
- 
-		window["uShadowMatrices"]=[]
-		for(var kt=d.finalTransformBuffer.length-16;kt<d.finalTransformBuffer.length;kt++){
-	 
-			window["uShadowMatrices"].push(d.finalTransformBuffer[kt])
-		}
-	   
-		
-		window["uShadowTexelPadProjections"]=d.shadowTexelPadProjections;
-		
-		window["uShadowKernelRotation"]=[0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
-			
+
+        window["uDiffuseCoefficients"] = e.diffuseCoefficients;
+
+        //window["uShadowMatrices"]=d.finalTransformBuffer;
+
+
+        window["uShadowMatrices"] = []
+        for (var kt = d.finalTransformBuffer.length - 16; kt < d.finalTransformBuffer.length; kt++) {
+
+            window["uShadowMatrices"].push(d.finalTransformBuffer[kt])
+        }
+        window["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
+        window["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
+
+
         0 < d.count && (m.uniform4fv(p.uLightPositions, d.positionBuffer),
-        m.uniform3fv(p.uLightDirections, d.directionBuffer),
-        m.uniform3fv(p.uLightColors, d.colors),
-        m.uniform3fv(p.uLightParams, d.parameters),
-        m.uniform3fv(p.uLightSpot, d.spot),
-		
-        u = 0.392699 * a.postRender.currentSample(),
-      //  m.uniform2f(p.uShadowKernelRotation, 0.7853,0.7853),
-		  m.uniform2f(p.uShadowKernelRotation, u,u),
-		
-        0 < d.shadowCount && (u = f.depthTextures[0].desc.width,
-        m.uniform2f(p.uShadowMapSize, u, 1 / u),
-        m.uniformMatrix4fv(p.uShadowMatrices, !1, d.finalTransformBuffer),
-		
-		
-        m.uniformMatrix4fv(p.uInvShadowMatrices, !1, d.inverseTransformBuffer),
-        m.uniform4fv(p.uShadowTexelPadProjections, d.shadowTexelPadProjections),
-        f.bindDepthTexture(s.tDepth0, 0),
-        f.bindDepthTexture(s.tDepth1, 1),
-        f.bindDepthTexture(s.tDepth2, 2)));
+            m.uniform3fv(p.uLightDirections, d.directionBuffer),
+            m.uniform3fv(p.uLightColors, d.colors),
+            m.uniform3fv(p.uLightParams, d.parameters),
+            m.uniform3fv(p.uLightSpot, d.spot),
+
+            u = 0.392699 * a.postRender.currentSample(),
+            //  m.uniform2f(p.uShadowKernelRotation, 0.7853,0.7853),
+            m.uniform2f(p.uShadowKernelRotation, u, u),
+
+            0 < d.shadowCount && (u = f.depthTextures[0].desc.width,
+                m.uniform2f(p.uShadowMapSize, u, 1 / u),
+                m.uniformMatrix4fv(p.uShadowMatrices, !1, d.finalTransformBuffer),
+
+
+                m.uniformMatrix4fv(p.uInvShadowMatrices, !1, d.inverseTransformBuffer),
+                m.uniform4fv(p.uShadowTexelPadProjections, d.shadowTexelPadProjections),
+                f.bindDepthTexture(s.tDepth0, 0),
+                f.bindDepthTexture(s.tDepth1, 1),
+                f.bindDepthTexture(s.tDepth2, 2)));
         h && (m.uniform3fv(p.uSubdermisColor, h.subdermisColor),
-        m.uniform4fv(p.uTransColor, h.transColor),
-        m.uniform1f(p.uTransScatter, h.transScatter),
-        m.uniform4fv(p.uFresnelColor, h.fresnelColor),
-        m.uniform1f(p.uFresnelOcc, h.fresnelOcc),
-        m.uniform1f(p.uFresnelGlossMask, h.fresnelGlossMask),
-        m.uniform1f(p.uFresnelIntegral, h.fresnelIntegral),
-        m.uniform1f(p.uTransIntegral, h.transIntegral),
-        m.uniform1f(p.uSkinTransDepth, h.transDepth),
-        m.uniform1f(p.uTransSky, h.transSky),
-        m.uniform1f(p.uSkinShadowBlur, h.shadowBlur),
-        m.uniform1f(p.uNormalSmooth, h.normalSmooth),
-        (n = this.extrasTexCoordRanges.subdermisTex) && m.uniform4fv(p.uTexRangeSubdermis, n),
-        (n = this.extrasTexCoordRanges.translucencyTex) && m.uniform4fv(p.uTexRangeTranslucency, n),
-        (n = this.extrasTexCoordRanges.fuzzTex) && m.uniform4fv(p.uTexRangeFuzz, n));
+            m.uniform4fv(p.uTransColor, h.transColor),
+            m.uniform1f(p.uTransScatter, h.transScatter),
+            m.uniform4fv(p.uFresnelColor, h.fresnelColor),
+            m.uniform1f(p.uFresnelOcc, h.fresnelOcc),
+            m.uniform1f(p.uFresnelGlossMask, h.fresnelGlossMask),
+            m.uniform1f(p.uFresnelIntegral, h.fresnelIntegral),
+            m.uniform1f(p.uTransIntegral, h.transIntegral),
+            m.uniform1f(p.uSkinTransDepth, h.transDepth),
+            m.uniform1f(p.uTransSky, h.transSky),
+            m.uniform1f(p.uSkinShadowBlur, h.shadowBlur),
+            m.uniform1f(p.uNormalSmooth, h.normalSmooth),
+            (n = this.extrasTexCoordRanges.subdermisTex) && m.uniform4fv(p.uTexRangeSubdermis, n),
+            (n = this.extrasTexCoordRanges.translucencyTex) && m.uniform4fv(p.uTexRangeTranslucency, n),
+            (n = this.extrasTexCoordRanges.fuzzTex) && m.uniform4fv(p.uTexRangeFuzz, n));
         l && (m.uniform4fv(p.uFresnelColor, l.fresnelColor),
-        m.uniform1f(p.uFresnelOcc, l.fresnelOcc),
-        m.uniform1f(p.uFresnelGlossMask, l.fresnelGlossMask),
-        m.uniform1f(p.uFresnelIntegral, l.fresnelIntegral),
-        (n = this.extrasTexCoordRanges.fuzzTex) && m.uniform4fv(p.uTexRangeFuzz, n));
+            m.uniform1f(p.uFresnelOcc, l.fresnelOcc),
+            m.uniform1f(p.uFresnelGlossMask, l.fresnelGlossMask),
+            m.uniform1f(p.uFresnelIntegral, l.fresnelIntegral),
+            (n = this.extrasTexCoordRanges.fuzzTex) && m.uniform4fv(p.uTexRangeFuzz, n));
         k && (m.uniform3fv(p.uAnisoTangent, k.tangent),
-        m.uniform1f(p.uAnisoStrength, k.strength),
-        m.uniform1f(p.uAnisoIntegral, k.integral),
-        (n = this.extrasTexCoordRanges.anisoTex) && m.uniform4fv(p.uTexRangeAniso, n));
+            m.uniform1f(p.uAnisoStrength, k.strength),
+            m.uniform1f(p.uAnisoIntegral, k.integral),
+            (n = this.extrasTexCoordRanges.anisoTex) && m.uniform4fv(p.uTexRangeAniso, n));
         this.usesRefraction && (a.refractionSurface && a.refractionSurface.bind(s.tRefraction),
-        d = Matrix.mul(Matrix.empty(), x, d.invMatrix),
-        m.uniformMatrix4fv(p.uRefractionViewProjection, !1, d),
-        m.uniform1f(p.uRefractionRayDistance, this.refractionParams.distantBackground ? 1E10 : 4 * b.mesh.bounds.maxExtent),
-        m.uniform3fv(p.uRefractionTint, this.refractionParams.tint),
-        m.uniform1f(p.uRefractionAlbedoTint, this.refractionParams.useAlbedoTint ? 1 : 0),
-        m.uniform1f(p.uRefractionIOREntry, 1 / this.refractionParams.IOR),
-        (n = this.extrasTexCoordRanges.refractionMaskTex) && m.uniform4fv(p.uTexRangeRefraction, n));
+            d = Matrix.mul(Matrix.empty(), x, d.invMatrix),
+            m.uniformMatrix4fv(p.uRefractionViewProjection, !1, d),
+            m.uniform1f(p.uRefractionRayDistance, this.refractionParams.distantBackground ? 1E10 : 4 * b.mesh.bounds.maxExtent),
+            m.uniform3fv(p.uRefractionTint, this.refractionParams.tint),
+            m.uniform1f(p.uRefractionAlbedoTint, this.refractionParams.useAlbedoTint ? 1 : 0),
+            m.uniform1f(p.uRefractionIOREntry, 1 / this.refractionParams.IOR),
+            (n = this.extrasTexCoordRanges.refractionMaskTex) && m.uniform4fv(p.uTexRangeRefraction, n));
         if (n = this.extrasTexCoordRanges.emissiveTex)
             m.uniform4fv(p.uTexRangeEmissive, n),
-            m.uniform1f(p.uEmissiveScale, this.emissiveIntensity);
+                m.uniform1f(p.uEmissiveScale, this.emissiveIntensity);
         (n = this.extrasTexCoordRanges.aoTex) && m.uniform4fv(p.uTexRangeAO, n);
         r.albedo.bind(s.tAlbedo);
         r.reflectivity.bind(s.tReflectivity);
         r.normal.bind(s.tNormal);
         r.extras.bind(s.tExtras);
         e.specularTexture.bind(s.tSkySpecular);
-		 
-		 
+
+
 
         g === this.stripShader && (m.uniform1fv(p.uStrips, a.stripData.strips),
-        m.uniform2f(p.uStripRes, 2 / c.size[0], 2 / c.size[1]));
+            m.uniform2f(p.uStripRes, 2 / c.size[0], 2 / c.size[1]));
         m.uniform2f(p.uUVOffset, this.uOffset, this.vOffset);
         return !0
     }
-    ;
-    Material.prototype.bindAlphaPrepass = function(a, b) {
+        ;
+    Material.prototype.bindAlphaPrepass = function (a, b) {
         if (!this.complete() || !this.prepassShader)
             return !1;
         var c = this.gl
-          , d = this.prepassShader.params
-          , e = this.prepassShader.samplers;
+            , d = this.prepassShader.params
+            , e = this.prepassShader.samplers;
         this.prepassShader.bind();
         var f = Matrix.mul(Matrix.empty(), a.view.viewMatrix, b.mesh.displayMatrix)
-          , f = Matrix.mul(Matrix.empty(), a.view.projectionMatrix, f);
+            , f = Matrix.mul(Matrix.empty(), a.view.projectionMatrix, f);
         c.uniformMatrix4fv(d.uModelViewProjectionMatrix, !1, f);
         c.uniform2f(d.uUVOffset, this.uOffset, this.vOffset);
         this.textures.albedo.bind(e.tAlbedo);
         return !0
     }
-    ;
-    Material.prototype.bindWire = function(a, b) {
+        ;
+    Material.prototype.bindWire = function (a, b) {
         if (!this.complete())
             return !1;
         var c = this.gl
-          , d = this.wireShader.params
-          , e = a.view;
+            , d = this.wireShader.params
+            , e = a.view;
         c.enable(c.BLEND);
         c.blendFunc(c.SRC_ALPHA, c.ONE_MINUS_SRC_ALPHA);
         c.depthMask(!1);
         this.wireShader.bind();
         var f = Matrix.mul(Matrix.empty(), a.view.viewMatrix, b.mesh.displayMatrix)
-          , f = Matrix.mul(Matrix.empty(), a.view.projectionMatrix, f);
+            , f = Matrix.mul(Matrix.empty(), a.view.projectionMatrix, f);
         c.uniformMatrix4fv(d.uModelViewProjectionMatrix, !1, f);
         c.uniform4f(d.uStripParams, 2 / e.size[0], 2 / e.size[1], a.stripData.strips[3], a.stripData.strips[4]);
         return !0
     }
-    ;
-    Material.prototype.complete = function() {
+        ;
+    Material.prototype.complete = function () {
         return this.wireShader.complete() && this.shader.complete() && this.stripShader.complete() && (!this.prepassShader || this.prepassShader.complete()) && (!this.refractionShader || this.refractionShader.complete()) && this.textures.albedo.complete() && this.textures.reflectivity.complete() && this.textures.normal.complete()
     }
-    ;
+        ;
     var Matrix = {
         type: Float32Array,
-        create: function(a, b, c, d, e, f, g, h, k, l, n, m, p, r, s, u) {
+        create: function (a, b, c, d, e, f, g, h, k, l, n, m, p, r, s, u) {
             var q = new Matrix.type(16);
             q[0] = a;
             q[4] = b;
@@ -2677,10 +2677,10 @@ marmoset = {};
             q[15] = u;
             return q
         },
-        empty: function() {
+        empty: function () {
             return new Matrix.type(16)
         },
-        identity: function() {
+        identity: function () {
             var a = new Matrix.type(16);
             a[0] = 1;
             a[4] = 0;
@@ -2700,7 +2700,7 @@ marmoset = {};
             a[15] = 1;
             return a
         },
-        set: function(a, b, c, d, e, f, g, h, k, l, n, m, p, r, s, u, q) {
+        set: function (a, b, c, d, e, f, g, h, k, l, n, m, p, r, s, u, q) {
             a[0] = b;
             a[4] = c;
             a[8] = d;
@@ -2718,11 +2718,11 @@ marmoset = {};
             a[11] = u;
             a[15] = q
         },
-        translation: function(a, b, c, d) {
+        translation: function (a, b, c, d) {
             Matrix.set(a, 1, 0, 0, b, 0, 1, 0, c, 0, 0, 1, d, 0, 0, 0, 1);
             return a
         },
-        rotation: function(a, b, c) {
+        rotation: function (a, b, c) {
             a[0] = 1;
             a[4] = 0;
             a[8] = 0;
@@ -2743,47 +2743,47 @@ marmoset = {};
             b = Math.sin(d);
             d = Math.cos(d);
             switch (c) {
-            case 0:
-                a[5] = d;
-                a[9] = -b;
-                a[6] = b;
-                a[10] = d;
-                break;
-            case 1:
-                a[0] = d;
-                a[8] = b;
-                a[2] = -b;
-                a[10] = d;
-                break;
-            case 2:
-                a[0] = d,
-                a[4] = -b,
-                a[1] = b,
-                a[5] = d
+                case 0:
+                    a[5] = d;
+                    a[9] = -b;
+                    a[6] = b;
+                    a[10] = d;
+                    break;
+                case 1:
+                    a[0] = d;
+                    a[8] = b;
+                    a[2] = -b;
+                    a[10] = d;
+                    break;
+                case 2:
+                    a[0] = d,
+                        a[4] = -b,
+                        a[1] = b,
+                        a[5] = d
             }
             return a
         },
-        mul: function(a, b, c) {
+        mul: function (a, b, c) {
             var d = b[0]
-              , e = b[1]
-              , f = b[2]
-              , g = b[3]
-              , h = b[4]
-              , k = b[5]
-              , l = b[6]
-              , n = b[7]
-              , m = b[8]
-              , p = b[9]
-              , r = b[10]
-              , s = b[11]
-              , u = b[12]
-              , q = b[13]
-              , x = b[14];
+                , e = b[1]
+                , f = b[2]
+                , g = b[3]
+                , h = b[4]
+                , k = b[5]
+                , l = b[6]
+                , n = b[7]
+                , m = b[8]
+                , p = b[9]
+                , r = b[10]
+                , s = b[11]
+                , u = b[12]
+                , q = b[13]
+                , x = b[14];
             b = b[15];
             var w = c[0]
-              , v = c[1]
-              , t = c[2]
-              , y = c[3];
+                , v = c[1]
+                , t = c[2]
+                , y = c[3];
             a[0] = w * d + v * h + t * m + y * u;
             a[1] = w * e + v * k + t * p + y * q;
             a[2] = w * f + v * l + t * r + y * x;
@@ -2814,36 +2814,36 @@ marmoset = {};
             a[15] = w * g + v * n + t * s + y * b;
             return a
         },
-        invert: function(a, b) {
+        invert: function (a, b) {
             var c = b[0]
-              , d = b[1]
-              , e = b[2]
-              , f = b[3]
-              , g = b[4]
-              , h = b[5]
-              , k = b[6]
-              , l = b[7]
-              , n = b[8]
-              , m = b[9]
-              , p = b[10]
-              , r = b[11]
-              , s = b[12]
-              , u = b[13]
-              , q = b[14]
-              , x = b[15]
-              , w = c * h - d * g
-              , v = c * k - e * g
-              , t = c * l - f * g
-              , y = d * k - e * h
-              , E = d * l - f * h
-              , F = e * l - f * k
-              , A = n * u - m * s
-              , B = n * q - p * s
-              , z = n * x - r * s
-              , C = m * q - p * u
-              , G = m * x - r * u
-              , H = p * x - r * q
-              , D = w * H - v * G + t * C + y * z - E * B + F * A;
+                , d = b[1]
+                , e = b[2]
+                , f = b[3]
+                , g = b[4]
+                , h = b[5]
+                , k = b[6]
+                , l = b[7]
+                , n = b[8]
+                , m = b[9]
+                , p = b[10]
+                , r = b[11]
+                , s = b[12]
+                , u = b[13]
+                , q = b[14]
+                , x = b[15]
+                , w = c * h - d * g
+                , v = c * k - e * g
+                , t = c * l - f * g
+                , y = d * k - e * h
+                , E = d * l - f * h
+                , F = e * l - f * k
+                , A = n * u - m * s
+                , B = n * q - p * s
+                , z = n * x - r * s
+                , C = m * q - p * u
+                , G = m * x - r * u
+                , H = p * x - r * q
+                , D = w * H - v * G + t * C + y * z - E * B + F * A;
             if (!D)
                 return null;
             D = 1 / D;
@@ -2865,7 +2865,7 @@ marmoset = {};
             a[15] = (n * y - m * v + p * w) * D;
             return a
         },
-        transpose: function(a, b) {
+        transpose: function (a, b) {
             a[0] = b[0];
             a[4] = b[1];
             a[8] = b[2];
@@ -2884,26 +2884,26 @@ marmoset = {};
             a[15] = b[15];
             return a
         },
-        mul4: function(a, b, c, d, e, f) {
+        mul4: function (a, b, c, d, e, f) {
             a[0] = b[0] * c + b[4] * d + b[8] * e + b[12] * f;
             a[1] = b[1] * c + b[5] * d + b[9] * e + b[13] * f;
             a[2] = b[2] * c + b[6] * d + b[10] * e + b[14] * f;
             a[3] = b[3] * c + b[7] * d + b[11] * e + b[15] * f;
             return a
         },
-        mulPoint: function(a, b, c, d, e) {
+        mulPoint: function (a, b, c, d, e) {
             a[0] = b[0] * c + b[4] * d + b[8] * e + b[12];
             a[1] = b[1] * c + b[5] * d + b[9] * e + b[13];
             a[2] = b[2] * c + b[6] * d + b[10] * e + b[14];
             return a
         },
-        mulVec: function(a, b, c, d, e) {
+        mulVec: function (a, b, c, d, e) {
             a[0] = b[0] * c + b[4] * d + b[8] * e;
             a[1] = b[1] * c + b[5] * d + b[9] * e;
             a[2] = b[2] * c + b[6] * d + b[10] * e;
             return a
         },
-        perspective: function(a, b, c, d, e, f) {
+        perspective: function (a, b, c, d, e, f) {
             f = f || 0;
             b = 1 / Math.tan(0.00872664625 * b);
             a[0] = b / c;
@@ -2917,7 +2917,7 @@ marmoset = {};
             a[12] = a[13] = a[15] = 0;
             return a
         },
-        perspectiveInfinite: function(a, b, c, d, e) {
+        perspectiveInfinite: function (a, b, c, d, e) {
             e = e || 0;
             b = 1 / Math.tan(0.00872664625 * b);
             a[0] = b / c;
@@ -2930,10 +2930,10 @@ marmoset = {};
             a[12] = a[13] = a[15] = 0;
             return a
         },
-        ortho: function(a, b, c, d, e, f, g, h) {
+        ortho: function (a, b, c, d, e, f, g, h) {
             var k = 1 / (c - b)
-              , l = 1 / (e - d)
-              , n = 1 / (g - f);
+                , l = 1 / (e - d)
+                , n = 1 / (g - f);
             a[0] = k + k;
             a[1] = a[2] = a[3] = 0;
             a[5] = l + l;
@@ -2946,10 +2946,10 @@ marmoset = {};
             a[15] = 1;
             return a
         },
-        lookAt: function(a, b, c, d) {
+        lookAt: function (a, b, c, d) {
             var e = a.subarray(0, 3)
-              , f = a.subarray(4, 7)
-              , g = a.subarray(8, 11);
+                , f = a.subarray(4, 7)
+                , g = a.subarray(8, 11);
             Vect.sub(g, b, c);
             Vect.cross(e, d, g);
             Vect.normalize(g, g);
@@ -2957,20 +2957,20 @@ marmoset = {};
             Vect.cross(f, g, e);
             Matrix.set(a, e[0], e[1], e[2], -Vect.dot(e, b), f[0], f[1], f[2], -Vect.dot(f, b), g[0], g[1], g[2], -Vect.dot(g, b), 0, 0, 0, 1)
         },
-        copy: function(a, b) {
+        copy: function (a, b) {
             for (var c = 0; 16 > c; ++c)
                 a[c] = b[c]
         },
-        copyToBuffer: function(a, b, c) {
+        copyToBuffer: function (a, b, c) {
             for (var d = 0; 16 > d; ++d)
                 a[b + d] = c[d]
         }
     };
     function Mesh(a, b, c) {
-		 this.initdata(a,b,c);
-       
+        this.initdata(a, b, c);
+
     }
-	 Mesh.prototype.initdata = function (a,b,c) {
+    Mesh.prototype.initdata = function (a, b, c) {
         this.gl = a;
         this.desc = b;
         var d = b.isDynamicMesh;
@@ -3003,19 +3003,19 @@ marmoset = {};
         a.bindBuffer(a.ARRAY_BUFFER, this.vertexBuffer);
         c = c.readBytes(this.vertexCount * this.stride);
         d ? (this.dynamicVertexData = new Uint8Array(c),
-        a.bufferData(a.ARRAY_BUFFER, c, a.DYNAMIC_DRAW)) : a.bufferData(a.ARRAY_BUFFER, c, a.STATIC_DRAW);
+            a.bufferData(a.ARRAY_BUFFER, c, a.DYNAMIC_DRAW)) : a.bufferData(a.ARRAY_BUFFER, c, a.STATIC_DRAW);
         a.bindBuffer(a.ARRAY_BUFFER, null);
         this.bounds = void 0 === b.minBound || void 0 === b.maxBound ? {
             min: Vect.create(-10, -10, -10, 1),
             max: Vect.create(10, 10, -0, 1)
         } : {
-            min: Vect.create(b.minBound[0], b.minBound[1], b.minBound[2], 1),
-            max: Vect.create(b.maxBound[0], b.maxBound[1], b.maxBound[2], 1)
-        };
+                min: Vect.create(b.minBound[0], b.minBound[1], b.minBound[2], 1),
+                max: Vect.create(b.maxBound[0], b.maxBound[1], b.maxBound[2], 1)
+            };
         this.bounds.maxExtent = Math.max(Math.max(b.maxBound[0] - b.minBound[0], b.maxBound[1] - b.minBound[1]), b.maxBound[2] - b.minBound[2]);
         this.bounds.averageExtent = (b.maxBound[0] - b.minBound[0] + (b.maxBound[1] - b.minBound[1]) + (b.maxBound[2] - b.minBound[2])) / 3
-      };
-    ;function MeshRenderable(a, b, c) {
+    };
+    ; function MeshRenderable(a, b, c) {
         this.mesh = a;
         this.gl = this.mesh.gl;
         this.indexOffset = b.firstIndex * a.indexTypeSize;
@@ -3025,13 +3025,13 @@ marmoset = {};
         this.material = c;
         this.visible = !0
     }
-    MeshRenderable.prototype.draw = function(a) {
+    MeshRenderable.prototype.draw = function (a) {
         var b = this.gl;
         if (this.material.bind(a, this)) {
             a = this.material.shader.attribs;
             var c = this.mesh.stride;
             this.mesh.desc.cullBackFaces ? (b.enable(b.CULL_FACE),
-            b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);
+                b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
             b.bindBuffer(b.ARRAY_BUFFER, this.mesh.vertexBuffer);
             b.enableVertexAttribArray(a.vPosition);
@@ -3049,7 +3049,7 @@ marmoset = {};
             b.vertexAttribPointer(a.vTexCoord, 2, b.FLOAT, !1, c, f);
             f += 8;
             this.mesh.secondaryTexCoord && (e && b.vertexAttribPointer(a.vTexCoord2, 2, b.FLOAT, !1, c, f),
-            f += 8);
+                f += 8);
             b.vertexAttribPointer(a.vTangent, 2, b.UNSIGNED_SHORT, !0, c, f);
             f += 4;
             b.vertexAttribPointer(a.vBitangent, 2, b.UNSIGNED_SHORT, !0, c, f);
@@ -3066,11 +3066,11 @@ marmoset = {};
             e && b.disableVertexAttribArray(a.vTexCoord2)
         }
     }
-    ;
-    MeshRenderable.prototype.drawShadow = function(a) {
+        ;
+    MeshRenderable.prototype.drawShadow = function (a) {
         var b = this.gl;
         this.mesh.desc.cullBackFaces ? (b.enable(b.CULL_FACE),
-        b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);
+            b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);
         b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
         b.bindBuffer(b.ARRAY_BUFFER, this.mesh.vertexBuffer);
         b.enableVertexAttribArray(a);
@@ -3078,11 +3078,11 @@ marmoset = {};
         b.drawElements(b.TRIANGLES, this.indexCount, this.mesh.indexType, this.indexOffset);
         b.disableVertexAttribArray(a)
     }
-    ;
-    MeshRenderable.prototype.drawAlphaShadow = function(a, b) {
+        ;
+    MeshRenderable.prototype.drawAlphaShadow = function (a, b) {
         var c = this.gl;
         this.mesh.desc.cullBackFaces ? (c.enable(c.CULL_FACE),
-        c.cullFace(c.BACK)) : c.disable(c.CULL_FACE);
+            c.cullFace(c.BACK)) : c.disable(c.CULL_FACE);
         c.bindBuffer(c.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
         c.bindBuffer(c.ARRAY_BUFFER, this.mesh.vertexBuffer);
         c.enableVertexAttribArray(a);
@@ -3093,14 +3093,14 @@ marmoset = {};
         c.disableVertexAttribArray(a);
         c.disableVertexAttribArray(b)
     }
-    ;
-    MeshRenderable.prototype.drawAlphaPrepass = function(a) {
+        ;
+    MeshRenderable.prototype.drawAlphaPrepass = function (a) {
         var b = this.gl;
         if (this.material.bindAlphaPrepass(a, this)) {
             a = this.material.prepassShader.attribs;
             var c = this.mesh.stride;
             this.mesh.desc.cullBackFaces ? (b.enable(b.CULL_FACE),
-            b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);
+                b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
             b.bindBuffer(b.ARRAY_BUFFER, this.mesh.vertexBuffer);
             b.enableVertexAttribArray(a.vPosition);
@@ -3112,101 +3112,101 @@ marmoset = {};
             b.disableVertexAttribArray(a.vTexCoord)
         }
     }
-    ;
-    MeshRenderable.prototype.drawWire = function(a) {
+        ;
+    MeshRenderable.prototype.drawWire = function (a) {
         var b = this.material.wireShader.attribs
-          , c = this.gl;
+            , c = this.gl;
         this.material.bindWire(a, this) && (c.enableVertexAttribArray(b.vPosition),
-        c.bindBuffer(c.ELEMENT_ARRAY_BUFFER, this.mesh.wireBuffer),
-        c.bindBuffer(c.ARRAY_BUFFER, this.mesh.vertexBuffer),
-        c.vertexAttribPointer(b.vPosition, 3, c.FLOAT, !1, this.mesh.stride, 0),
-        c.drawElements(c.LINES, this.wireIndexCount, this.mesh.indexType, this.wireIndexOffset),
-        c.disableVertexAttribArray(b.vPosition))
+            c.bindBuffer(c.ELEMENT_ARRAY_BUFFER, this.mesh.wireBuffer),
+            c.bindBuffer(c.ARRAY_BUFFER, this.mesh.vertexBuffer),
+            c.vertexAttribPointer(b.vPosition, 3, c.FLOAT, !1, this.mesh.stride, 0),
+            c.drawElements(c.LINES, this.wireIndexCount, this.mesh.indexType, this.wireIndexOffset),
+            c.disableVertexAttribArray(b.vPosition))
     }
-    ;
-    MeshRenderable.prototype.complete = function() {
+        ;
+    MeshRenderable.prototype.complete = function () {
         return this.material.complete()
     }
-    ;
+        ;
     var Network = {
-        fetchImage: function(a, b, c) {
+        fetchImage: function (a, b, c) {
             var d = new Image;
             d.crossOrigin = "Anonymous";
-            d.onload = function() {
+            d.onload = function () {
                 0 < d.width && 0 < d.height ? b(d) : c && c()
             }
-            ;
-            c && (req.onerror = function() {
+                ;
+            c && (req.onerror = function () {
                 c()
             }
             );
             d.src = a
         },
-        fetchText: function(a, b, c, d) {
+        fetchText: function (a, b, c, d) {
             var e = new XMLHttpRequest;
             e.open("GET", a, !0);
-            e.onload = function() {
+            e.onload = function () {
                 200 == e.status ? b(e.responseText) : c && c()
             }
-            ;
-            c && (e.onerror = function() {
+                ;
+            c && (e.onerror = function () {
                 c()
             }
             );
-            d && (e.onprogress = function(a) {
+            d && (e.onprogress = function (a) {
                 d(a.loaded, a.total)
             }
             );
             e.send()
         },
-        fetchBinary: function(a, b, c, d) {
+        fetchBinary: function (a, b, c, d) {
             var e = new XMLHttpRequest;
             e.open("GET", a, !0);
             e.responseType = "arraybuffer";
-            e.onload = function() {
+            e.onload = function () {
                 200 == e.status ? b(e.response) : c && c()
             }
-            ;
-            c && (e.onerror = function() {
+                ;
+            c && (e.onerror = function () {
                 c()
             }
             );
-            d && (e.onprogress = function(a) {
+            d && (e.onprogress = function (a) {
                 d(a.loaded, a.total)
             }
             );
             e.send()
         },
-        fetchBinaryIncremental: function(a, b, c, d) {
+        fetchBinaryIncremental: function (a, b, c, d) {
             var e = new XMLHttpRequest;
             e.open("HEAD", a, !0);
-            e.onload = function() {
+            e.onload = function () {
                 if (200 == e.status) {
                     var f = e.getResponseHeader("Accept-Ranges");
                     if (f && "none" != f) {
                         var g = e.getResponseHeader("Content-Length") | 0
-                          , h = function(c, e) {
-                            var f = new XMLHttpRequest;
-                            f.open("GET", a, !0);
-                            f.setRequestHeader("Range", "bytes=" + c + "-" + e);
-                            f.responseType = "arraybuffer";
-                            f.onload = function() {
-                                (206 == f.status || 200 == f.status) && b(f.response) && e < g && (c += d,
-                                e += d,
-                                e = e < g - 1 ? e : g - 1,
-                                h(c, e))
-                            }
-                            ;
-                            f.send()
-                        };
+                            , h = function (c, e) {
+                                var f = new XMLHttpRequest;
+                                f.open("GET", a, !0);
+                                f.setRequestHeader("Range", "bytes=" + c + "-" + e);
+                                f.responseType = "arraybuffer";
+                                f.onload = function () {
+                                    (206 == f.status || 200 == f.status) && b(f.response) && e < g && (c += d,
+                                        e += d,
+                                        e = e < g - 1 ? e : g - 1,
+                                        h(c, e))
+                                }
+                                    ;
+                                f.send()
+                            };
                         h(0, d - 1)
                     } else
                         c && c()
                 } else
                     c && c()
             }
-            ;
-            c && (e.onerror = function() {
+                ;
+            c && (e.onerror = function () {
                 c()
             }
             );
@@ -3227,23 +3227,23 @@ marmoset = {};
         this.compactMode = !1;
         this.ui = a.ui;
         var b = "animationpause" + a.imageSetNumber + "x.png"
-          , c = "animationplay" + a.imageSetNumber + "x.png"
-          , d = "timelineLE" + a.imageSetNumber + "x.png"
-          , e = "timelineM" + a.imageSetNumber + "x.png"
-          , f = "timelineRE" + a.imageSetNumber + "x.png"
-          , g = a.ui.viewer.scene.sceneAnimator.animations.length;
+            , c = "animationplay" + a.imageSetNumber + "x.png"
+            , d = "timelineLE" + a.imageSetNumber + "x.png"
+            , e = "timelineM" + a.imageSetNumber + "x.png"
+            , f = "timelineRE" + a.imageSetNumber + "x.png"
+            , g = a.ui.viewer.scene.sceneAnimator.animations.length;
         if (0 != g) {
             var h = this.idealSliderWidth;
             this.bottomOffset = 85;
             this.centerOffset = 60;
             var k = a.width / 2 + this.centerOffset
-              , l = k - h / 2
-              , k = k + h / 2
-              , n = l - 14 - 32
-              , m = k - n
-              , p = 32 / a.height
-              , r = this.bottomOffset / a.height
-              , s = this.playbackRegion;
+                , l = k - h / 2
+                , k = k + h / 2
+                , n = l - 14 - 32
+                , m = k - n
+                , p = 32 / a.height
+                , r = this.bottomOffset / a.height
+                , s = this.playbackRegion;
             s.controlRect.widthPercent = m / a.width;
             s.controlRect.heightPercent = p;
             s.controlRect.xPercent = n / a.width;
@@ -3261,7 +3261,7 @@ marmoset = {};
             this.playButton.linkControl(s.addImageElement(this.playButton.controlRect, c));
             b = h / m;
             m = (l - n) / m;
-            this.timelineSlider = new TimelineSlider(this.guiScreen,s);
+            this.timelineSlider = new TimelineSlider(this.guiScreen, s);
             this.timelineSlider.controlRect.set(m, 0.03125, b, 1);
             s.controlRect.registerChildControlRect(this.timelineSlider.controlRect);
             this.timelineSlider.setBackground3x1(s, d, e, f);
@@ -3302,36 +3302,36 @@ marmoset = {};
             this.speedList.spawnControl(d, e, 44, 24, !1, 0);
             this.speedList.selectItem(2);
             m > a.width && (this.idealSliderWidth = a.width - (118 + (this.totalListBoxPixelsX + 14)) - this.centerOffset,
-            a = 0,
-            this.cameraList && a++,
-            this.animationList && a++,
-            1 == a && (this.idealSliderWidth += 56,
-            this.centerOffset -= 14),
-            2 == a && (this.idealSliderWidth += 63,
-            this.centerOffset -= 63));
+                a = 0,
+                this.cameraList && a++ ,
+                this.animationList && a++ ,
+                1 == a && (this.idealSliderWidth += 56,
+                    this.centerOffset -= 14),
+                2 == a && (this.idealSliderWidth += 63,
+                    this.centerOffset -= 63));
             this.setupCallbacks()
         }
     }
-    PlaybackControls.prototype.resize = function(a) {
+    PlaybackControls.prototype.resize = function (a) {
         a.ui.viewer.scene.sceneAnimator.showPlayControls || (a.width = 1,
-        a.height = 1);
+            a.height = 1);
         this.compactMode = a.width < this.minWidth;
         var b = this.bottomOffset
-          , c = this.bottomOffset + 4
-          , d = 0;
+            , c = this.bottomOffset + 4
+            , d = 0;
         this.cameraList && this.animationList ? d += 42 + this.cameraList.localPixelsX + this.animationList.localPixelsX : this.cameraList ? d += 28 + this.cameraList.localPixelsX : this.animationList && (d += 28 + this.animationList.localPixelsX);
         var e = a.width - d - 72;
         0 == d && (e -= 14);
         var f = 116
-          , g = f + e + 14;
+            , g = f + e + 14;
         this.compactMode && (f = 58,
-        e += 44 + d,
-        0 < d && (b += 32),
-        !d && (c += 32));
+            e += 44 + d,
+            0 < d && (b += 32),
+            !d && (c += 32));
         var d = 32 / e
-          , h = d + 14 / e
-          , k = 1 - h
-          , l = this.playbackRegion;
+            , h = d + 14 / e
+            , k = 1 - h
+            , l = this.playbackRegion;
         l.controlRect.widthPercent = e / a.width;
         l.controlRect.heightPercent = 32 / a.height;
         l.controlRect.xPercent = f / a.width;
@@ -3344,13 +3344,13 @@ marmoset = {};
         l.controlRect.updateChildElements();
         this.speedList.setControl(58, c, 44, 24, !1);
         this.cameraList && (this.cameraList.setControl(g, c, 10, 24, !0, 8),
-        g += this.cameraList.localPixelsX + 14);
+            g += this.cameraList.localPixelsX + 14);
         this.animationList && this.animationList.setControl(g, c, 10, 24, !0, 8);
         this.timelineSlider.backgroundControl.alignBackground()
     }
-    ;
-    PlaybackControls.prototype.setupCallbacks = function() {
-        var a = function(a) {
+        ;
+    PlaybackControls.prototype.setupCallbacks = function () {
+        var a = function (a) {
             "0.01x" == this.speedList.selectedItemText && this.ui.viewer.scene.sceneAnimator.setPlaybackSpeed(0.01);
             "0.05x" == this.speedList.selectedItemText && this.ui.viewer.scene.sceneAnimator.setPlaybackSpeed(0.05);
             "0.25x" == this.speedList.selectedItemText && this.ui.viewer.scene.sceneAnimator.setPlaybackSpeed(0.25);
@@ -3359,35 +3359,35 @@ marmoset = {};
             "2.0x" == this.speedList.selectedItemText && this.ui.viewer.scene.sceneAnimator.setPlaybackSpeed(2);
             "4.0x" == this.speedList.selectedItemText && this.ui.viewer.scene.sceneAnimator.setPlaybackSpeed(4)
         }
-        .bind(this)
-          , b = function(a) {
-            this.ui.viewer.scene.sceneAnimator.selectCamera(this.cameraList.selectedIndex);
-            this.ui.viewer.wake()
-        }
-        .bind(this)
-          , c = function(a) {
-            this.ui.viewer.scene.sceneAnimator.selectAnimation(this.animationList.selectedIndex);
-            this.ui.viewer.wake()
-        }
-        .bind(this);
+            .bind(this)
+            , b = function (a) {
+                this.ui.viewer.scene.sceneAnimator.selectCamera(this.cameraList.selectedIndex);
+                this.ui.viewer.wake()
+            }
+                .bind(this)
+            , c = function (a) {
+                this.ui.viewer.scene.sceneAnimator.selectAnimation(this.animationList.selectedIndex);
+                this.ui.viewer.wake()
+            }
+                .bind(this);
         this.speedList && (this.speedList.selectionChangedCallback = a);
         this.cameraList && (this.cameraList.selectionChangedCallback = b);
         this.animationList && (this.animationList.selectionChangedCallback = c);
-        this.playButton.controlRect.linkedControl.onclick = function() {
+        this.playButton.controlRect.linkedControl.onclick = function () {
             this.ui.viewer.scene.sceneAnimator.pause(!1);
             this.playButton.controlRect.showControl(!1);
             this.pauseButton.controlRect.showControl(!0);
             this.ui.viewer.wake()
         }
-        .bind(this);
-        this.pauseButton.controlRect.linkedControl.onclick = function() {
+            .bind(this);
+        this.pauseButton.controlRect.linkedControl.onclick = function () {
             this.ui.viewer.scene.sceneAnimator.pause(!0);
             this.playButton.controlRect.showControl(!0);
             this.pauseButton.controlRect.showControl(!1)
         }
-        .bind(this)
+            .bind(this)
     }
-    ;
+        ;
     function PostRender(a, b, c) {
         this.gl = a;
         this.desc = b;
@@ -3403,7 +3403,7 @@ marmoset = {};
         this.sampleIndex = 0;
         this.sampleCount = 1;
         c && (this.sampleCount = 4,
-        this.sampleOffsets = [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]]);
+            this.sampleOffsets = [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]]);
         this.aaShader = a.shaderCache.fromURLs("postvert.glsl", "postaa.glsl");
         this.shader = a.shaderCache.fromURLs("postvert.glsl", "postfrag.glsl", b);
         this.plainShader = a.shaderCache.fromURLs("postvert.glsl", "postfrag.glsl", []);
@@ -3421,14 +3421,14 @@ marmoset = {};
                     height: 256,
                     clamp: !0
                 },
-                this.bloomTextures[c] = new Texture(a,b),
-                this.bloomTextures[c].loadArray(null, a.RGBA, a.ext.textureHalf && a.ext.textureHalfLinear ? a.ext.textureHalf.HALF_FLOAT_OES : a.UNSIGNED_BYTE),
-                this.bloomTargets[c] = new Framebuffer(a,{
-                    width: b.width,
-                    height: b.height,
-                    color0: this.bloomTextures[c]
-                });
-            for (this.bloomSamples = 64; this.bloomSamples + 16 >= a.limits.fragmentUniforms; )
+                    this.bloomTextures[c] = new Texture(a, b),
+                    this.bloomTextures[c].loadArray(null, a.RGBA, a.ext.textureHalf && a.ext.textureHalfLinear ? a.ext.textureHalf.HALF_FLOAT_OES : a.UNSIGNED_BYTE),
+                    this.bloomTargets[c] = new Framebuffer(a, {
+                        width: b.width,
+                        height: b.height,
+                        color0: this.bloomTextures[c]
+                    });
+            for (this.bloomSamples = 64; this.bloomSamples + 16 >= a.limits.fragmentUniforms;)
                 this.bloomSamples /= 2;
             this.bloomShader = a.shaderCache.fromURLs("postvert.glsl", "bloom.glsl", ["#define BLOOM_SAMPLES " + this.bloomSamples]);
             this.shrinkShader = a.shaderCache.fromURLs("postvert.glsl", "bloomshrink.glsl")
@@ -3439,26 +3439,26 @@ marmoset = {};
             var d = 255 * Math.random();
             a[c] = 0.5 * (b + d)
         }
-        this.noiseTexture = new Texture(this.gl,{
+        this.noiseTexture = new Texture(this.gl, {
             width: 128,
             height: 128
         });
         this.noiseTexture.loadArray(a, this.gl.LUMINANCE);
         this.desc.colorLUT && (a = this.desc.colorLUT,
-        this.colorLUT = new Texture(this.gl,{
-            width: a.length / 3 | 0,
-            height: 1,
-            clamp: !0
-        }),
-        this.colorLUT.loadArray(new Uint8Array(a), this.gl.RGB));
-        this.blackTexture = new Texture(this.gl,{
+            this.colorLUT = new Texture(this.gl, {
+                width: a.length / 3 | 0,
+                height: 1,
+                clamp: !0
+            }),
+            this.colorLUT.loadArray(new Uint8Array(a), this.gl.RGB));
+        this.blackTexture = new Texture(this.gl, {
             width: 1,
             height: 1
         });
         this.blackTexture.loadArray(new Uint8Array([0, 0, 0, 0]));
         this.bloomResult = this.blackTexture
     }
-    PostRender.prototype.prepareBloom = function(a) {
+    PostRender.prototype.prepareBloom = function (a) {
         if (this.useBloom && this.bloomShader.complete() && this.shrinkShader.complete()) {
             this.shrinkShader.bind();
             this.bloomTargets[1].bind();
@@ -3486,19 +3486,19 @@ marmoset = {};
             this.bloomTextures[0].bind(this.bloomShader.samplers.tInput);
             for (d = 0; d < this.bloomSamples; ++d)
                 c = b[4 * d + 0],
-                c *= a.desc.width / a.desc.height,
-                b[4 * d + 0] = 0,
-                b[4 * d + 1] = c;
+                    c *= a.desc.width / a.desc.height,
+                    b[4 * d + 0] = 0,
+                    b[4 * d + 1] = c;
             this.gl.uniform4fv(this.bloomShader.params.uKernel, b);
             this.fillScreen(this.bloomShader.attribs.vCoord);
             this.bloomResult = this.bloomTextures[1]
         } else
             this.bloomResult = this.blackTexture
     }
-    ;
-    PostRender.prototype.computeParams = function(a, b) {
+        ;
+    PostRender.prototype.computeParams = function (a, b) {
         var c = this.desc
-          , d = {};
+            , d = {};
         d.scale = [c.contrast[0] * c.contrast[3], c.contrast[1] * c.contrast[3], c.contrast[2] * c.contrast[3]];
         d.bias = [c.bias[0] * c.bias[3], c.bias[1] * c.bias[3], c.bias[2] * c.bias[3]];
         d.bias = [-d.bias[0] * d.scale[0] + d.bias[0], -d.bias[1] * d.scale[1] + d.bias[1], -d.bias[2] * d.scale[2] + d.bias[2]];
@@ -3513,22 +3513,22 @@ marmoset = {};
         d.vignetteAspect = [a / e, b / e, 0.5 * a / e, 0.5 * b / e];
         d.vignette = [2 * (1 - c.vignette[0]) * c.vignette[3], 2 * (1 - c.vignette[1]) * c.vignette[3], 2 * (1 - c.vignette[2]) * c.vignette[3], c.vignetteCurve];
         var e = 1 / this.noiseTexture.desc.width
-          , f = 1 / this.noiseTexture.desc.height
-          , g = 1 - c.grainSharpness;
+            , f = 1 / this.noiseTexture.desc.height
+            , g = 1 - c.grainSharpness;
         d.grainCoord = [e * a, f * b, 0.5 * g * e, 0.5 * g * f];
         d.grainScaleBias = [2 * c.grain, -c.grain];
         return d
     }
-    ;
-    PostRender.prototype.present = function(a, b, c, d) {
+        ;
+    PostRender.prototype.present = function (a, b, c, d) {
         d || this.prepareBloom(a);
         1 < this.sampleCount && this.allocAABuffer(b, c);
         d = d ? this.plainShader : this.shader;
         if (d.bind()) {
             var e = this.gl
-              , f = d.samplers
-              , g = d.params
-              , h = this.computeParams(b, c);
+                , f = d.samplers
+                , g = d.params
+                , h = this.computeParams(b, c);
             a.bind(f.tInput);
             this.bloomResult.bind(f.tBloom);
             this.noiseTexture.bind(f.tGrain);
@@ -3547,55 +3547,55 @@ marmoset = {};
                 var k = 1 / (1 + this.sampleIndex);
                 this.sampleIndex += 1;
                 1 > k && (e.enable(e.BLEND),
-                e.blendColor(k, k, k, k),
-                e.blendFunc(e.CONSTANT_ALPHA, e.ONE_MINUS_CONSTANT_ALPHA));
+                    e.blendColor(k, k, k, k),
+                    e.blendFunc(e.CONSTANT_ALPHA, e.ONE_MINUS_CONSTANT_ALPHA));
                 this.aaTarget.bind()
             } else
                 Framebuffer.bindNone(e),
-                1 < this.sampleCount && (this.sampleIndex += 1);
+                    1 < this.sampleCount && (this.sampleIndex += 1);
             e.viewport(0, 0, b, c);
             this.fillScreen(d.attribs.vCoord);
             a && (1 > k && e.disable(e.BLEND),
-            Framebuffer.bindNone(e),
-            this.aaShader.bind(),
-            this.aaBuffer.bind(this.aaShader.samplers.tInput),
-            this.fillScreen(this.aaShader.attribs.vCoord))
+                Framebuffer.bindNone(e),
+                this.aaShader.bind(),
+                this.aaBuffer.bind(this.aaShader.samplers.tInput),
+                this.fillScreen(this.aaShader.attribs.vCoord))
         }
     }
-    ;
-    PostRender.prototype.allocAABuffer = function(a, b) {
+        ;
+    PostRender.prototype.allocAABuffer = function (a, b) {
         this.aaBuffer && this.aaBuffer.desc.width == a && this.aaBuffer.desc.height == b || (this.aaBuffer && this.aaBuffer.destroy(),
-        this.aaBuffer = new Texture(this.gl,{
-            width: a,
-            height: b,
-            clamp: !0
-        }),
-        this.aaBuffer.loadArray(),
-        this.aaTarget = new Framebuffer(this.gl,{
-            color0: this.aaBuffer,
-            ignoreStatus: !0
-        }))
+            this.aaBuffer = new Texture(this.gl, {
+                width: a,
+                height: b,
+                clamp: !0
+            }),
+            this.aaBuffer.loadArray(),
+            this.aaTarget = new Framebuffer(this.gl, {
+                color0: this.aaBuffer,
+                ignoreStatus: !0
+            }))
     }
-    ;
-    PostRender.prototype.adjustProjectionForSupersampling = function(a) {
+        ;
+    PostRender.prototype.adjustProjectionForSupersampling = function (a) {
         if (1 < this.sampleCount) {
             var b = this.currentSample()
-              , c = this.sampleOffsets[b][0] / a.size[0]
-              , b = this.sampleOffsets[b][1] / a.size[1]
-              , c = Matrix.translation(Matrix.empty(), c, b, 0);
+                , c = this.sampleOffsets[b][0] / a.size[0]
+                , b = this.sampleOffsets[b][1] / a.size[1]
+                , c = Matrix.translation(Matrix.empty(), c, b, 0);
             Matrix.mul(a.projectionMatrix, c, a.projectionMatrix)
         }
     }
-    ;
-    PostRender.prototype.discardAAHistory = function() {
+        ;
+    PostRender.prototype.discardAAHistory = function () {
         this.sampleIndex = -1
     }
-    ;
-    PostRender.prototype.currentSample = function() {
+        ;
+    PostRender.prototype.currentSample = function () {
         return (0 > this.sampleIndex ? 0 : this.sampleIndex) % this.sampleCount
     }
-    ;
-    PostRender.prototype.fillScreen = function(a) {
+        ;
+    PostRender.prototype.fillScreen = function (a) {
         var b = this.gl;
         b.bindBuffer(b.ARRAY_BUFFER, this.fullscreenTriangle);
         b.enableVertexAttribArray(a);
@@ -3604,13 +3604,13 @@ marmoset = {};
         b.disableVertexAttribArray(a);
         b.bindBuffer(b.ARRAY_BUFFER, null)
     }
-    ;
-    PostRender.prototype.blitTexture = function(a) {
+        ;
+    PostRender.prototype.blitTexture = function (a) {
         this.aaShader.bind();
         a.bind(this.aaShader.samplers.tInput);
         this.fillScreen(this.aaShader.attribs.vCoord)
     }
-    ;
+        ;
     function Scene(a) {
         this.gl = a;
         this.name = "untitled";
@@ -3628,7 +3628,7 @@ marmoset = {};
         this.sceneLoaded = !1;
         this.debugString = ""
     }
-    Scene.prototype.load = function(a) {
+    Scene.prototype.load = function (a) {
         var b = this.gl, c, d = a.extract("scene.json");
         if (void 0 !== d) {
             if (!a.checkSignature(d))
@@ -3640,58 +3640,58 @@ marmoset = {};
                 c = JSON.parse(d)
             } catch (e) {
                 return console.error(e),
-                !1
+                    !1
             }
         } else
             return !1;
         this.metaData = c.metaData;
         this.view = new View(c.mainCamera.view);
-        this.sky = new Sky(this.gl,a,c.sky);
-        this.lights = new Lights(c.lights,this.view);
+        this.sky = new Sky(this.gl, a, c.sky);
+        this.lights = new Lights(c.lights, this.view);
         this.materialsList = [];
         this.materials = {};
         for (var f in c.materials) {
             var g = c.materials[f];
             g.lightCount = this.lights.count;
             g.shadowCount = this.lights.shadowCount;
-            d = new Material(this.gl,a,g);
+            d = new Material(this.gl, a, g);
             this.materials[g.name] = d;
             this.materialsList.push(d)
         }
         if (c.meshes)
             for (g = 0; g < c.meshes.length; ++g) {
                 f = c.meshes[g];
-                f = new Mesh(this.gl,f,a.extract(f.file));
+                f = new Mesh(this.gl, f, a.extract(f.file));
                 this.meshes.push(f);
                 for (var h = 0; h < f.desc.subMeshes.length; ++h) {
                     var k = f.desc.subMeshes[h];
                     if (d = this.materials[k.material])
-                        f.numSubMeshes++,
-                        this.meshRenderables.push(new MeshRenderable(f,k,d))
+                        f.numSubMeshes++ ,
+                            this.meshRenderables.push(new MeshRenderable(f, k, d))
                 }
             }
         this.bounds = new Bounds(this.meshes);
-        this.postRender = new PostRender(this.gl,c.mainCamera.post,!0);
-        this.shadow = new ShadowCollector(b,this.lights.shadowCount);
+        this.postRender = new PostRender(this.gl, c.mainCamera.post, !0);
+        this.shadow = new ShadowCollector(b, this.lights.shadowCount);
         this.cameras = c.Cameras;
-        c.AnimData && (this.sceneAnimator = new SceneAnimator(this,a,c.AnimData));
-        c.fog && (this.fog = new Fog(b,c.fog));
-        c.shadowFloor && (this.shadowFloor = new ShadowFloor(b,c.shadowFloor,this.shadow,this.lights));
+        c.AnimData && (this.sceneAnimator = new SceneAnimator(this, a, c.AnimData));
+        c.fog && (this.fog = new Fog(b, c.fog));
+        c.shadowFloor && (this.shadowFloor = new ShadowFloor(b, c.shadowFloor, this.shadow, this.lights));
         return this.sceneLoaded = !0
     }
-    ;
-    Scene.prototype.update = function() {
-        this.sceneAnimator && (this.frameCounter++,
-        this.lights.flagUpdateAnimatedLighting(),
-        this.sceneAnimator.drawAnimated && (1 == this.frameCounter ? this.sceneAnimator.resetPlayback() : this.sceneAnimator.updateAnimationPlayback()));
+        ;
+    Scene.prototype.update = function () {
+        this.sceneAnimator && (this.frameCounter++ ,
+            this.lights.flagUpdateAnimatedLighting(),
+            this.sceneAnimator.drawAnimated && (1 == this.frameCounter ? this.sceneAnimator.resetPlayback() : this.sceneAnimator.updateAnimationPlayback()));
         this.lights.update(this.view, this.bounds)
     }
-    ;
-    Scene.prototype.collectShadows = function(a) {
+        ;
+    Scene.prototype.collectShadows = function (a) {
         this.shadow.collect(this, a)
     }
-    ;
-    Scene.prototype.draw = function(a) {
+        ;
+    Scene.prototype.draw = function (a) {
         var b = this.gl;
         if (this.sceneLoaded) {
             this.sky.setClearColor();
@@ -3721,15 +3721,15 @@ marmoset = {};
                     break
                 }
             if (d)
-                for (this.refractionSurface && this.refractionSurface.desc.width == a.color0.desc.width && this.refractionSurface.desc.height == a.color0.desc.height || (this.refractionSurface = new Texture(b,a.color0.desc),
-                this.refractionSurface.loadArray(null, a.color0.format, a.color0.componentType),
-                this.refractionBuffer = new Framebuffer(this.gl,{
-                    color0: this.refractionSurface
-                })),
-                this.refractionBuffer.bind(),
-                this.postRender.blitTexture(a.color0),
-                a.bind(),
-                c = 0; c < this.meshRenderables.length; ++c)
+                for (this.refractionSurface && this.refractionSurface.desc.width == a.color0.desc.width && this.refractionSurface.desc.height == a.color0.desc.height || (this.refractionSurface = new Texture(b, a.color0.desc),
+                    this.refractionSurface.loadArray(null, a.color0.format, a.color0.componentType),
+                    this.refractionBuffer = new Framebuffer(this.gl, {
+                        color0: this.refractionSurface
+                    })),
+                    this.refractionBuffer.bind(),
+                    this.postRender.blitTexture(a.color0),
+                    a.bind(),
+                    c = 0; c < this.meshRenderables.length; ++c)
                     this.meshRenderables[c].material.usesRefraction && this.meshRenderables[c].visible && this.meshRenderables[c].draw(this);
             if (this.stripData.activeWireframe() && 0 < this.meshRenderables.length) {
                 for (c = 0; c < this.meshRenderables.length; ++c)
@@ -3739,12 +3739,12 @@ marmoset = {};
             b.disable(b.BLEND)
         }
     }
-    ;
-    Scene.prototype.drawSecondary = function(a) {
+        ;
+    Scene.prototype.drawSecondary = function (a) {
         this.fog && this.fog.draw(this, a)
     }
-    ;
-    Scene.prototype.complete = function() {
+        ;
+    Scene.prototype.complete = function () {
         if (!this.sky.complete() || !this.shadow.complete() || this.fog && !this.fog.complete() || this.shadowFloor && !this.shadowFloor.complete())
             return !1;
         for (var a = 0; a < this.meshRenderables.length; ++a)
@@ -3752,7 +3752,7 @@ marmoset = {};
                 return !1;
         return !0
     }
-    ;
+        ;
     function SceneAnimator(a, b, c) {
         this.scene = a;
         this.animations = [];
@@ -3786,7 +3786,7 @@ marmoset = {};
         this.autoPlayAnims = c.autoPlayAnims;
         this.showPlayControls = c.showPlayControls;
         c.scenePlaybackSpeed && (this.scenePlaybackSpeed = c.scenePlaybackSpeed,
-        0 == this.scenePlaybackSpeed && (this.scenePlaybackSpeed = 1));
+            0 == this.scenePlaybackSpeed && (this.scenePlaybackSpeed = 1));
         this.autoPlayAnims || (this.paused = !0);
         if (this.loadAnimations) {
             if (c.meshIDs)
@@ -3796,90 +3796,90 @@ marmoset = {};
                 }
             if (c.lightIDs)
                 for (d = c.lightIDs.length,
-                e = 0; e < d; ++e)
+                    e = 0; e < d; ++e)
                     f = c.lightIDs[e],
-                    f = f.partIndex,
-                    this.lightIDs.push(f);
+                        f = f.partIndex,
+                        this.lightIDs.push(f);
             if (c.materialIDs)
                 for (d = c.materialIDs.length,
-                e = 0; e < d; ++e)
+                    e = 0; e < d; ++e)
                     f = c.materialIDs[e],
-                    f = f.partIndex,
-                    this.materialIDs.push(f);
+                        f = f.partIndex,
+                        this.materialIDs.push(f);
             this.numMatricesInTable = c.numMatrices;
             e = b.get("MatTable.bin");
             f = new ByteStream(e.data);
             e || (this.numMatricesInTable = 0,
-            this.debugString += "<br>No mattable?");
+                this.debugString += "<br>No mattable?");
             if (c.skinningRigs && this.loadSkinningRigs)
                 for (d = c.skinningRigs.length,
-                e = 0; e < d; ++e) {
-                    var g = new SkinningRig(b,c.skinningRigs[e],f);
+                    e = 0; e < d; ++e) {
+                    var g = new SkinningRig(b, c.skinningRigs[e], f);
                     "" == g.debugString ? this.skinningRigs.push(g) : (this.debugString += "<br>Error loading skinning rig " + e + " :" + g.debugString,
-                    this.debugString += "<br>Skipping the rest",
-                    e = d)
+                        this.debugString += "<br>Skipping the rest",
+                        e = d)
                 }
             if (c.animations)
                 for (f = c.animations.length,
-                e = 0; e < f; ++e)
-                    d = new Animation(b,c.animations[e]),
-                    this.animations.push(d);
+                    e = 0; e < f; ++e)
+                    d = new Animation(b, c.animations[e]),
+                        this.animations.push(d);
             this.startMS = Date.now();
             f = this.animations.length;
             if (this.linkSceneObjects && 0 != f) {
                 for (e = 0; e < f; e++)
                     for (b = this.animations[e],
-                    d = b.animatedObjects.length,
-                    c = 0; c < d; c++)
+                        d = b.animatedObjects.length,
+                        c = 0; c < d; c++)
                         g = b.animatedObjects[c],
-                        "LightSO" == g.sceneObjectType && (g.lightIndex = this.findLightIndexByPartIndex(c),
-                        -1 != g.lightIndex ? b.lightObjects.push(g) : this.debugString += "<br> got light not in scene " + g.name),
-                        "FogSO" == g.sceneObjectType && (this.fogObjectIndex = c),
-                        "SubMeshSO" == g.sceneObjectType && 0 == e && (this.subMeshObjectIndices.push(c),
-                        this.subMeshLiveIndices.push(-1)),
-                        "Material" == g.sceneObjectType && (g.materialIndex = this.findMaterialIndexByPartIndex(c),
-                        -1 == g.materialIndex ? this.debugString += "<br> can't find material index for object " + c : b.materialObjects.push(g)),
-                        "TurnTableSO" == g.sceneObjectType && b.turnTableObjects.push(g),
-                        "MeshSO" == g.sceneObjectType && (g.meshIndex = this.findMeshIndexByPartIndex(this.scene.meshes, c),
-                        -1 == g.meshIndex ? (this.debugString += "<br> can't find mesh index for object " + c,
-                        this.logObjectInfo(c, 0)) : (b.meshObjects.push(g),
-                        g.mesh = this.scene.meshes[g.meshIndex],
-                        -1 != g.skinningRigIndex && g.mesh && g.skinningRigIndex < this.skinningRigs.length && (g.skinningRig = this.skinningRigs[g.skinningRigIndex],
-                        g.skinningRig.isRigidSkin || (g.mesh.dynamicVertexData ? g.skinningRig.useOriginalMeshVertices(g.mesh) : (this.debugString += "Skinning object - but mesh is not dynamic",
-                        this.debugString += "<br>Rig index " + g.skinningRigIndex,
-                        this.debugString += " not tagged as rigid"))))),
-                        "CameraSO" == g.sceneObjectType && b.cameraObjects.push(g);
+                            "LightSO" == g.sceneObjectType && (g.lightIndex = this.findLightIndexByPartIndex(c),
+                                -1 != g.lightIndex ? b.lightObjects.push(g) : this.debugString += "<br> got light not in scene " + g.name),
+                            "FogSO" == g.sceneObjectType && (this.fogObjectIndex = c),
+                            "SubMeshSO" == g.sceneObjectType && 0 == e && (this.subMeshObjectIndices.push(c),
+                                this.subMeshLiveIndices.push(-1)),
+                            "Material" == g.sceneObjectType && (g.materialIndex = this.findMaterialIndexByPartIndex(c),
+                                -1 == g.materialIndex ? this.debugString += "<br> can't find material index for object " + c : b.materialObjects.push(g)),
+                            "TurnTableSO" == g.sceneObjectType && b.turnTableObjects.push(g),
+                            "MeshSO" == g.sceneObjectType && (g.meshIndex = this.findMeshIndexByPartIndex(this.scene.meshes, c),
+                                -1 == g.meshIndex ? (this.debugString += "<br> can't find mesh index for object " + c,
+                                    this.logObjectInfo(c, 0)) : (b.meshObjects.push(g),
+                                        g.mesh = this.scene.meshes[g.meshIndex],
+                                        -1 != g.skinningRigIndex && g.mesh && g.skinningRigIndex < this.skinningRigs.length && (g.skinningRig = this.skinningRigs[g.skinningRigIndex],
+                                            g.skinningRig.isRigidSkin || (g.mesh.dynamicVertexData ? g.skinningRig.useOriginalMeshVertices(g.mesh) : (this.debugString += "Skinning object - but mesh is not dynamic",
+                                                this.debugString += "<br>Rig index " + g.skinningRigIndex,
+                                                this.debugString += " not tagged as rigid"))))),
+                            "CameraSO" == g.sceneObjectType && b.cameraObjects.push(g);
                 b = this.animations[0];
                 c = b.cameraObjects.length;
                 for (e = 0; e < c; e++)
                     if (f = b.cameraObjects[e],
-                    d = this.scene.cameras[f.name]) {
+                        d = this.scene.cameras[f.name]) {
                         if (d = d.view)
                             d = new View(d),
-                            this.cameraObjectIndices.push(f.id),
-                            this.views.push(d),
-                            this.viewYawOffsets.push(0),
-                            this.viewPitchOffsets.push(0)
+                                this.cameraObjectIndices.push(f.id),
+                                this.views.push(d),
+                                this.viewYawOffsets.push(0),
+                                this.viewPitchOffsets.push(0)
                     } else
                         this.debugString += "<br>no camDesc for " + f.name,
-                        this.views.push(a.view);
+                            this.views.push(a.view);
                 a = this.scene.meshes.length;
                 f = this.subMeshObjectIndices.length;
                 for (e = d = 0; e < a; e++)
                     for (g = this.scene.meshes[e],
-                    c = 0; c < f; c++) {
+                        c = 0; c < f; c++) {
                         var h = this.subMeshObjectIndices[c]
-                          , k = b.animatedObjects[h]
-                          , l = b.animatedObjects[k.parentIndex];
+                            , k = b.animatedObjects[h]
+                            , l = b.animatedObjects[k.parentIndex];
                         l.mesh || (this.debugString += "<br>submesh parent object has no mesh?",
-                        this.debugString += "<br>obj.name " + k.name,
-                        this.debugString += "<br>parent.name " + l.name,
-                        this.debugString += "<br>submesh index " + c,
-                        this.debugString += "<br>obj.index " + h);
+                            this.debugString += "<br>obj.name " + k.name,
+                            this.debugString += "<br>parent.name " + l.name,
+                            this.debugString += "<br>submesh index " + c,
+                            this.debugString += "<br>obj.index " + h);
                         if (l.mesh == g) {
                             for (h = 0; h < g.numSubMeshes; h++)
                                 this.subMeshLiveIndices[c + (g.numSubMeshes - 1 - h)] = d,
-                                d++;
+                                    d++;
                             c = f
                         }
                     }
@@ -3890,15 +3890,15 @@ marmoset = {};
                 this.findCameraChildren();
                 this.findFixedTransforms();
                 this.runDebugMode && (this.setAnimationProgress(0, !0),
-                "" != this.debugString ? this.stopEverything = !0 : this.checkDebug())
+                    "" != this.debugString ? this.stopEverything = !0 : this.checkDebug())
             }
         } else
             this.debugString += "<br>Skip loading animation data"
     }
-    SceneAnimator.prototype.logTimes = function() {
+    SceneAnimator.prototype.logTimes = function () {
         this.debugString += "<br>Times";
         var a = this.animations[0]
-          , b = a.animatedObjects.length;
+            , b = a.animatedObjects.length;
         this.debugString += "<br>Animation totalSeconds " + a.totalSeconds;
         this.debugString += "<br>Animation totalFrames " + a.totalFrames;
         this.debugString += "<br>Animation totalObjects " + b;
@@ -3910,50 +3910,50 @@ marmoset = {};
             this.debugString += " Frames: " + d.totalFrames
         }
     }
-    ;
-    SceneAnimator.prototype.flagAllForDebugging = function() {
+        ;
+    SceneAnimator.prototype.flagAllForDebugging = function () {
         for (var a = this.animations.length, b = 0; b < a; b++)
             for (var c = this.animations[b], d = c.animatedObjects.length, e = 0; e < d; e++)
                 c.animatedObjects[e].debugMe = !0
     }
-    ;
-    SceneAnimator.prototype.checkDebug = function() {
+        ;
+    SceneAnimator.prototype.checkDebug = function () {
         this.debugString = "<br>--------------------------------------Debug Info:";
         this.debugString += "<br>this.selectedAnimationIndex :" + this.selectedAnimationIndex;
         var a = this.animations[this.selectedAnimationIndex]
-          , b = a.animatedObjects.length;
+            , b = a.animatedObjects.length;
         this.debugString += "<br>numAnimatedObjects :" + b;
         "" != a.debugString && (this.debugString += "<br>--------------------------------------------------Got animation bug info:",
-        this.debugString += a.debugString,
-        this.showDebugInfo = this.stopEverything = !0,
-        a.debugString = "");
+            this.debugString += a.debugString,
+            this.showDebugInfo = this.stopEverything = !0,
+            a.debugString = "");
         for (var c = 0; c < b; c++) {
             var d = a.animatedObjects[c];
             if ("" != d.debugString || "" != d.animatedLocalTransform.debugString)
                 this.debugString += "<br>--------------------------------------------------Got object bug info:",
-                this.debugString += d.debugString,
-                this.debugString += d.animatedLocalTransform.debugString,
-                this.showDebugInfo = this.stopEverything = !0,
-                d.debugString = "",
-                d.animatedLocalTransform.debugString = "";
+                    this.debugString += d.debugString,
+                    this.debugString += d.animatedLocalTransform.debugString,
+                    this.showDebugInfo = this.stopEverything = !0,
+                    d.debugString = "",
+                    d.animatedLocalTransform.debugString = "";
             d.skinningRig && "" != d.skinningRig.debugString && (this.debugString += "<br>--------------------------------------------------Got skin rig info:",
-            this.debugString += d.skinningRig.debugString,
-            d.skinningRig.debugString = "",
-            this.showDebugInfo = this.stopEverything = !0)
+                this.debugString += d.skinningRig.debugString,
+                d.skinningRig.debugString = "",
+                this.showDebugInfo = this.stopEverything = !0)
         }
         this.debugString += "<br>--------------------------------------Done Debug Info:"
     }
-    ;
-    SceneAnimator.prototype.logObjectInfo = function(a, b) {
+        ;
+    SceneAnimator.prototype.logObjectInfo = function (a, b) {
         var c = this.animations[this.selectedAnimationIndex]
-          , d = b * c.originalFPS;
+            , d = b * c.originalFPS;
         if (a >= c.animatedObjects.length)
             this.debugString += "object index " + a + " exceeds " + c.animatedObjects.length;
         else {
             var e = c.animatedObjects[a]
-              , f = c.animatedObjects[e.modelPartIndex]
-              , g = c.getObjectAnimationFramePercent(e, b)
-              , h = c.getObjectAnimationFramePercent(f, b);
+                , f = c.animatedObjects[e.modelPartIndex]
+                , g = c.getObjectAnimationFramePercent(e, b)
+                , h = c.getObjectAnimationFramePercent(f, b);
             this.debugString = "";
             this.debugString += "<br>Object Name: " + e.name;
             this.debugString += "<br>Object Type: " + e.sceneObjectType;
@@ -3978,32 +3978,32 @@ marmoset = {};
             c.getWorldTransform(e.id, b, d, this.sceneScale, !0);
             this.debugString += e.debugString;
             var c = d[0]
-              , e = d[1]
-              , f = d[2]
-              , g = d[4]
-              , h = d[5]
-              , k = d[6]
-              , l = d[8]
-              , n = d[9]
-              , d = d[10];
+                , e = d[1]
+                , f = d[2]
+                , g = d[4]
+                , h = d[5]
+                , k = d[6]
+                , l = d[8]
+                , n = d[9]
+                , d = d[10];
             Math.sqrt(c * c + e * e + f * f);
             Math.sqrt(g * g + h * h + k * k);
             Math.sqrt(l * l + n * n + d * d)
         }
     }
-    ;
-    SceneAnimator.prototype.resetPlayback = function() {
+        ;
+    SceneAnimator.prototype.resetPlayback = function () {
         this.startMS = Date.now();
         this.animationProgress = this.totalSeconds = 0;
         this.setAnimationProgress(0, !0)
     }
-    ;
-    SceneAnimator.prototype.pause = function(a) {
+        ;
+    SceneAnimator.prototype.pause = function (a) {
         this.paused = a;
         this.startMS = Date.now() - 1E3 * this.totalSeconds / (this.playbackSpeed * this.scenePlaybackSpeed)
     }
-    ;
-    SceneAnimator.prototype.setAnimationProgress = function(a, b) {
+        ;
+    SceneAnimator.prototype.setAnimationProgress = function (a, b) {
         var c = this.animations[this.selectedAnimationIndex];
         this.animationProgress = a;
         this.totalSeconds = c.totalSeconds * this.animationProgress;
@@ -4012,36 +4012,36 @@ marmoset = {};
         this.startMS = Date.now() - 1E3 * this.totalSeconds / (this.playbackSpeed * this.scenePlaybackSpeed);
         b && this.updateScene()
     }
-    ;
-    SceneAnimator.prototype.setPlaybackSpeed = function(a) {
+        ;
+    SceneAnimator.prototype.setPlaybackSpeed = function (a) {
         this.playbackSpeed = a;
         this.startMS = Date.now() - 1E3 * this.totalSeconds / (this.playbackSpeed * this.scenePlaybackSpeed)
     }
-    ;
-    SceneAnimator.prototype.resetCustomView = function() {
+        ;
+    SceneAnimator.prototype.resetCustomView = function () {
         0 <= this.selectedCameraIndex && this.selectedCameraIndex < this.views.length && (this.viewYawOffsets[this.selectedCameraIndex] = 0,
-        this.viewPitchOffsets[this.selectedCameraIndex] = 0,
-        this.scene.view.rotation[1] = this.views[this.selectedCameraIndex].rotation[1],
-        this.scene.view.rotation[0] = this.views[this.selectedCameraIndex].rotation[0],
-        this.setViewFromSelectedCamera())
+            this.viewPitchOffsets[this.selectedCameraIndex] = 0,
+            this.scene.view.rotation[1] = this.views[this.selectedCameraIndex].rotation[1],
+            this.scene.view.rotation[0] = this.views[this.selectedCameraIndex].rotation[0],
+            this.setViewFromSelectedCamera())
     }
-    ;
-    SceneAnimator.prototype.updateUserCamera = function() {
+        ;
+    SceneAnimator.prototype.updateUserCamera = function () {
         this.clearCacheForCameraChildren();
         if (0 <= this.selectedCameraIndex && this.selectedCameraIndex < this.views.length && this.selectedAnimationIndex < this.animations.length) {
             var a = this.cameraObjectIndices[this.selectedCameraIndex]
-              , b = this.animations[this.selectedAnimationIndex];
+                , b = this.animations[this.selectedAnimationIndex];
             if (a < b.animatedObjects.length) {
                 var c = this.views[this.selectedCameraIndex]
-                  , d = this.scene.view.rotation[1]
-                  , e = this.scene.view.rotation[0]
-                  , f = e - c.rotation[0];
+                    , d = this.scene.view.rotation[1]
+                    , e = this.scene.view.rotation[0]
+                    , f = e - c.rotation[0];
                 this.viewYawOffsets[this.selectedCameraIndex] = d - c.rotation[1];
                 this.viewPitchOffsets[this.selectedCameraIndex] = f;
                 c = b.animatedObjects[a];
                 b.getObjectAnimationFramePercent(c, this.totalSeconds);
                 var f = Matrix.identity()
-                  , g = Matrix.identity();
+                    , g = Matrix.identity();
                 c.useFixedWorldTransform = !1;
                 c.useFixedLocalTransform = !1;
                 c.animatedLocalTransform.lockTransform = !1;
@@ -4056,20 +4056,20 @@ marmoset = {};
                 c.cachedFrameUse3 = 0;
                 b.getWorldTransform(a, this.totalSeconds, g, this.sceneScale, !1);
                 var a = g[0]
-                  , h = g[1]
-                  , k = g[2]
-                  , l = g[4]
-                  , n = g[5]
-                  , m = g[6]
-                  , p = g[8]
-                  , r = g[9]
-                  , s = g[10]
-                  , a = Math.sqrt(a * a + h * h + k * k)
-                  , l = Math.sqrt(l * l + n * n + m * m)
-                  , n = Math.sqrt(p * p + r * r + s * s)
-                  , m = -(this.scene.view.pivot[0] - g[12])
-                  , h = -(this.scene.view.pivot[1] - g[13])
-                  , g = -(this.scene.view.pivot[2] - g[14]);
+                    , h = g[1]
+                    , k = g[2]
+                    , l = g[4]
+                    , n = g[5]
+                    , m = g[6]
+                    , p = g[8]
+                    , r = g[9]
+                    , s = g[10]
+                    , a = Math.sqrt(a * a + h * h + k * k)
+                    , l = Math.sqrt(l * l + n * n + m * m)
+                    , n = Math.sqrt(p * p + r * r + s * s)
+                    , m = -(this.scene.view.pivot[0] - g[12])
+                    , h = -(this.scene.view.pivot[1] - g[13])
+                    , g = -(this.scene.view.pivot[2] - g[14]);
                 0 >= m * p + h * r + g * s && (d += 180);
                 d = Matrix.rotation(Matrix.empty(), d, 1);
                 e = Matrix.rotation(Matrix.empty(), e, 0);
@@ -4103,13 +4103,13 @@ marmoset = {};
             }
         }
     }
-    ;
-    SceneAnimator.prototype.setViewFromSelectedCamera = function() {
+        ;
+    SceneAnimator.prototype.setViewFromSelectedCamera = function () {
         if (0 <= this.selectedCameraIndex && this.selectedCameraIndex < this.views.length) {
             var a = this.views[this.selectedCameraIndex]
-              , b = this.scene.view
-              , c = this.viewYawOffsets[this.selectedCameraIndex]
-              , d = this.viewPitchOffsets[this.selectedCameraIndex];
+                , b = this.scene.view
+                , c = this.viewYawOffsets[this.selectedCameraIndex]
+                , d = this.viewPitchOffsets[this.selectedCameraIndex];
             b.pivot[0] = a.pivot[0];
             b.pivot[1] = a.pivot[1];
             b.pivot[2] = a.pivot[2];
@@ -4124,8 +4124,8 @@ marmoset = {};
             b.updateView()
         }
     }
-    ;
-    SceneAnimator.prototype.selectDefaultCamera = function() {
+        ;
+    SceneAnimator.prototype.selectDefaultCamera = function () {
         if (-1 != this.defaultCameraGlobalIndex && 0 < this.animations.length)
             for (var a = this.animations[0], b = a.cameraObjects.length, c = 0; c < b; c++)
                 if (a.cameraObjects[c].id == this.defaultCameraGlobalIndex) {
@@ -4134,30 +4134,30 @@ marmoset = {};
                 }
         this.selectedCameraIndex = 0
     }
-    ;
-    SceneAnimator.prototype.updateAnimationPlayback = function() {
+        ;
+    SceneAnimator.prototype.updateAnimationPlayback = function () {
         if (!this.stopEverything || !this.runDebugMode) {
             var a = this.animations[this.selectedAnimationIndex];
             this.updateUserCamera();
             if (this.paused || !this.playAnimations)
                 this.startMS = 0 < this.playbackSpeed ? Date.now() - 1E3 * this.totalSeconds / (this.playbackSpeed * this.scenePlaybackSpeed) : Date.now() - 1E3 * this.totalSeconds,
-                this.refreshTransformsOnly(),
-                this.runDebugMode && this.checkDebug(),
-                a = this.scene.view,
-                a.saveResetView(),
-                a.updateProjection(),
-                a.updateView();
+                    this.refreshTransformsOnly(),
+                    this.runDebugMode && this.checkDebug(),
+                    a = this.scene.view,
+                    a.saveResetView(),
+                    a.updateProjection(),
+                    a.updateView();
             else {
                 this.lockPlayback && 0 < this.playbackSpeed && (this.startMS = Date.now() - 1E3 * this.totalSeconds / (this.playbackSpeed * this.scenePlaybackSpeed));
                 var b = (Date.now() - this.startMS) / 1E3 * this.playbackSpeed * this.scenePlaybackSpeed;
                 this.totalSeconds = (Date.now() - this.startMS) / 1E3 * this.playbackSpeed * this.scenePlaybackSpeed;
                 var c = b / a.totalSeconds
-                  , b = Math.floor(c)
-                  , c = c - b;
-                b != this.loopCount && (this.loopCount++,
-                this.loopTurntables && this.rolloverTurntables(),
-                this.autoAdvanceNextAnimation && (this.nextAnimation(),
-                this.resetPlayback()));
+                    , b = Math.floor(c)
+                    , c = c - b;
+                b != this.loopCount && (this.loopCount++ ,
+                    this.loopTurntables && this.rolloverTurntables(),
+                    this.autoAdvanceNextAnimation && (this.nextAnimation(),
+                        this.resetPlayback()));
                 this.totalSeconds = a.totalSeconds * c;
                 this.animationProgress = this.totalSeconds / a.totalSeconds - Math.floor(this.totalSeconds / a.totalSeconds);
                 this.updateScene();
@@ -4165,8 +4165,8 @@ marmoset = {};
             }
         }
     }
-    ;
-    SceneAnimator.prototype.updateScene = function() {
+        ;
+    SceneAnimator.prototype.updateScene = function () {
         this.lastSceneFramePercent = this.totalSeconds * this.animations[this.selectedAnimationIndex].originalFPS;
         0 != this.fogObjectIndex && this.updateFog();
         this.animateTurntables && this.updateTurntables();
@@ -4175,33 +4175,33 @@ marmoset = {};
         this.animateMaterials && this.updateMaterials();
         this.animateVisibility && this.updateVisibility()
     }
-    ;
-    SceneAnimator.prototype.findCameraChildren = function() {
+        ;
+    SceneAnimator.prototype.findCameraChildren = function () {
         for (var a = this.animations[0], b = a.animatedObjects.length, c = 0; c < b; c++)
             a.hasParentTypeInHierarchy(a.animatedObjects[c], "CameraSO") && this.cameraChildrenIndices.push(c)
     }
-    ;
-    SceneAnimator.prototype.findFixedTransforms = function() {
+        ;
+    SceneAnimator.prototype.findFixedTransforms = function () {
         for (var a = this.animations.length, b = 0; b < a; b++)
             for (var c = this.animations[b], d = c.animatedObjects.length, e = 0; e < d; e++) {
                 var f = c.animatedObjects[e];
                 if (!f.useFixedWorldTransform && !c.hasAnimationInHierarchy(f))
                     if ("Material" == f.sceneObjectType)
                         f.setFixedWorldTransform(Matrix.identity()),
-                        f.setFixedLocalTransform(Matrix.identity());
+                            f.setFixedLocalTransform(Matrix.identity());
                     else {
                         var g = Matrix.identity()
-                          , h = Matrix.identity();
+                            , h = Matrix.identity();
                         c.hasParentTypeInHierarchy(f, "SceneRootSO") ? (c.getWorldTransform(f.id, 0, g, this.sceneScale, !1),
-                        f.evaluateLocalTransformAtFramePercent(0, h, !0, !1)) : (c.evaluateModelPartTransformAtFrame(f.id, 0, g, !1),
-                        f.evaluateLocalTransformAtFramePercent(0, h, !1, !1));
+                            f.evaluateLocalTransformAtFramePercent(0, h, !0, !1)) : (c.evaluateModelPartTransformAtFrame(f.id, 0, g, !1),
+                                f.evaluateLocalTransformAtFramePercent(0, h, !1, !1));
                         f.setFixedWorldTransform(g);
                         f.setFixedLocalTransform(h)
                     }
             }
     }
-    ;
-    SceneAnimator.prototype.clearCacheForCameraChildren = function() {
+        ;
+    SceneAnimator.prototype.clearCacheForCameraChildren = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = this.cameraChildrenIndices.length, c = 0; c < b; c++) {
             var d = a.animatedObjects[this.cameraChildrenIndices[c]];
             d.useFixedWorldTransform = !1;
@@ -4218,26 +4218,26 @@ marmoset = {};
             d.animatedLocalTransform.lockTransform = !1
         }
     }
-    ;
-    SceneAnimator.prototype.refreshTransformsOnly = function() {
+        ;
+    SceneAnimator.prototype.refreshTransformsOnly = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = a.meshObjects.length, c = 0; c < b; c++) {
             var d = a.meshObjects[c];
             a.getWorldTransform(d.id, this.totalSeconds, d.mesh.displayMatrix, this.sceneScale, !0);
             if (this.enableSkinning && d.skinningRig && this.unitScaleSkinnedMeshes && !d.skinningRig.isRigidSkin) {
                 var d = d.mesh.displayMatrix
-                  , e = d[0]
-                  , f = d[1]
-                  , g = d[2]
-                  , h = d[4]
-                  , k = d[5]
-                  , l = d[6]
-                  , n = d[8]
-                  , m = d[9]
-                  , p = d[10]
-                  , e = Math.sqrt(e * e + f * f + g * g)
-                  , h = Math.sqrt(h * h + k * k + l * l)
-                  , n = Math.sqrt(n * n + m * m + p * p)
-                  , n = (e + h + n) / 2;
+                    , e = d[0]
+                    , f = d[1]
+                    , g = d[2]
+                    , h = d[4]
+                    , k = d[5]
+                    , l = d[6]
+                    , n = d[8]
+                    , m = d[9]
+                    , p = d[10]
+                    , e = Math.sqrt(e * e + f * f + g * g)
+                    , h = Math.sqrt(h * h + k * k + l * l)
+                    , n = Math.sqrt(n * n + m * m + p * p)
+                    , n = (e + h + n) / 2;
                 d[0] /= n;
                 d[1] /= n;
                 d[2] /= n;
@@ -4251,67 +4251,67 @@ marmoset = {};
         }
         if (this.animateLights)
             for (b = a.lightObjects.length,
-            c = 0; c < b; c++)
+                c = 0; c < b; c++)
                 d = a.lightObjects[c],
-                d.useFixedWorldTransform || (n = this.scene.lights.getLightPos(d.lightIndex),
-                m = this.scene.lights.getLightDir(d.lightIndex),
-                p = Matrix.identity(),
-                a.getWorldTransform(d.id, this.totalSeconds, p, this.sceneScale, !0),
-                m[0] = p[8],
-                m[1] = p[9],
-                m[2] = p[10],
-                0 != n[3] && (n[0] = p[12],
-                n[1] = p[13],
-                n[2] = p[14],
-                this.scene.lights.setLightPos(d.lightIndex, n)),
-                this.scene.lights.setLightDir(d.lightIndex, m))
+                    d.useFixedWorldTransform || (n = this.scene.lights.getLightPos(d.lightIndex),
+                        m = this.scene.lights.getLightDir(d.lightIndex),
+                        p = Matrix.identity(),
+                        a.getWorldTransform(d.id, this.totalSeconds, p, this.sceneScale, !0),
+                        m[0] = p[8],
+                        m[1] = p[9],
+                        m[2] = p[10],
+                        0 != n[3] && (n[0] = p[12],
+                            n[1] = p[13],
+                            n[2] = p[14],
+                            this.scene.lights.setLightPos(d.lightIndex, n)),
+                        this.scene.lights.setLightDir(d.lightIndex, m))
     }
-    ;
-    SceneAnimator.prototype.findMeshIndexByPartIndex = function(a, b) {
+        ;
+    SceneAnimator.prototype.findMeshIndexByPartIndex = function (a, b) {
         for (var c = 0; c < this.meshIDs.length; ++c)
             if (b == this.meshIDs[c])
                 return c;
         return -1
     }
-    ;
-    SceneAnimator.prototype.findLightIndexByPartIndex = function(a) {
+        ;
+    SceneAnimator.prototype.findLightIndexByPartIndex = function (a) {
         for (var b = 0; b < this.lightIDs.length; b++)
             if (a == this.lightIDs[b])
                 return b;
         return -1
     }
-    ;
-    SceneAnimator.prototype.findMaterialIndexByPartIndex = function(a) {
+        ;
+    SceneAnimator.prototype.findMaterialIndexByPartIndex = function (a) {
         for (var b = 0; b < this.materialIDs.length; b++)
             if (a == this.materialIDs[b])
                 return b;
         return -1
     }
-    ;
-    SceneAnimator.prototype.nextAnimation = function() {
+        ;
+    SceneAnimator.prototype.nextAnimation = function () {
         this.selectedAnimationIndex++;
         this.selectedAnimationIndex >= this.animations.length && (this.selectedAnimationIndex = 0)
     }
-    ;
-    SceneAnimator.prototype.selectAnimation = function(a) {
+        ;
+    SceneAnimator.prototype.selectAnimation = function (a) {
         0 <= a && a < this.animations.length && (this.selectedAnimationIndex = a);
         this.paused && this.setAnimationProgress(this.animationProgress, !0)
     }
-    ;
-    SceneAnimator.prototype.selectCamera = function(a) {
+        ;
+    SceneAnimator.prototype.selectCamera = function (a) {
         -1 != a && this.selectedCameraIndex != a && (this.selectedCameraIndex = a,
-        this.setViewFromSelectedCamera())
+            this.setViewFromSelectedCamera())
     }
-    ;
-    SceneAnimator.prototype.getAnimatedCamera = function() {
+        ;
+    SceneAnimator.prototype.getAnimatedCamera = function () {
         if (0 <= this.selectedCameraIndex && this.selectedAnimationIndex < this.animations.length) {
             var a = this.animations[this.selectedAnimationIndex];
             if (this.selectedCameraIndex < a.cameraObjects.length)
                 return a.cameraObjects[this.selectedCameraIndex]
         }
     }
-    ;
-    SceneAnimator.prototype.poseMeshes = function() {
+        ;
+    SceneAnimator.prototype.poseMeshes = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = a.meshObjects.length, c = 0; c < b; c++) {
             var d = a.meshObjects[c];
             if (this.enableSkinning && d.skinningRig)
@@ -4323,19 +4323,19 @@ marmoset = {};
                     var e = d.modelPartScale * this.sceneScale;
                     if (this.unitScaleSkinnedMeshes) {
                         var f = d.mesh.displayMatrix
-                          , g = f[0]
-                          , h = f[1]
-                          , k = f[2]
-                          , l = f[4]
-                          , n = f[5]
-                          , m = f[6]
-                          , p = f[8]
-                          , r = f[9]
-                          , s = f[10]
-                          , g = Math.sqrt(g * g + h * h + k * k)
-                          , l = Math.sqrt(l * l + n * n + m * m)
-                          , p = Math.sqrt(p * p + r * r + s * s)
-                          , p = (g + l + p) / 2;
+                            , g = f[0]
+                            , h = f[1]
+                            , k = f[2]
+                            , l = f[4]
+                            , n = f[5]
+                            , m = f[6]
+                            , p = f[8]
+                            , r = f[9]
+                            , s = f[10]
+                            , g = Math.sqrt(g * g + h * h + k * k)
+                            , l = Math.sqrt(l * l + n * n + m * m)
+                            , p = Math.sqrt(p * p + r * r + s * s)
+                            , p = (g + l + p) / 2;
                         f[0] /= p;
                         f[1] /= p;
                         f[2] /= p;
@@ -4353,104 +4353,104 @@ marmoset = {};
                 a.getWorldTransform(d.id, this.totalSeconds, d.mesh.displayMatrix, this.sceneScale, !0)
         }
     }
-    ;
-    SceneAnimator.prototype.updateLights = function() {
+        ;
+    SceneAnimator.prototype.updateLights = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = this.totalSeconds * a.originalFPS, c = a.lightObjects.length, d = 0; d < c; d++) {
             var e = a.lightObjects[d]
-              , f = this.scene.lights.getLightPos(e.lightIndex)
-              , g = this.scene.lights.getLightDir(e.lightIndex)
-              , h = this.scene.lights.getLightColor(e.lightIndex)
-              , k = Matrix.identity()
-              , l = 1;
+                , f = this.scene.lights.getLightPos(e.lightIndex)
+                , g = this.scene.lights.getLightDir(e.lightIndex)
+                , h = this.scene.lights.getLightColor(e.lightIndex)
+                , k = Matrix.identity()
+                , l = 1;
             e.useFixedWorldTransform || a.getWorldTransform(e.id, this.totalSeconds, k, this.sceneScale, !0);
             e.redProperty && (e.redProperty.evaluate(b, h[0], e),
-            h[0] = e.redProperty.lastValue);
+                h[0] = e.redProperty.lastValue);
             e.greenProperty && (e.greenProperty.evaluate(b, h[1], e),
-            h[1] = e.greenProperty.lastValue);
+                h[1] = e.greenProperty.lastValue);
             e.blueProperty && (e.blueProperty.evaluate(b, h[2], e),
-            h[2] = e.blueProperty.lastValue);
+                h[2] = e.blueProperty.lastValue);
             e.brightnessProperty && (e.brightnessProperty.evaluate(b, l, e),
-            l = e.brightnessProperty.lastValue);
+                l = e.brightnessProperty.lastValue);
             h[0] *= l;
             h[1] *= l;
             h[2] *= l;
             0 != f[3] && (e.useFixedWorldTransform || (f[0] = k[12],
-            f[1] = k[13],
-            f[2] = k[14],
-            this.scene.lights.setLightPos(e.lightIndex, f)),
-            e.spotAngleProperty && 0 < this.scene.lights.spot[3 * e.lightIndex] && (f = 0,
-            e.spotAngleProperty.evaluate(b, f, e),
-            f = e.spotAngleProperty.lastValue,
-            this.scene.lights.setLightSpotAngle(e.lightIndex, f)),
-            e.spotSharpnessProperty && (f = 0,
-            e.spotSharpnessProperty.evaluate(b, f, e),
-            f = e.spotSharpnessProperty.lastValue,
-            this.scene.lights.setLightSpotSharpness(e.lightIndex, f)),
-            e.distanceProperty && (f = 1,
-            e.distanceProperty.evaluate(b, f, e),
-            f = e.distanceProperty.lastValue * this.sceneScale,
-            this.scene.lights.setLightDistance(e.lightIndex, f)));
+                f[1] = k[13],
+                f[2] = k[14],
+                this.scene.lights.setLightPos(e.lightIndex, f)),
+                e.spotAngleProperty && 0 < this.scene.lights.spot[3 * e.lightIndex] && (f = 0,
+                    e.spotAngleProperty.evaluate(b, f, e),
+                    f = e.spotAngleProperty.lastValue,
+                    this.scene.lights.setLightSpotAngle(e.lightIndex, f)),
+                e.spotSharpnessProperty && (f = 0,
+                    e.spotSharpnessProperty.evaluate(b, f, e),
+                    f = e.spotSharpnessProperty.lastValue,
+                    this.scene.lights.setLightSpotSharpness(e.lightIndex, f)),
+                e.distanceProperty && (f = 1,
+                    e.distanceProperty.evaluate(b, f, e),
+                    f = e.distanceProperty.lastValue * this.sceneScale,
+                    this.scene.lights.setLightDistance(e.lightIndex, f)));
             e.useFixedWorldTransform || (g[0] = k[8],
-            g[1] = k[9],
-            g[2] = k[10],
-            this.scene.lights.setLightDir(e.lightIndex, g));
+                g[1] = k[9],
+                g[2] = k[10],
+                this.scene.lights.setLightDir(e.lightIndex, g));
             this.scene.lights.setLightColor(e.lightIndex, h)
         }
     }
-    ;
-    SceneAnimator.prototype.updateTurntables = function() {
+        ;
+    SceneAnimator.prototype.updateTurntables = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = this.totalSeconds * a.originalFPS, c = a.turnTableObjects.length, d = 0; d < c; d++) {
             var e = a.turnTableObjects[d];
             e.spinProperty.evaluate(b, 0, e);
             e.turnTableSpin = e.turnTableSpinOffset + e.spinProperty.lastValue * this.totalSeconds
         }
     }
-    ;
-    SceneAnimator.prototype.rolloverTurntables = function() {
+        ;
+    SceneAnimator.prototype.rolloverTurntables = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = a.turnTableObjects.length, c = 0; c < b; c++) {
             var d = a.turnTableObjects[c];
             d.turnTableSpinOffset = d.turnTableSpin
         }
     }
-    ;
-    SceneAnimator.prototype.updateMaterials = function() {
+        ;
+    SceneAnimator.prototype.updateMaterials = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = this.totalSeconds * a.originalFPS, c = a.materialObjects.length, d = 0; d < c; d++) {
             var e = a.materialObjects[d];
             e.offsetUProperty && (e.offsetUProperty.evaluate(b, 0, e),
-            this.scene.materialsList[e.materialIndex].uOffset = e.offsetUProperty.lastValue);
+                this.scene.materialsList[e.materialIndex].uOffset = e.offsetUProperty.lastValue);
             e.offsetVProperty && (e.offsetVProperty.evaluate(b, 0, e),
-            this.scene.materialsList[e.materialIndex].vOffset = e.offsetVProperty.lastValue);
+                this.scene.materialsList[e.materialIndex].vOffset = e.offsetVProperty.lastValue);
             e.emissiveProperty && 1 < e.emissiveProperty.numKeyframes && (e.emissiveProperty.evaluate(b, 0, e),
-            this.scene.materialsList[e.materialIndex].emissiveIntensity = e.emissiveProperty.lastValue)
+                this.scene.materialsList[e.materialIndex].emissiveIntensity = e.emissiveProperty.lastValue)
         }
     }
-    ;
-    SceneAnimator.prototype.updateFog = function() {
+        ;
+    SceneAnimator.prototype.updateFog = function () {
         var a = this.animations[this.selectedAnimationIndex]
-          , b = this.totalSeconds * a.originalFPS;
+            , b = this.totalSeconds * a.originalFPS;
         0 <= this.fogObjectIndex && this.fogObjectIndex < a.animatedObjects.length && this.scene.fog && (a = a.animatedObjects[this.fogObjectIndex],
-        a.redProperty && (this.scene.fog.desc.color[0] = a.redProperty.evaluate(b, this.scene.fog.desc.color[0], a)),
-        a.greenProperty && (this.scene.fog.desc.color[1] = a.greenProperty.evaluate(b, this.scene.fog.desc.color[1], a)),
-        a.blueProperty && (this.scene.fog.desc.color[2] = a.blueProperty.evaluate(b, this.scene.fog.desc.color[2], a)),
-        a.distanceProperty && (this.scene.fog.desc.distance = a.distanceProperty.evaluate(b, this.scene.fog.desc.distance, a)),
-        a.opacityProperty && (this.scene.fog.desc.opacity = a.opacityProperty.evaluate(b, this.scene.fog.desc.opacity, a)),
-        a.skyIllumProperty && (this.scene.fog.desc.skyIllum = a.skyIllumProperty.evaluate(b, this.scene.fog.desc.skyIllum, a)),
-        a.lightIllumProperty && (this.scene.fog.desc.lightIllum = a.lightIllumProperty.evaluate(b, this.scene.fog.desc.lightIllum, a)),
-        a.dispersionProperty && (this.scene.fog.desc.dispersion = a.dispersionProperty.evaluate(b, this.scene.fog.desc.dispersion, a)))
+            a.redProperty && (this.scene.fog.desc.color[0] = a.redProperty.evaluate(b, this.scene.fog.desc.color[0], a)),
+            a.greenProperty && (this.scene.fog.desc.color[1] = a.greenProperty.evaluate(b, this.scene.fog.desc.color[1], a)),
+            a.blueProperty && (this.scene.fog.desc.color[2] = a.blueProperty.evaluate(b, this.scene.fog.desc.color[2], a)),
+            a.distanceProperty && (this.scene.fog.desc.distance = a.distanceProperty.evaluate(b, this.scene.fog.desc.distance, a)),
+            a.opacityProperty && (this.scene.fog.desc.opacity = a.opacityProperty.evaluate(b, this.scene.fog.desc.opacity, a)),
+            a.skyIllumProperty && (this.scene.fog.desc.skyIllum = a.skyIllumProperty.evaluate(b, this.scene.fog.desc.skyIllum, a)),
+            a.lightIllumProperty && (this.scene.fog.desc.lightIllum = a.lightIllumProperty.evaluate(b, this.scene.fog.desc.lightIllum, a)),
+            a.dispersionProperty && (this.scene.fog.desc.dispersion = a.dispersionProperty.evaluate(b, this.scene.fog.desc.dispersion, a)))
     }
-    ;
-    SceneAnimator.prototype.updateVisibility = function() {
+        ;
+    SceneAnimator.prototype.updateVisibility = function () {
         for (var a = this.animations[this.selectedAnimationIndex], b = this.subMeshObjectIndices.length, c = 0; c < b; c++) {
             var d = this.subMeshLiveIndices[c];
             if (-1 != d) {
                 var e = this.subMeshObjectIndices[c]
-                  , d = this.scene.meshRenderables[d]
-                  , f = a.getObjectAnimationFramePercent(a.animatedObjects[e], this.totalSeconds);
+                    , d = this.scene.meshRenderables[d]
+                    , f = a.getObjectAnimationFramePercent(a.animatedObjects[e], this.totalSeconds);
                 d.visible = a.isVisibleAtFramePercent(e, f)
             }
         }
     }
-    ;
+        ;
     function Shader(a) {
         this.gl = a;
         this.program = null;
@@ -4458,39 +4458,39 @@ marmoset = {};
         this.samplers = {};
         this.attribs = {}
     }
-    Shader.prototype.build = function(a, b) {
+    Shader.prototype.build = function (a, b) {
         var c = this.gl;
         this.program = c.createProgram();
         this.params = {};
         this.samplers = {};
         this.attribs = {};
-        var d = function(a) {
-            for (var b = "", c = a.indexOf("\n"), d = 0; -1 != c; )
-                d++,
-                b += d + ": ",
-                b += a.substring(0, c + 1),
-                a = a.substring(c + 1, a.length),
-                c = a.indexOf("\n");
+        var d = function (a) {
+            for (var b = "", c = a.indexOf("\n"), d = 0; -1 != c;)
+                d++ ,
+                    b += d + ": ",
+                    b += a.substring(0, c + 1),
+                    a = a.substring(c + 1, a.length),
+                    c = a.indexOf("\n");
             console.log(b)
         }
-          , e = c.createShader(c.VERTEX_SHADER);
+            , e = c.createShader(c.VERTEX_SHADER);
         c.shaderSource(e, a);
         c.compileShader(e);
         c.getShaderParameter(e, c.COMPILE_STATUS) || (console.log(c.getShaderInfoLog(e)),
-        marmoset.verboseErrors && d(a));
+            marmoset.verboseErrors && d(a));
         c.attachShader(this.program, e);
         e = c.createShader(c.FRAGMENT_SHADER);
         c.shaderSource(e, b);
         c.compileShader(e);
         c.getShaderParameter(e, c.COMPILE_STATUS) || (console.log(c.getShaderInfoLog(e)),
-        marmoset.verboseErrors && d(b));
+            marmoset.verboseErrors && d(b));
         c.attachShader(this.program, e);
         c.linkProgram(this.program);
         c.getProgramParameter(this.program, c.LINK_STATUS) || console.log(c.getProgramInfoLog(this.program));
         for (var e = c.getProgramParameter(this.program, c.ACTIVE_UNIFORMS), f = 0, d = 0; d < e; ++d) {
             var g = c.getActiveUniform(this.program, d)
-              , h = g.name
-              , k = h.indexOf("[");
+                , h = g.name
+                , k = h.indexOf("[");
             0 <= k && (h = h.substring(0, k));
             k = c.getUniformLocation(this.program, g.name);
             g.type == c.SAMPLER_2D || g.type == c.SAMPLER_CUBE ? this.samplers[h] = {
@@ -4501,23 +4501,23 @@ marmoset = {};
         e = c.getProgramParameter(this.program, c.ACTIVE_ATTRIBUTES);
         for (d = 0; d < e; ++d)
             f = c.getActiveAttrib(this.program, d),
-            this.attribs[f.name] = c.getAttribLocation(this.program, f.name)
+                this.attribs[f.name] = c.getAttribLocation(this.program, f.name)
     }
-    ;
-    Shader.prototype.bind = function() {
+        ;
+    Shader.prototype.bind = function () {
         return this.program ? (this.gl.useProgram(this.program),
-        !0) : !1
+            !0) : !1
     }
-    ;
-    Shader.prototype.complete = function() {
+        ;
+    Shader.prototype.complete = function () {
         return !!this.program
     }
-    ;
+        ;
     function ShaderCache(a) {
         this.gl = a;
         this.cache = []
     }
-    ShaderCache.prototype.fromURLs = function(a, b, c) {
+    ShaderCache.prototype.fromURLs = function (a, b, c) {
         var d = "";
         if (c)
             for (var e = 0; e < c.length; ++e)
@@ -4527,45 +4527,45 @@ marmoset = {};
         if (void 0 !== e)
             return e;
         var f = new Shader(this.gl)
-          , g = null
-          , h = null
-          , k = function() {
-            null != g && null != h && f.build(g, h)
-        };
-        this.fetch(a, function(a) {
+            , g = null
+            , h = null
+            , k = function () {
+                null != g && null != h && f.build(g, h)
+            };
+        this.fetch(a, function (a) {
             g = d + a;
             k()
         });
-        this.fetch(b, function(a) {
+        this.fetch(b, function (a) {
             h = d + a;
             k()
         });
         return this.cache[c] = f
     }
-    ;
-    ShaderCache.prototype.fetch = function(a, b) {
-        "undefined" != typeof ShaderTable ? void 0 !== ShaderTable[a] ? this.resolveIncludes(new String(ShaderTable[a]), b) : b("") : Network.fetchText("src/shader/" + a, function(a) {
+        ;
+    ShaderCache.prototype.fetch = function (a, b) {
+        "undefined" != typeof ShaderTable ? void 0 !== ShaderTable[a] ? this.resolveIncludes(new String(ShaderTable[a]), b) : b("") : Network.fetchText("src/shader/" + a, function (a) {
             this.resolveIncludes(a, b)
         }
-        .bind(this), function() {
-            b("")
-        })
+            .bind(this), function () {
+                b("")
+            })
     }
-    ;
-    ShaderCache.prototype.resolveIncludes = function(a, b) {
-        for (var c = [], d = !0, e = function(a, b, e, f, n) {
+        ;
+    ShaderCache.prototype.resolveIncludes = function (a, b) {
+        for (var c = [], d = !0, e = function (a, b, e, f, n) {
             d = !0;
             c.push({
                 offset: n,
                 path: b.slice(1, b.length - 1)
             });
             return ""
-        }; d; )
+        }; d;)
             d = !1,
-            a = a.replace(/#include\s((<[^>]+>)|("[^"]+"))/, e);
+                a = a.replace(/#include\s((<[^>]+>)|("[^"]+"))/, e);
         if (0 < c.length)
             for (var f = c.length, e = 0; e < c.length; ++e)
-                this.fetch(c[e].path, function(d) {
+                this.fetch(c[e].path, function (d) {
                     this.src = d;
                     if (0 >= --f) {
                         for (d = c.length - 1; 0 <= d; --d)
@@ -4573,11 +4573,11 @@ marmoset = {};
                         b(a)
                     }
                 }
-                .bind(c[e]));
+                    .bind(c[e]));
         else
             b(a)
     }
-    ;
+        ;
     function ShadowCollector(a, b) {
         this.gl = a;
         this.shadowCount = b;
@@ -4603,21 +4603,21 @@ marmoset = {};
                 height: c.height
             }, e, f;
             this.nativeDepth ? (e = a.DEPTH_COMPONENT,
-            f = a.UNSIGNED_SHORT) : (d.depthBuffer = Framebuffer.createDepthBuffer(a, c.width, c.height),
-            e = a.RGB,
-            f = a.UNSIGNED_BYTE);
+                f = a.UNSIGNED_SHORT) : (d.depthBuffer = Framebuffer.createDepthBuffer(a, c.width, c.height),
+                    e = a.RGB,
+                    f = a.UNSIGNED_BYTE);
             for (var g = 0; g < this.shadowCount; ++g)
-                this.depthTextures[g] = new Texture(a,c),
-                this.depthTextures[g].loadArray(null, e, f),
-                this.nativeDepth ? d.depth = this.depthTextures[g] : d.color0 = this.depthTextures[g],
-                this.depthTargets[g] = new Framebuffer(a,d)
+                this.depthTextures[g] = new Texture(a, c),
+                    this.depthTextures[g].loadArray(null, e, f),
+                    this.nativeDepth ? d.depth = this.depthTextures[g] : d.color0 = this.depthTextures[g],
+                    this.depthTargets[g] = new Framebuffer(a, d)
         }
     }
-    ShadowCollector.prototype.bindDepthTexture = function(a, b) {
+    ShadowCollector.prototype.bindDepthTexture = function (a, b) {
         this.shadowCount > b && this.depthTextures[b].bind(a)
     }
-    ;
-    ShadowCollector.prototype.collect = function(a, b) {
+        ;
+    ShadowCollector.prototype.collect = function (a, b) {
         for (var c = this.gl, d = a.lights, e = d.shadowCount, f = d.modelViewBuffer, g = d.projectionBuffer, h = d.matrix, k = 0 != a.sceneAnimator, l = Matrix.empty(), n = !1, m = 0; m < e; ++m)
             if (d.shadowsNeedUpdate[m]) {
                 d.shadowsNeedUpdate[m] = 0;
@@ -4633,9 +4633,9 @@ marmoset = {};
                 c.uniformMatrix4fv(p.params.uMeshTransform, !1, Matrix.identity());
                 for (var r = 0; r < a.meshRenderables.length; ++r) {
                     var s = a.meshRenderables[r]
-                      , u = s.material;
+                        , u = s.material;
                     !s.mesh.desc.castShadows || !u.castShadows || 0 < u.shadowAlphaTest || (k && c.uniformMatrix4fv(p.params.uMeshTransform, !1, s.mesh.displayMatrix),
-                    s.drawShadow(p.attribs.vPosition))
+                        s.drawShadow(p.attribs.vPosition))
                 }
                 p = this.shaderAlphaTest;
                 p.bind();
@@ -4643,21 +4643,21 @@ marmoset = {};
                 c.uniformMatrix4fv(p.params.uMeshTransform, !1, Matrix.identity());
                 for (r = 0; r < a.meshRenderables.length; ++r)
                     s = a.meshRenderables[r],
-                    u = s.material,
-                    s.mesh.desc.castShadows && u.castShadows && 0 < u.shadowAlphaTest && (u.textures.albedo.bind(p.samplers.tAlbedo),
-                    k && (c.uniform2f(p.params.uUVOffset, u.uOffset, u.vOffset),
-                    c.uniformMatrix4fv(p.params.uMeshTransform, !1, s.mesh.displayMatrix)),
-                    s.drawAlphaShadow(p.attribs.vPosition, p.attribs.vTexCoord))
+                        u = s.material,
+                        s.mesh.desc.castShadows && u.castShadows && 0 < u.shadowAlphaTest && (u.textures.albedo.bind(p.samplers.tAlbedo),
+                            k && (c.uniform2f(p.params.uUVOffset, u.uOffset, u.vOffset),
+                                c.uniformMatrix4fv(p.params.uMeshTransform, !1, s.mesh.displayMatrix)),
+                            s.drawAlphaShadow(p.attribs.vPosition, p.attribs.vTexCoord))
             }
         n && (b.bind(),
-        c.enable(c.CULL_FACE),
-        c.cullFace(c.BACK))
+            c.enable(c.CULL_FACE),
+            c.cullFace(c.BACK))
     }
-    ;
-    ShadowCollector.prototype.complete = function() {
+        ;
+    ShadowCollector.prototype.complete = function () {
         return this.shaderSolid.complete() && this.shaderAlphaTest.complete()
     }
-    ;
+        ;
     function ShadowFloor(a, b, c, d) {
         this.gl = a;
         this.desc = b;
@@ -4674,21 +4674,21 @@ marmoset = {};
         a.bufferData(a.ARRAY_BUFFER, b, a.STATIC_DRAW);
         a.bindBuffer(a.ARRAY_BUFFER, null)
     }
-    ShadowFloor.prototype.draw = function(a) {
-        
-	
+    ShadowFloor.prototype.draw = function (a) {
+
+
     }
-    ;
-    ShadowFloor.prototype.complete = function() {
+        ;
+    ShadowFloor.prototype.complete = function () {
         return this.shader.complete()
     }
-    ;
+        ;
     function Skin(a) {
         this.numVertices = a.vertexCount;
         this.vertices = new Float32Array(a.vertexCount);
         a.vertexBuffer || (this.numVertices = 0)
     }
-    ;function SkinningCluster() {
+    ; function SkinningCluster() {
         this.associateObjectIndex = this.linkObjectIndex = this.linkMode = 0;
         this.vertexIndices = [];
         this.vertexWeights = [];
@@ -4698,25 +4698,25 @@ marmoset = {};
         this.defaultAssociateWorldTransformInvert = Matrix.identity();
         this.debugString = ""
     }
-    SkinningCluster.prototype.solveAdditiveClusterTransform = function(a, b, c) {
+    SkinningCluster.prototype.solveAdditiveClusterTransform = function (a, b, c) {
         b = Matrix.identity();
         var d = Matrix.identity()
-          , e = Matrix.identity();
+            , e = Matrix.identity();
         Matrix.mul(b, a, this.defaultClusterBaseTransform);
         Matrix.mul(d, this.defaultAssociateWorldTransformInvert, b);
         Matrix.mul(e, this.defaultAssociateWorldTransformInvert, d);
         Matrix.mul(c, this.defaultClusterWorldTransformInvert, e)
     }
-    ;
-    SkinningCluster.prototype.solveSimpleClusterTransform = function(a, b, c) {
+        ;
+    SkinningCluster.prototype.solveSimpleClusterTransform = function (a, b, c) {
         var d = Matrix.identity()
-          , e = Matrix.identity();
+            , e = Matrix.identity();
         Matrix.invert(e, b);
         Matrix.mul(d, e, a);
         Matrix.mul(c, d, this.defaultClusterBaseTransform)
     }
-    ;
-    SkinningCluster.prototype.solveClusterTransformAtFrame = function(a, b, c, d) {
+        ;
+    SkinningCluster.prototype.solveClusterTransformAtFrame = function (a, b, c, d) {
         if (1 == this.linkMode) {
             var e = Matrix.identity();
             b = Matrix.identity();
@@ -4725,13 +4725,13 @@ marmoset = {};
             this.solveAdditiveClusterTransform(e, b, d)
         } else {
             var e = Matrix.identity()
-              , f = Matrix.identity();
+                , f = Matrix.identity();
             a.evaluateModelPartTransformAtFrame(this.linkObjectIndex, c, e, !1);
             a.evaluateModelPartTransformAtFrame(b, c, f, !1);
             this.solveSimpleClusterTransform(e, f, d)
         }
     }
-    ;
+        ;
     function SkinningRig(a, b, c) {
         this.debugString = "";
         this.skinningClusters = [];
@@ -4739,7 +4739,7 @@ marmoset = {};
         if (a = a.get(this.srcVFile))
             if (a.data) {
                 this.rigByteStream = new ByteStream(a.data);
-                a = new Uint32Array(this.rigByteStream.bytes.buffer,0,this.rigByteStream.bytes.length / 4);
+                a = new Uint32Array(this.rigByteStream.bytes.buffer, 0, this.rigByteStream.bytes.length / 4);
                 this.expectedNumClusters = a[0];
                 this.expectedNumVertices = a[1];
                 this.numClusterLinks = a[2];
@@ -4759,14 +4759,14 @@ marmoset = {};
                     e.defaultClusterBaseTransform = c.getMatrix(g);
                     Matrix.invert(e.defaultClusterWorldTransformInvert, e.defaultClusterWorldTransform);
                     1 == e.linkMode && (e.defaultAssociateWorldTransform = c.getMatrix(a[f + 6]),
-                    Matrix.invert(e.defaultAssociateWorldTransformInvert, e.defaultAssociateWorldTransform))
+                        Matrix.invert(e.defaultAssociateWorldTransformInvert, e.defaultAssociateWorldTransform))
                 }
                 c = 4 * b;
                 b = c + this.expectedNumVertices;
                 a = b + 2 * this.numClusterLinks;
                 b = new Uint8Array(this.rigByteStream.bytes.subarray(b));
                 a = new Uint8Array(this.rigByteStream.bytes.subarray(a));
-                this.linkMapCount = new Uint8Array(this.rigByteStream.bytes.buffer,c,this.expectedNumVertices);
+                this.linkMapCount = new Uint8Array(this.rigByteStream.bytes.buffer, c, this.expectedNumVertices);
                 this.linkMapClusterIndices = new Uint16Array(b.buffer);
                 this.linkMapWeights = new Float32Array(a.buffer)
             } else
@@ -4774,84 +4774,84 @@ marmoset = {};
         else
             this.debugString += "<br>Error loading buffer for skinning rig " + this.srcVFile
     }
-    SkinningRig.prototype.unpackUnitVectors = function(a, b, c, d) {
+    SkinningRig.prototype.unpackUnitVectors = function (a, b, c, d) {
         for (var e = 0; e < c; e++) {
             var f = b[d * e]
-              , g = b[d * e + 1]
-              , h = 32768 <= g;
+                , g = b[d * e + 1]
+                , h = 32768 <= g;
             h && (g -= 32768);
             var f = f / 32767.4 * 2 - 1
-              , g = g / 32767.4 * 2 - 1
-              , k = 1 - (f * f + g * g)
-              , k = Math.sqrt(k)
-              , k = isNaN(k) ? 0 : k;
+                , g = g / 32767.4 * 2 - 1
+                , k = 1 - (f * f + g * g)
+                , k = Math.sqrt(k)
+                , k = isNaN(k) ? 0 : k;
             h && (k = -k);
             a[3 * e] = f;
             a[3 * e + 1] = g;
             a[3 * e + 2] = k
         }
     }
-    ;
-    SkinningRig.prototype.copyOriginalVertices = function(a) {
+        ;
+    SkinningRig.prototype.copyOriginalVertices = function (a) {
         if (!this.unTransformedVertices)
             if (this.unTransformedVertices = new Float32Array(3 * a.vertexCount),
-            this.unTransformedNormals = new Float32Array(3 * a.vertexCount),
-            this.unTransformedTangents = new Float32Array(3 * a.vertexCount),
-            this.unTransformedBiTangents = new Float32Array(3 * a.vertexCount),
-            this.skinVertexWeights = new Float32Array(a.vertexCount),
-            this.skinVertexTransform4x3 = new Float32Array(12),
-            a.dynamicVertexData) {
+                this.unTransformedNormals = new Float32Array(3 * a.vertexCount),
+                this.unTransformedTangents = new Float32Array(3 * a.vertexCount),
+                this.unTransformedBiTangents = new Float32Array(3 * a.vertexCount),
+                this.skinVertexWeights = new Float32Array(a.vertexCount),
+                this.skinVertexTransform4x3 = new Float32Array(12),
+                a.dynamicVertexData) {
                 var b = new Float32Array(a.dynamicVertexData.buffer);
                 new Uint8Array(a.dynamicVertexData.buffer);
                 var c = 0
-                  , d = c
-                  , c = c + 12 + 8;
+                    , d = c
+                    , c = c + 12 + 8;
                 a.secondaryTexCoord && (c += 8);
                 var e = c
-                  , f = c += 4
-                  , c = c + 4
-                  , g = a.stride / 2
-                  , c = new Uint8Array(a.dynamicVertexData.subarray(c))
-                  , c = new Uint16Array(c.buffer)
-                  , e = new Uint8Array(a.dynamicVertexData.subarray(e))
-                  , e = new Uint16Array(e.buffer)
-                  , f = new Uint8Array(a.dynamicVertexData.subarray(f))
-                  , f = new Uint16Array(f.buffer);
+                    , f = c += 4
+                    , c = c + 4
+                    , g = a.stride / 2
+                    , c = new Uint8Array(a.dynamicVertexData.subarray(c))
+                    , c = new Uint16Array(c.buffer)
+                    , e = new Uint8Array(a.dynamicVertexData.subarray(e))
+                    , e = new Uint16Array(e.buffer)
+                    , f = new Uint8Array(a.dynamicVertexData.subarray(f))
+                    , f = new Uint16Array(f.buffer);
                 this.unpackUnitVectors(this.unTransformedNormals, c, a.vertexCount, g);
                 this.unpackUnitVectors(this.unTransformedTangents, e, a.vertexCount, g);
                 this.unpackUnitVectors(this.unTransformedBiTangents, f, a.vertexCount, g);
                 for (g = 0; g < a.vertexCount; g++)
                     f = (a.stride * g + d) / 4,
-                    this.unTransformedVertices[3 * g] = b[f],
-                    this.unTransformedVertices[3 * g + 1] = b[f + 1],
-                    this.unTransformedVertices[3 * g + 2] = b[f + 2]
+                        this.unTransformedVertices[3 * g] = b[f],
+                        this.unTransformedVertices[3 * g + 1] = b[f + 1],
+                        this.unTransformedVertices[3 * g + 2] = b[f + 2]
             } else
                 this.debugString += "<br>Can't init skinning rig - mesh buffer is not dynamic - rigid is " + this.isRigidSkin
     }
-    ;
-    SkinningRig.prototype.useOriginalMeshVertices = function(a) {
+        ;
+    SkinningRig.prototype.useOriginalMeshVertices = function (a) {
         this.isRigidSkin ? this.debugString += "<br>useOriginalMeshVertices for rigid skin?" : this.copyOriginalVertices(a)
     }
-    ;
-    SkinningRig.prototype.deformMeshVertices = function(a, b) {
+        ;
+    SkinningRig.prototype.deformMeshVertices = function (a, b) {
         if (0 != this.skinningClusters.length && this.unTransformedVertices) {
             var c = a.stride / 4
-              , d = new Float32Array(a.dynamicVertexData.buffer)
-              , e = new Uint16Array(a.dynamicVertexData.buffer);
+                , d = new Float32Array(a.dynamicVertexData.buffer)
+                , e = new Uint16Array(a.dynamicVertexData.buffer);
             new Uint8Array(a.dynamicVertexData.buffer);
             var f;
             f = 20;
             a.secondaryTexCoord && (f += 8);
             var g = f
-              , h = f += 4;
+                , h = f += 4;
             f += 4;
             for (var k = this.unTransformedVertices.length / 3, l = 0, n = 0; n < k; ++n) {
                 var m = n
-                  , p = (m * a.stride + g) / 2
-                  , r = (m * a.stride + h) / 2
-                  , s = (m * a.stride + f) / 2
-                  , u = this.linkMapCount[m]
-                  , q = this.skinVertexTransform4x3;
+                    , p = (m * a.stride + g) / 2
+                    , r = (m * a.stride + h) / 2
+                    , s = (m * a.stride + f) / 2
+                    , u = this.linkMapCount[m]
+                    , q = this.skinVertexTransform4x3;
                 this.skinVertexWeights[m] = 0;
                 q[0] = 0;
                 q[1] = 0;
@@ -4868,8 +4868,8 @@ marmoset = {};
                 var x = this.linkMapWeights[l];
                 if (1 == u && 1 == x) {
                     var w = this.linkMapClusterIndices[l]
-                      , w = this.skinningClusters[w]
-                      , v = w.matrix;
+                        , w = this.skinningClusters[w]
+                        , v = w.matrix;
                     q[0] = v[0];
                     q[1] = v[1];
                     q[2] = v[2];
@@ -4886,39 +4886,39 @@ marmoset = {};
                 } else
                     for (var t = this.skinVertexWeights[m] = 0; t < u; t++)
                         x = this.linkMapWeights[l + t],
-                        w = this.linkMapClusterIndices[l + t],
-                        w < this.skinningClusters.length && (w = this.skinningClusters[w],
-                        v = w.matrix,
-                        q[0] += x * v[0],
-                        q[1] += x * v[1],
-                        q[2] += x * v[2],
-                        q[3] += x * v[4],
-                        q[4] += x * v[5],
-                        q[5] += x * v[6],
-                        q[6] += x * v[8],
-                        q[7] += x * v[9],
-                        q[8] += x * v[10],
-                        q[9] += x * v[12],
-                        q[10] += x * v[13],
-                        q[11] += x * v[14],
-                        this.skinVertexWeights[m] += x,
-                        1 == w.linkMode && (this.skinVertexWeights[m] = 1));
+                            w = this.linkMapClusterIndices[l + t],
+                            w < this.skinningClusters.length && (w = this.skinningClusters[w],
+                                v = w.matrix,
+                                q[0] += x * v[0],
+                                q[1] += x * v[1],
+                                q[2] += x * v[2],
+                                q[3] += x * v[4],
+                                q[4] += x * v[5],
+                                q[5] += x * v[6],
+                                q[6] += x * v[8],
+                                q[7] += x * v[9],
+                                q[8] += x * v[10],
+                                q[9] += x * v[12],
+                                q[10] += x * v[13],
+                                q[11] += x * v[14],
+                                this.skinVertexWeights[m] += x,
+                                1 == w.linkMode && (this.skinVertexWeights[m] = 1));
                 l += this.linkMapCount[n];
                 if (0 < this.skinVertexWeights[m]) {
                     var y = this.unTransformedVertices[3 * n + 0]
-                      , E = this.unTransformedVertices[3 * n + 1]
-                      , F = this.unTransformedVertices[3 * n + 2]
-                      , A = this.unTransformedNormals[3 * n + 0]
-                      , B = this.unTransformedNormals[3 * n + 1]
-                      , z = this.unTransformedNormals[3 * n + 2]
-                      , w = this.unTransformedTangents[3 * n + 0]
-                      , v = this.unTransformedTangents[3 * n + 1]
-                      , C = this.unTransformedTangents[3 * n + 2]
-                      , u = this.unTransformedBiTangents[3 * n + 0]
-                      , q = this.unTransformedBiTangents[3 * n + 1]
-                      , x = this.unTransformedBiTangents[3 * n + 2]
-                      , t = this.skinVertexTransform4x3
-                      , G = 1;
+                        , E = this.unTransformedVertices[3 * n + 1]
+                        , F = this.unTransformedVertices[3 * n + 2]
+                        , A = this.unTransformedNormals[3 * n + 0]
+                        , B = this.unTransformedNormals[3 * n + 1]
+                        , z = this.unTransformedNormals[3 * n + 2]
+                        , w = this.unTransformedTangents[3 * n + 0]
+                        , v = this.unTransformedTangents[3 * n + 1]
+                        , C = this.unTransformedTangents[3 * n + 2]
+                        , u = this.unTransformedBiTangents[3 * n + 0]
+                        , q = this.unTransformedBiTangents[3 * n + 1]
+                        , x = this.unTransformedBiTangents[3 * n + 2]
+                        , t = this.skinVertexTransform4x3
+                        , G = 1;
                     0 < this.skinVertexWeights[m] && (G = 1 / this.skinVertexWeights[m]);
                     d[c * n] = G * (y * t[0] + E * t[3] + F * t[6] + t[9]) * b;
                     d[c * n + 1] = G * (y * t[1] + E * t[4] + F * t[7] + t[10]) * b;
@@ -4961,16 +4961,16 @@ marmoset = {};
                     e[r + 1] = Math.floor(x)
                 } else
                     y = this.unTransformedVertices[3 * n + 0],
-                    E = this.unTransformedVertices[3 * n + 1],
-                    F = this.unTransformedVertices[3 * n + 2],
-                    d[c * n] = y * b,
-                    d[c * n + 1] = E * b,
-                    d[c * n + 2] = F * b
+                        E = this.unTransformedVertices[3 * n + 1],
+                        F = this.unTransformedVertices[3 * n + 2],
+                        d[c * n] = y * b,
+                        d[c * n + 1] = E * b,
+                        d[c * n + 2] = F * b
             }
         }
     }
-    ;
-    SkinningRig.prototype.deformMesh = function(a, b) {
+        ;
+    SkinningRig.prototype.deformMesh = function (a, b) {
         if (0 != this.skinningClusters.length && !this.isRigidSkin) {
             this.deformMeshVertices(a, b);
             var c = a.gl;
@@ -4979,12 +4979,12 @@ marmoset = {};
             c.bindBuffer(c.ARRAY_BUFFER, null)
         }
     }
-    ;
+        ;
     function Sky(a, b, c) {
         this.gl = a;
         var d = b.extract("sky.dat") || b.extract("sky.png");
         if (void 0 !== d) {
-            this.specularTexture = new Texture(a,{
+            this.specularTexture = new Texture(a, {
                 width: 256,
                 height: 2048,
                 clamp: !0
@@ -4992,11 +4992,11 @@ marmoset = {};
             b = d.data;
             for (var d = d.data.length, e = d / 4, f = new Uint8Array(d), g = 0, h = 0; g < d; ++h)
                 f[g++] = b[h + 2 * e],
-                f[g++] = b[h + e],
-                f[g++] = b[h],
-                f[g++] = b[h + 3 * e];
-				
-				window["specularTexturedata"]=f;
+                    f[g++] = b[h + e],
+                    f[g++] = b[h],
+                    f[g++] = b[h + 3 * e];
+
+            window["specularTexturedata"] = f;
             this.specularTexture.loadArray(f)
         }
         this.diffuseCoefficients = new Float32Array(c.diffuseCoefficients);
@@ -5005,27 +5005,27 @@ marmoset = {};
         this.backgroundColor = new Float32Array(c.backgroundColor);
         if (1 <= this.backgroundMode)
             if (this.backgroundShader = a.shaderCache.fromURLs("skyvert.glsl", 3 == this.backgroundMode ? "skySH.glsl" : "sky.glsl", ["#define SKYMODE " + this.backgroundMode]),
-            this.vertexBuffer = a.createBuffer(),
-            a.bindBuffer(a.ARRAY_BUFFER, this.vertexBuffer),
-            c = 1 / 256,
-            b = 0.5 / 256,
-            d = 2.8 * b,
-            e = 0.5 * b,
-            c = new Float32Array([0, 1, 0, 0.49609375 + c, 0.49609375 + c, 1, 0, 0, 0.9921875 + c, 0.49609375 + c, 0, 0, 1, 0.49609375 + c, 0.9921875 + c, -1, 0, 0, 0 + c, 0.49609375 + c, 0, 0, -1, 0.49609375 + c, 0 + c, 0, -1, 0, 0.9921875 + c, 0 + c, 0, -1, 0, 0.9921875 + c, 0.9921875 + c, 0, -1, 0, 0 + c, 0.9921875 + c, 0, -1, 0, 0 + c, 0 + c, d, 1 - d, -d, 0.5 + b, 0.5 - b, d, 1 - d, d, 0.5 + b, 0.5 + b, -d, 1 - d, d, 0.5 - b, 0.5 + b, -d, 1 - d, -d, 0.5 - b, 0.5 - b, -d, 0, -1 + d, 0.5 - b, 0 + c + b, d, 0, -1 + d, 0.5 + b, 0 + c + b, 1 - d, 0, -d, 0.9921875 + c - b, 0.5 - b, 1 - d, 0, d, 0.9921875 + c - b, 0.5 + b, d, 0, 1 - d, 0.5 + b, 0.9921875 + c - b, -d, 0, 1 - d, 0.5 - b, 0.9921875 + c - b, -1 + d, 0, d, 0 + c + b, 0.5 + b, -1 + d, 0, -d, 0 + c + b, 0.5 - b, 1, 0, 0, 0.9921875 + c - e, 0.49609375 + c, 0, 0, 1, 0.49609375 + c, 0.9921875 + c - e, -1, 0, 0, 0 + c + e, 0.49609375 + c, 0, 0, -1, 0.49609375 + c, 0 + c + e, 0, 1, 0, 0.49609375 + c - e, 0.49609375 + c, 0, 1, 0, 0.49609375 + c, 0.49609375 + c - e, 0, 1, 0, 0.49609375 + c + e, 0.49609375 + c, 0, 1, 0, 0.49609375 + c, 0.49609375 + c + e]),
-            a.bufferData(a.ARRAY_BUFFER, c, a.STATIC_DRAW),
-            a.bindBuffer(a.ARRAY_BUFFER, null),
-            this.indexBuffer = a.createBuffer(),
-            a.bindBuffer(a.ELEMENT_ARRAY_BUFFER, this.indexBuffer),
-            c = new Uint16Array([2, 1, 6, 3, 2, 7, 8, 4, 3, 4, 5, 1, 9, 14, 15, 17, 10, 16, 18, 19, 11, 20, 13, 12, 28, 12, 13, 13, 24, 28, 28, 24, 9, 9, 24, 14, 25, 9, 15, 25, 15, 21, 10, 25, 21, 10, 21, 16, 22, 26, 10, 22, 10, 17, 18, 11, 26, 22, 18, 26, 19, 23, 27, 19, 27, 11, 23, 20, 27, 27, 20, 12]),
-            this.skyIndexCount = c.length,
-            a.bufferData(a.ELEMENT_ARRAY_BUFFER, c, a.STATIC_DRAW),
-            a.bindBuffer(a.ELEMENT_ARRAY_BUFFER, null),
-            3 == this.backgroundMode)
+                this.vertexBuffer = a.createBuffer(),
+                a.bindBuffer(a.ARRAY_BUFFER, this.vertexBuffer),
+                c = 1 / 256,
+                b = 0.5 / 256,
+                d = 2.8 * b,
+                e = 0.5 * b,
+                c = new Float32Array([0, 1, 0, 0.49609375 + c, 0.49609375 + c, 1, 0, 0, 0.9921875 + c, 0.49609375 + c, 0, 0, 1, 0.49609375 + c, 0.9921875 + c, -1, 0, 0, 0 + c, 0.49609375 + c, 0, 0, -1, 0.49609375 + c, 0 + c, 0, -1, 0, 0.9921875 + c, 0 + c, 0, -1, 0, 0.9921875 + c, 0.9921875 + c, 0, -1, 0, 0 + c, 0.9921875 + c, 0, -1, 0, 0 + c, 0 + c, d, 1 - d, -d, 0.5 + b, 0.5 - b, d, 1 - d, d, 0.5 + b, 0.5 + b, -d, 1 - d, d, 0.5 - b, 0.5 + b, -d, 1 - d, -d, 0.5 - b, 0.5 - b, -d, 0, -1 + d, 0.5 - b, 0 + c + b, d, 0, -1 + d, 0.5 + b, 0 + c + b, 1 - d, 0, -d, 0.9921875 + c - b, 0.5 - b, 1 - d, 0, d, 0.9921875 + c - b, 0.5 + b, d, 0, 1 - d, 0.5 + b, 0.9921875 + c - b, -d, 0, 1 - d, 0.5 - b, 0.9921875 + c - b, -1 + d, 0, d, 0 + c + b, 0.5 + b, -1 + d, 0, -d, 0 + c + b, 0.5 - b, 1, 0, 0, 0.9921875 + c - e, 0.49609375 + c, 0, 0, 1, 0.49609375 + c, 0.9921875 + c - e, -1, 0, 0, 0 + c + e, 0.49609375 + c, 0, 0, -1, 0.49609375 + c, 0 + c + e, 0, 1, 0, 0.49609375 + c - e, 0.49609375 + c, 0, 1, 0, 0.49609375 + c, 0.49609375 + c - e, 0, 1, 0, 0.49609375 + c + e, 0.49609375 + c, 0, 1, 0, 0.49609375 + c, 0.49609375 + c + e]),
+                a.bufferData(a.ARRAY_BUFFER, c, a.STATIC_DRAW),
+                a.bindBuffer(a.ARRAY_BUFFER, null),
+                this.indexBuffer = a.createBuffer(),
+                a.bindBuffer(a.ELEMENT_ARRAY_BUFFER, this.indexBuffer),
+                c = new Uint16Array([2, 1, 6, 3, 2, 7, 8, 4, 3, 4, 5, 1, 9, 14, 15, 17, 10, 16, 18, 19, 11, 20, 13, 12, 28, 12, 13, 13, 24, 28, 28, 24, 9, 9, 24, 14, 25, 9, 15, 25, 15, 21, 10, 25, 21, 10, 21, 16, 22, 26, 10, 22, 10, 17, 18, 11, 26, 22, 18, 26, 19, 23, 27, 19, 27, 11, 23, 20, 27, 27, 20, 12]),
+                this.skyIndexCount = c.length,
+                a.bufferData(a.ELEMENT_ARRAY_BUFFER, c, a.STATIC_DRAW),
+                a.bindBuffer(a.ELEMENT_ARRAY_BUFFER, null),
+                3 == this.backgroundMode)
                 for (this.backgroundCoefficients = new Float32Array(this.diffuseCoefficients),
-                g = 0; g < this.backgroundCoefficients.length; ++g)
+                    g = 0; g < this.backgroundCoefficients.length; ++g)
                     this.backgroundCoefficients[g] *= this.backgroundBrightness;
             else {
-                this.backgroundTexture = new Texture(a,{
+                this.backgroundTexture = new Texture(a, {
                     width: 256,
                     height: 256,
                     clamp: !0
@@ -5033,19 +5033,19 @@ marmoset = {};
                 c = !1;
                 var k;
                 a.ext.textureHalf && a.ext.textureHalfLinear && (this.backgroundTexture.loadArray(null, a.RGB, a.ext.textureHalf.HALF_FLOAT_OES),
-                k = new Framebuffer(a,{
-                    color0: this.backgroundTexture
-                }),
-                c = k.valid);
+                    k = new Framebuffer(a, {
+                        color0: this.backgroundTexture
+                    }),
+                    c = k.valid);
                 !c && a.ext.textureFloat && a.ext.textureFloatLinear && !a.hints.mobile && (this.backgroundTexture.loadArray(null, a.RGB, a.FLOAT),
-                k = new Framebuffer(a,{
-                    color0: this.backgroundTexture
-                }),
-                c = k.valid);
+                    k = new Framebuffer(a, {
+                        color0: this.backgroundTexture
+                    }),
+                    c = k.valid);
                 c || (this.backgroundTexture.loadArray(),
-                k = new Framebuffer(a,{
-                    color0: this.backgroundTexture
-                }));
+                    k = new Framebuffer(a, {
+                        color0: this.backgroundTexture
+                    }));
                 k.bind();
                 k = new Shader(a);
                 k.build("precision highp float; varying vec2 tc; attribute vec4 p; void main(){ gl_Position=p; tc=vec2(0.5,0.5/8.0)*p.xy+vec2(0.5,6.5/8.0); }", "precision highp float; varying vec2 tc; uniform sampler2D tex; uniform float b; void main(){vec4 s=texture2D(tex,tc); gl_FragColor.xyz=s.xyz*(b*s.w);}");
@@ -5062,7 +5062,7 @@ marmoset = {};
                 a.disableVertexAttribArray(k.attribs.p)
             }
     }
-    Sky.prototype.setClearColor = function() {
+    Sky.prototype.setClearColor = function () {
         if (marmoset.transparentBackground)
             this.gl.clearColor(0, 0, 0, 0);
         else if (1 > this.backgroundMode) {
@@ -5071,15 +5071,15 @@ marmoset = {};
         } else
             this.gl.clearColor(0.0582, 0.06772, 0.07805, 1)
     }
-    ;
-    Sky.prototype.draw = function(a) {
+        ;
+    Sky.prototype.draw = function (a) {
         if (1 > this.backgroundMode || marmoset.transparentBackground)
             return !1;
         if (this.complete()) {
             var b = this.gl
-              , c = this.backgroundShader
-              , d = a.view
-              , e = a.lights.invMatrix;
+                , c = this.backgroundShader
+                , d = a.view
+                , e = a.lights.invMatrix;
             c.bind();
             b.uniformMatrix4fv(c.params.uInverseSkyMatrix, !1, e);
             b.uniformMatrix4fv(c.params.uViewProjection, !1, d.viewProjectionMatrix);
@@ -5093,7 +5093,7 @@ marmoset = {};
             b.vertexAttribPointer(c.attribs.vTexCoord, 2, b.FLOAT, !1, 20, 12);
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             1 > a && (b.enable(b.BLEND),
-            b.blendFunc(b.SRC_ALPHA, b.ONE_MINUS_SRC_ALPHA));
+                b.blendFunc(b.SRC_ALPHA, b.ONE_MINUS_SRC_ALPHA));
             b.depthMask(!1);
             b.disable(b.DEPTH_TEST);
             b.drawElements(b.TRIANGLES, this.skyIndexCount, b.UNSIGNED_SHORT, 0);
@@ -5104,11 +5104,11 @@ marmoset = {};
             b.disableVertexAttribArray(c.attribs.vTexCoord)
         }
     }
-    ;
-    Sky.prototype.complete = function() {
+        ;
+    Sky.prototype.complete = function () {
         return this.backgroundShader && !this.backgroundShader.complete() ? !1 : this.specularTexture.complete()
     }
-    ;
+        ;
     function StripData() {
         this.STRIP_NONE = -2;
         this.STRIP_MENU = -1;
@@ -5121,47 +5121,47 @@ marmoset = {};
         this.timestamp = Date.now();
         this.update(!0)
     }
-    StripData.expDecay = function(a, b) {
+    StripData.expDecay = function (a, b) {
         return Math.exp(-0.69314718 / a * b)
     }
-    ;
-    StripData.prototype.update = function(a) {
+        ;
+    StripData.prototype.update = function (a) {
         var b = 0.001 * (Date.now() - this.timestamp);
         this.timestamp = Date.now();
         for (var c = !1, d = 0; d < this.stripCount; ++d) {
             var e = 0
-              , e = this.selectedStrip == this.STRIP_MENU ? -0.9 + 0.3 * (d + 1) : 0 > this.selectedStrip || d < this.selectedStrip ? -2 : 2;
+                , e = this.selectedStrip == this.STRIP_MENU ? -0.9 + 0.3 * (d + 1) : 0 > this.selectedStrip || d < this.selectedStrip ? -2 : 2;
             if (a)
                 this.strips[d] = e;
             else {
                 var f = e - this.strips[d]
-                  , f = f * StripData.expDecay(0.05, b);
+                    , f = f * StripData.expDecay(0.05, b);
                 this.animationActive && (this.strips[d] = e - f);
                 c = c || 0.001 < Math.abs(f)
             }
         }
         this.animationActive = c
     }
-    ;
-    StripData.prototype.active = function() {
+        ;
+    StripData.prototype.active = function () {
         return this.selectedStrip >= this.STRIP_MENU
     }
-    ;
-    StripData.prototype.activeFade = function() {
+        ;
+    StripData.prototype.activeFade = function () {
         var a = (this.strips[this.stripCount - 1] - -2) / (-0.9 + 0.3 * this.stripCount - -2)
-          , a = 1 < a ? 1 : a;
+            , a = 1 < a ? 1 : a;
         return 0 > a ? 0 : a
     }
-    ;
-    StripData.prototype.activeWireframe = function() {
+        ;
+    StripData.prototype.activeWireframe = function () {
         return this.active() && 0.01 < Math.abs(this.strips[4] - this.strips[3])
     }
-    ;
-    StripData.prototype.toggleMenu = function() {
+        ;
+    StripData.prototype.toggleMenu = function () {
         this.selectedStrip = this.selectedStrip == this.STRIP_MENU ? this.STRIP_NONE : this.STRIP_MENU
     }
-    ;
-    StripData.prototype.selectStrip = function(a, b) {
+        ;
+    StripData.prototype.selectStrip = function (a, b) {
         if (this.selectedStrip == this.STRIP_MENU) {
             var c = a + b * this.stripSlant;
             this.selectedStrip = this.STRIP_NONE;
@@ -5173,7 +5173,7 @@ marmoset = {};
         } else
             this.selectedStrip = this.STRIP_MENU
     }
-    ;
+        ;
     function Texture(a, b) {
         this.gl = a;
         this.id = null;
@@ -5191,10 +5191,10 @@ marmoset = {};
             nofilter: b.nofilter
         }
     }
-    Texture.prototype.loadImage = function(a, b) {
+    Texture.prototype.loadImage = function (a, b) {
         var c = this.gl;
         a && a.width && a.height && (this.desc.width = a.width,
-        this.desc.height = a.height);
+            this.desc.height = a.height);
         this.id = c.createTexture();
         c.bindTexture(this.type, this.id);
         this.format = b || c.RGBA;
@@ -5204,8 +5204,8 @@ marmoset = {};
         this.setParams();
         c.bindTexture(this.type, null)
     }
-    ;
-    Texture.prototype.loadArray = function(a, b, c) {
+        ;
+    Texture.prototype.loadArray = function (a, b, c) {
         var d = this.gl;
         this.id = d.createTexture();
         d.bindTexture(this.type, this.id);
@@ -5216,36 +5216,36 @@ marmoset = {};
         this.setParams();
         d.bindTexture(this.type, null)
     }
-    ;
-    Texture.prototype.setParams = function() {
+        ;
+    Texture.prototype.setParams = function () {
         var a = this.gl
-          , b = function(a) {
-            return 0 < a && 0 == (a & a - 1)
-        };
+            , b = function (a) {
+                return 0 < a && 0 == (a & a - 1)
+            };
         b(this.desc.width) && b(this.desc.height) || (this.desc.clamp = !0,
-        this.desc.mipmap = !1);
+            this.desc.mipmap = !1);
         b = !this.desc.nofilter;
         this.desc.mipmap ? (a.generateMipmap(this.type),
-        a.texParameteri(this.type, a.TEXTURE_MIN_FILTER, b ? a.LINEAR_MIPMAP_LINEAR : a.NEAREST_MIPMAP_NEAREST)) : a.texParameteri(this.type, a.TEXTURE_MIN_FILTER, b ? a.LINEAR : a.NEAREST);
+            a.texParameteri(this.type, a.TEXTURE_MIN_FILTER, b ? a.LINEAR_MIPMAP_LINEAR : a.NEAREST_MIPMAP_NEAREST)) : a.texParameteri(this.type, a.TEXTURE_MIN_FILTER, b ? a.LINEAR : a.NEAREST);
         a.texParameteri(this.type, a.TEXTURE_MAG_FILTER, b ? a.LINEAR : a.NEAREST);
         if (this.desc.clamp || this.desc.mirror)
             b = this.desc.clamp ? a.CLAMP_TO_EDGE : a.MIRRORED_REPEAT,
-            a.texParameteri(this.type, a.TEXTURE_WRAP_S, b),
-            a.texParameteri(this.type, a.TEXTURE_WRAP_T, b);
+                a.texParameteri(this.type, a.TEXTURE_WRAP_S, b),
+                a.texParameteri(this.type, a.TEXTURE_WRAP_T, b);
         this.desc.aniso && a.ext.textureAniso && a.texParameteri(this.type, a.ext.textureAniso.TEXTURE_MAX_ANISOTROPY_EXT, this.desc.aniso)
     }
-    ;
-    Texture.prototype.rebuildMips = function() {
+        ;
+    Texture.prototype.rebuildMips = function () {
         this.desc.mipmap && (this.gl.bindTexture(this.type, this.id),
-        this.gl.generateMipmap(this.type))
+            this.gl.generateMipmap(this.type))
     }
-    ;
-    Texture.prototype.copyColorBuffer = function() {
+        ;
+    Texture.prototype.copyColorBuffer = function () {
         this.gl.bindTexture(this.type, this.id);
         this.gl.copyTexSubImage2D(this.type, 0, 0, 0, 0, 0, this.desc.width, this.desc.height)
     }
-    ;
-    Texture.prototype.bind = function(a) {
+        ;
+    Texture.prototype.bind = function (a) {
         if (a) {
             var b = this.gl;
             b.uniform1i(a.location, a.unit);
@@ -5253,62 +5253,62 @@ marmoset = {};
             b.bindTexture(this.type, this.id)
         }
     }
-    ;
-    Texture.prototype.destroy = function() {
+        ;
+    Texture.prototype.destroy = function () {
         this.gl.deleteTexture(this.id);
         this.id = null
     }
-    ;
-    Texture.prototype.complete = function() {
+        ;
+    Texture.prototype.complete = function () {
         return !!this.id
     }
-    ;
+        ;
     function TextureCache(a) {
         this.gl = a;
         this.cache = []
     }
-    TextureCache.prototype.fromURL = function(a, b) {
+    TextureCache.prototype.fromURL = function (a, b) {
         var c = this.cache[a];
         if (void 0 !== c)
             return c;
-        var d = new Texture(this.gl,b);
-        Network.fetchImage(a, function(a) {
+        var d = new Texture(this.gl, b);
+        Network.fetchImage(a, function (a) {
             d.loadImage(a)
         });
         return this.cache[a] = d
     }
-    ;
-    TextureCache.prototype.fromFile = function(a, b) {
+        ;
+    TextureCache.prototype.fromFile = function (a, b) {
         if (!a)
             return null;
         var c = this.cache[a.name];
         if (void 0 !== c)
             return c;
-        var d = new Texture(this.gl,b);
+        var d = new Texture(this.gl, b);
         this.cache[a.name] = d;
-        TextureCache.parseFile(a, function(a) {
+        TextureCache.parseFile(a, function (a) {
             d.loadImage(a);
             TextureCache.closeImage(a)
         });
         return d
     }
-    ;
-    TextureCache.prototype.fromFilesMergeAlpha = function(a, b, c) {
+        ;
+    TextureCache.prototype.fromFilesMergeAlpha = function (a, b, c) {
         if (!b)
             return this.fromFile(a, c);
         var d = a.name + "|" + b.name
-          , e = this.cache[d];
+            , e = this.cache[d];
         if (void 0 !== e)
             return e;
         var f = this.gl;
         this.blitShader || (this.blitShader = new Shader(this.gl),
-        this.blitShader.build("precision highp float; varying vec2 c; attribute vec2 pos; void main(){ gl_Position.xy = 2.0*pos-vec2(1.0); gl_Position.zw = vec2(0.5,1.0); c=pos; }", "precision highp float; varying vec2 c; uniform sampler2D tTex; void main(){ gl_FragColor=texture2D(tTex,c).rgbr; }"),
-        this.mergeVerts = f.createBuffer(),
-        f.bindBuffer(f.ARRAY_BUFFER, this.mergeVerts),
-        e = new Float32Array([0, 0, 2, 0, 0, 2]),
-        f.bufferData(f.ARRAY_BUFFER, e, f.STATIC_DRAW),
-        f.bindBuffer(f.ARRAY_BUFFER, null));
-        var g = function(a) {
+            this.blitShader.build("precision highp float; varying vec2 c; attribute vec2 pos; void main(){ gl_Position.xy = 2.0*pos-vec2(1.0); gl_Position.zw = vec2(0.5,1.0); c=pos; }", "precision highp float; varying vec2 c; uniform sampler2D tTex; void main(){ gl_FragColor=texture2D(tTex,c).rgbr; }"),
+            this.mergeVerts = f.createBuffer(),
+            f.bindBuffer(f.ARRAY_BUFFER, this.mergeVerts),
+            e = new Float32Array([0, 0, 2, 0, 0, 2]),
+            f.bufferData(f.ARRAY_BUFFER, e, f.STATIC_DRAW),
+            f.bindBuffer(f.ARRAY_BUFFER, null));
+        var g = function (a) {
             this.blitShader.bind();
             a.bind(this.blitShader.samplers.tTex);
             f.bindBuffer(f.ARRAY_BUFFER, this.mergeVerts);
@@ -5318,117 +5318,117 @@ marmoset = {};
             f.disableVertexAttribArray(this.blitShader.attribs.pos);
             f.bindBuffer(f.ARRAY_BUFFER, null)
         }
-        .bind(this)
-          , h = new Texture(this.gl,c);
+            .bind(this)
+            , h = new Texture(this.gl, c);
         this.cache[d] = h;
         var k = 0
-          , l = 0
-          , n = function() {
-            if (k && l) {
-                var a, b;
-                l.width * l.height > k.width * k.height ? (a = l.width,
-                b = l.height) : (a = k.width,
-                b = k.height);
-                h.desc.width = a;
-                h.desc.height = b;
-                if (a <= f.limits.viewportSizes[0] && b <= f.limits.viewportSizes[1]) {
-                    var c = {
-                        clamp: !0
-                    };
-                    k.width == a && k.height == b ? (h.loadImage(k, f.RGBA),
-                    a = new Framebuffer(f,{
-                        color0: h,
-                        ignoreStatus: !0
-                    }),
-                    TextureCache.closeImage(k)) : (b = new Texture(f,c),
-                    b.loadImage(k, f.RGB),
-                    TextureCache.closeImage(k),
-                    h.loadArray(null),
-                    a = new Framebuffer(f,{
-                        color0: h,
-                        ignoreStatus: !0
-                    }),
-                    a.bind(),
-                    g(b),
-                    b.destroy());
-                    b = new Texture(f,c);
-                    b.loadImage(l, f.RGB);
-                    TextureCache.closeImage(l);
-                    a.bind();
-                    f.colorMask(!1, !1, !1, !0);
-                    g(b);
-                    f.colorMask(!0, !0, !0, !0);
-                    b.destroy();
-                    Framebuffer.bindNone(f);
-                    h.rebuildMips()
-                } else {
-                    c = document.createElement("canvas");
-                    c.width = a;
-                    c.height = b;
-                    var d = c.getContext("2d");
-                    d.drawImage(k, 0, 0);
-                    TextureCache.closeImage(k);
-                    c = d.getImageData(0, 0, a, b);
-                    c = new Uint8Array(c.data.buffer,c.data.byteOffset,c.data.length);
-                    d.drawImage(l, 0, 0);
-                    TextureCache.closeImage(l);
-                    d = d.getImageData(0, 0, a, b).data;
-                    a = a * b * 4;
-                    for (b = 0; b < a; b += 4)
-                        c[b + 3] = d[b];
-                    h.loadArray(c)
+            , l = 0
+            , n = function () {
+                if (k && l) {
+                    var a, b;
+                    l.width * l.height > k.width * k.height ? (a = l.width,
+                        b = l.height) : (a = k.width,
+                            b = k.height);
+                    h.desc.width = a;
+                    h.desc.height = b;
+                    if (a <= f.limits.viewportSizes[0] && b <= f.limits.viewportSizes[1]) {
+                        var c = {
+                            clamp: !0
+                        };
+                        k.width == a && k.height == b ? (h.loadImage(k, f.RGBA),
+                            a = new Framebuffer(f, {
+                                color0: h,
+                                ignoreStatus: !0
+                            }),
+                            TextureCache.closeImage(k)) : (b = new Texture(f, c),
+                                b.loadImage(k, f.RGB),
+                                TextureCache.closeImage(k),
+                                h.loadArray(null),
+                                a = new Framebuffer(f, {
+                                    color0: h,
+                                    ignoreStatus: !0
+                                }),
+                                a.bind(),
+                                g(b),
+                                b.destroy());
+                        b = new Texture(f, c);
+                        b.loadImage(l, f.RGB);
+                        TextureCache.closeImage(l);
+                        a.bind();
+                        f.colorMask(!1, !1, !1, !0);
+                        g(b);
+                        f.colorMask(!0, !0, !0, !0);
+                        b.destroy();
+                        Framebuffer.bindNone(f);
+                        h.rebuildMips()
+                    } else {
+                        c = document.createElement("canvas");
+                        c.width = a;
+                        c.height = b;
+                        var d = c.getContext("2d");
+                        d.drawImage(k, 0, 0);
+                        TextureCache.closeImage(k);
+                        c = d.getImageData(0, 0, a, b);
+                        c = new Uint8Array(c.data.buffer, c.data.byteOffset, c.data.length);
+                        d.drawImage(l, 0, 0);
+                        TextureCache.closeImage(l);
+                        d = d.getImageData(0, 0, a, b).data;
+                        a = a * b * 4;
+                        for (b = 0; b < a; b += 4)
+                            c[b + 3] = d[b];
+                        h.loadArray(c)
+                    }
+                    TextureCache.closeImage(l)
                 }
-                TextureCache.closeImage(l)
             }
-        }
-        .bind(this);
-        TextureCache.parseFile(a, function(a) {
+                .bind(this);
+        TextureCache.parseFile(a, function (a) {
             k = a;
             n()
         });
-        TextureCache.parseFile(b, function(a) {
+        TextureCache.parseFile(b, function (a) {
             l = a;
             n()
         });
         return h
     }
-    ;
-    TextureCache.parseFile = function(a, b, c) {
+        ;
+    TextureCache.parseFile = function (a, b, c) {
         var d = c || new Image;
         if ("undefined" != typeof URL && "undefined" != typeof URL.createObjectURL) {
-            a = new Blob([a.data],{
+            a = new Blob([a.data], {
                 type: a.type
             });
             var e = URL.createObjectURL(a);
-            d.onload = function() {
+            d.onload = function () {
                 URL.revokeObjectURL(e);
                 b && b(d)
             }
-            ;
+                ;
             d.src = e
         } else {
-            a = new Blob([a.data],{
+            a = new Blob([a.data], {
                 type: a.type
             });
             var f = new FileReader;
-            f.onload = function(a) {
+            f.onload = function (a) {
                 d.src = f.result
             }
-            ;
-            d.onload = function() {
+                ;
+            d.onload = function () {
                 b && b(d)
             }
-            ;
+                ;
             f.readAsDataURL(a)
         }
     }
-    ;
-    TextureCache.closeImage = function(a) {
+        ;
+    TextureCache.closeImage = function (a) {
         a && 256 < a.width * a.height && (a.onload = null,
-        a.onerror = null,
-        a.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D")
+            a.onerror = null,
+            a.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D")
     }
-    ;
+        ;
     function TimelineSlider(a, b) {
         this.name = "none";
         this.debugString = "";
@@ -5451,7 +5451,7 @@ marmoset = {};
         this.guiScreen = a;
         b.addImageElement(this.knobControlRect, "animationknob" + a.imageSetNumber + "x.png")
     }
-    TimelineSlider.prototype.setBackground3x1 = function(a, b, c, d) {
+    TimelineSlider.prototype.setBackground3x1 = function (a, b, c, d) {
         var e = 8 / this.controlRect.getScreenHeight();
         this.backgroundControl = a.addTextButton("", 0, (1 - e) / 2, 1, e, 1);
         this.backgroundControl.defaultAlpha = 1;
@@ -5461,8 +5461,8 @@ marmoset = {};
         this.controlRect.linkedControl.style.zIndex = "3";
         this.setupCallbacks()
     }
-    ;
-    TimelineSlider.prototype.setSize = function(a, b) {
+        ;
+    TimelineSlider.prototype.setSize = function (a, b) {
         this.pixelsX = a;
         this.pixelsY = b;
         var c = 24 / b;
@@ -5476,41 +5476,41 @@ marmoset = {};
         this.backgroundControl.controlRect.widthPercent = this.controlRect.widthPercent;
         this.backgroundControl.controlRect.updateElement()
     }
-    ;
-    TimelineSlider.prototype.setSliderPercent = function(a) {
+        ;
+    TimelineSlider.prototype.setSliderPercent = function (a) {
         0 > a && (a = 0);
         1 < a && (a = 1);
         this.sliderPercent = a;
         this.knobControlRect.xPercent = a - this.knobWidthPercent / 2;
         this.knobControlRect.updateElement()
     }
-    ;
-    TimelineSlider.prototype.setupCallbacks = function() {
-        var a = function(a) {
+        ;
+    TimelineSlider.prototype.setupCallbacks = function () {
+        var a = function (a) {
             if (this.draggingSlider) {
                 var b = this.backgroundControl.controlRect.linkedControl.getBoundingClientRect();
                 this.setSliderPercent((a.clientX - b.left) / b.width);
                 this.guiScreen.ui.viewer.scene.sceneAnimator.setAnimationProgress(this.sliderPercent, !0);
                 this.guiScreen.ui.viewer.scene.sceneAnimator.paused && (this.guiScreen.ui.viewer.scene.postRender.discardAAHistory(),
-                this.guiScreen.ui.viewer.reDrawScene())
+                    this.guiScreen.ui.viewer.reDrawScene())
             }
         }
-        .bind(this)
-          , b = function(a) {
-            this.draggingSlider = !0;
-            var b = this.backgroundControl.controlRect.linkedControl.getBoundingClientRect();
-            this.setSliderPercent((a.clientX - b.left) / b.width);
-            this.guiScreen.ui.viewer.scene.sceneAnimator.setAnimationProgress(this.sliderPercent, !0);
-            this.guiScreen.ui.viewer.scene.sceneAnimator.lockPlayback = !0;
-            this.guiScreen.ui.viewer.scene.sceneAnimator.paused && (this.guiScreen.ui.viewer.scene.postRender.discardAAHistory(),
-            this.guiScreen.ui.viewer.reDrawScene())
-        }
-        .bind(this)
-          , c = function(a) {
-            this.draggingSlider = !1;
-            this.guiScreen.ui.viewer.scene.sceneAnimator.lockPlayback = !1
-        }
-        .bind(this);
+            .bind(this)
+            , b = function (a) {
+                this.draggingSlider = !0;
+                var b = this.backgroundControl.controlRect.linkedControl.getBoundingClientRect();
+                this.setSliderPercent((a.clientX - b.left) / b.width);
+                this.guiScreen.ui.viewer.scene.sceneAnimator.setAnimationProgress(this.sliderPercent, !0);
+                this.guiScreen.ui.viewer.scene.sceneAnimator.lockPlayback = !0;
+                this.guiScreen.ui.viewer.scene.sceneAnimator.paused && (this.guiScreen.ui.viewer.scene.postRender.discardAAHistory(),
+                    this.guiScreen.ui.viewer.reDrawScene())
+            }
+                .bind(this)
+            , c = function (a) {
+                this.draggingSlider = !1;
+                this.guiScreen.ui.viewer.scene.sceneAnimator.lockPlayback = !1
+            }
+                .bind(this);
         this.guiScreen.ui.viewer.input.element.addEventListener("mousemove", a);
         this.guiScreen.ui.viewer.input.element.addEventListener("mouseup", c);
         this.backgroundControl.controlRect.linkedControl.addEventListener("mousemove", a);
@@ -5518,7 +5518,7 @@ marmoset = {};
         this.backgroundControl.controlRect.linkedControl.addEventListener("mouseup", c);
         this.controlRect.linkedControl.addEventListener("mouseup", c)
     }
-    ;
+        ;
     function UI(a) {
         this.viewer = a;
         this.stripData = a.stripData;
@@ -5533,16 +5533,16 @@ marmoset = {};
         this.viewer.domRoot.appendChild(a);
         this.guiScreen = new GUIScreen(this)
     }
-    UI.prototype.setSize = function(a, b) {
+    UI.prototype.setSize = function (a, b) {
         this.container.width = a | 0;
         this.container.height = b | 0;
         this.container.style.width = a + "px";
         this.container.style.height = b + "px";
         this.guiScreen.setSize(this.container.width, this.container.height)
     }
-    ;
-    UI.prototype.clearView = function() {
-        for (; this.container.hasChildNodes(); )
+        ;
+    UI.prototype.clearView = function () {
+        for (; this.container.hasChildNodes();)
             this.container.removeChild(this.container.childNodes[0]);
         delete this.progressBar;
         delete this.thumbnail;
@@ -5550,32 +5550,32 @@ marmoset = {};
         delete this.playButton;
         delete this.helpOverlay
     }
-    ;
-    UI.prototype.bindInput = function(a) {
-        a.onSingleTap.push(function(b, c) {
+        ;
+    UI.prototype.bindInput = function (a) {
+        a.onSingleTap.push(function (b, c) {
             this.stripData.selectedStrip != this.stripData.STRIP_NONE && (b = 2 / a.element.clientWidth * b - 1,
-            c = 1 - 2 / a.element.clientHeight * c,
-            this.stripData.selectStrip(b, c),
-            this.stripData.selectedStrip == this.stripData.STRIP_MENU && this.helpOverlay.active && this.helpOverlay.toggle(),
-            this.refreshUI(),
-            this.viewer.wake())
+                c = 1 - 2 / a.element.clientHeight * c,
+                this.stripData.selectStrip(b, c),
+                this.stripData.selectedStrip == this.stripData.STRIP_MENU && this.helpOverlay.active && this.helpOverlay.toggle(),
+                this.refreshUI(),
+                this.viewer.wake())
         }
-        .bind(this))
+            .bind(this))
     }
-    ;
-    UI.sanitize = function(a) {
+        ;
+    UI.sanitize = function (a) {
         return a ? a.replace(/<|>|\(|\)|$|%|=/g, "") : a
     }
-    ;
-    UI.sanitizeURL = function(a) {
+        ;
+    UI.sanitizeURL = function (a) {
         return a ? 0 == a.indexOf("http://") || 0 == a.indexOf("https://") || 0 == a.indexOf("ftp://") ? encodeURI(a) : "http://" + encodeURI(a) : a
     }
-    ;
-    UI.prototype.showFailure = function(a) {
+        ;
+    UI.prototype.showFailure = function (a) {
         this.container.innerHTML = '<br><br><br><p style="text-align:center;color:#aaaaaa"><b>Marmoset Viewer could not initialize.</b><br><i>' + (a || "") + "</i>"
     }
-    ;
-    UI.prototype.showPreview = function(a) {
+        ;
+    UI.prototype.showPreview = function (a) {
         this.clearView();
         this.thumbnail = document.createElement("canvas");
         var b = this.container.width / this.container.height;
@@ -5583,7 +5583,7 @@ marmoset = {};
         this.thumbnail.width = this.thumbnail.height * b | 0;
         this.thumbnail.style.width = this.thumbnail.style.height = "100%";
         var b = this.thumbnail.getContext("2d")
-          , c = b.fillStyle = b.createRadialGradient(this.thumbnail.width / 2, this.thumbnail.height / 2, (this.thumbnail.width + this.thumbnail.height) / 2, this.thumbnail.width / 2, 0, 0);
+            , c = b.fillStyle = b.createRadialGradient(this.thumbnail.width / 2, this.thumbnail.height / 2, (this.thumbnail.width + this.thumbnail.height) / 2, this.thumbnail.width / 2, 0, 0);
         c.addColorStop(0, "rgb(0,0,0)");
         c.addColorStop(1, "rgb(150,150,150)");
         b.fillStyle = c;
@@ -5598,24 +5598,24 @@ marmoset = {};
         this.playButton.style["-webkit-transform"] = this.playButton.style.transform = "translate(-50%,-50%) scale(0.5,0.5)";
         this.playButton.style.opacity = 0.5;
         this.playButton.style.outline = "0px";
-        this.playButton.onclick = function() {
+        this.playButton.onclick = function () {
             this.viewer.loadScene(this.viewer.sceneURL);
             this.container.removeChild(this.playButton);
             delete this.playButton
         }
-        .bind(this);
+            .bind(this);
         this.container.appendChild(this.playButton);
-        a || fetchThumbnail(this.viewer.sceneURL, function(a) {
+        a || fetchThumbnail(this.viewer.sceneURL, function (a) {
             this.loadingImageURL || this.setThumbnail(a)
         }
-        .bind(this))
+            .bind(this))
     }
-    ;
-    UI.prototype.setThumbnailURL = function(a) {
+        ;
+    UI.prototype.setThumbnailURL = function (a) {
         (this.loadingImageURL = a) && Network.fetchImage(this.loadingImageURL, this.setThumbnail.bind(this))
     }
-    ;
-    UI.prototype.setThumbnail = function(a) {
+        ;
+    UI.prototype.setThumbnail = function (a) {
         if (this.thumbnail)
             if (a.height >= this.container.height) {
                 var b = this.container.height / a.height;
@@ -5628,9 +5628,9 @@ marmoset = {};
                 this.thumbnail = a
             } else {
                 var c = this.thumbnail.getContext("2d")
-                  , d = this.thumbnail.width
-                  , e = this.thumbnail.height
-                  , b = e / a.height;
+                    , d = this.thumbnail.width
+                    , e = this.thumbnail.height
+                    , b = e / a.height;
                 c.drawImage(a, (d - a.width * b) / 2, 0, a.width * b, e);
                 var f;
                 try {
@@ -5645,11 +5645,11 @@ marmoset = {};
                             for (var p = 0, r = 0, s = 0, u = -2; 2 >= u; ++u)
                                 for (var q = n + u, q = 0 > q ? 0 : q >= e ? e - 1 : q, x = -2; 2 >= x; ++x)
                                     var w = m + x
-                                      , w = 0 > w ? 0 : w >= d ? d - 1 : w
-                                      , w = 4 * (q * d + w)
-                                      , p = p + b[w]
-                                      , r = r + b[w + 1]
-                                      , s = s + b[w + 2];
+                                        , w = 0 > w ? 0 : w >= d ? d - 1 : w
+                                        , w = 4 * (q * d + w)
+                                        , p = p + b[w]
+                                        , r = r + b[w + 1]
+                                        , s = s + b[w + 2];
                             k[l++] = p / 25;
                             k[l++] = r / 25;
                             k[l++] = s / 25;
@@ -5662,19 +5662,19 @@ marmoset = {};
                 c.putImageData(f, 0, 0)
             }
     }
-    ;
-    UI.prototype.showActiveView = function() {
+        ;
+    UI.prototype.showActiveView = function () {
         var a = this.thumbnail;
         this.clearView();
         a && (this.fadeThumbnail = a,
-        this.fadeThumbnail.style.opacity = 1,
-        this.container.appendChild(this.fadeThumbnail));
+            this.fadeThumbnail.style.opacity = 1,
+            this.container.appendChild(this.fadeThumbnail));
         if (!marmoset.noUserInterface) {
             void 0 === marmoset.largeUI && (marmoset.largeUI = this.viewer.mobile);
             450 > this.container.width && (marmoset.largeUI = !1);
             var b = FullScreen.support()
-              , b = !0
-              , a = 1;
+                , b = !0
+                , a = 1;
             window.devicePixelRatio && (2 < window.devicePixelRatio ? a = 4 : 1 < window.devicePixelRatio && (a = 2));
             marmoset.largeUI && 4 > a && (a *= 2);
             var c = marmoset.largeUI ? 0.3 : 0.5;
@@ -5722,25 +5722,25 @@ marmoset = {};
             f.style.border = "0px";
             f.style.outline = "0px";
             f.style.opacity = c;
-            f.onmouseover = function() {
+            f.onmouseover = function () {
                 this.style.opacity = 1
             }
-            .bind(f);
-            f.onmouseout = function() {
+                .bind(f);
+            f.onmouseout = function () {
                 this.style.opacity = c
             }
-            .bind(f);
-            f.onclick = function(a) {
+                .bind(f);
+            f.onclick = function (a) {
                 window.open("http://www.marmoset.co/viewer?utm_source=inapp&utm_medium=menu&utm_campaign=viewer", "_blank");
                 this.style.opacity = c
             }
-            .bind(f, this);
+                .bind(f, this);
             d = new XMLHttpRequest;
             d.open("HEAD", f.src, !0);
-            d.onload = function(a) {
+            d.onload = function (a) {
                 this.logo.appendChild(a)
             }
-            .bind(this, f);
+                .bind(this, f);
             d.send();
             this.sigCluster.appendChild(this.logo);
             d = this.viewer.scene.metaData;
@@ -5749,13 +5749,13 @@ marmoset = {};
             d.author = UI.sanitize(d.author);
             d.link = UI.sanitizeURL(d.link);
             var g = d.title && 0 < d.title.length
-              , e = d.subtitle && 0 < d.subtitle.length
-              , f = d.author && 0 < d.author.length
-              , h = d.link && 0 < d.link.length;
+                , e = d.subtitle && 0 < d.subtitle.length
+                , f = d.author && 0 < d.author.length
+                , h = d.link && 0 < d.link.length;
             if (g || e || f) {
                 g || (d.title = "Art");
                 var k = !g && !e
-                  , l = document.createElement("div");
+                    , l = document.createElement("div");
                 l.style.position = "absolute";
                 l.style.right = marmoset.largeUI ? "74px" : "46px";
                 l.style.top = "5px";
@@ -5795,30 +5795,30 @@ marmoset = {};
                 f.style.opacity = 0.5;
                 f.style.textShadow = "1px 1px 2px rgba(0,0,0,0.7)";
                 e && (f.innerHTML = "<br>",
-                f.innerHTML += d.subtitle);
+                    f.innerHTML += d.subtitle);
                 k.appendChild(f);
-                h && (k.onmouseover = function(a, b, c) {
+                h && (k.onmouseover = function (a, b, c) {
                     a.style.opacity = c.style.opacity = 1;
                     b.style.textDecoration = "underline"
                 }
-                .bind(k, l, g, f),
-                k.onmouseout = function(a, b, c) {
-                    a.style.opacity = c.style.opacity = 0.5;
-                    b.style.textDecoration = "none"
-                }
-                .bind(k, l, g, f));
+                    .bind(k, l, g, f),
+                    k.onmouseout = function (a, b, c) {
+                        a.style.opacity = c.style.opacity = 0.5;
+                        b.style.textDecoration = "none"
+                    }
+                        .bind(k, l, g, f));
                 this.sigCluster.appendChild(k);
                 this.sigCluster.sceneTitle = k
             }
             this.container.appendChild(this.sigCluster);
             this.sigCluster.active = !0;
-            this.sigCluster.toggle = function() {
+            this.sigCluster.toggle = function () {
                 this.sceneTitle && this.line && (this.active ? (this.removeChild(this.sceneTitle),
-                this.removeChild(this.line)) : (this.appendChild(this.sceneTitle),
-                this.appendChild(this.line)));
+                    this.removeChild(this.line)) : (this.appendChild(this.sceneTitle),
+                        this.appendChild(this.line)));
                 this.active = !this.active
             }
-            .bind(this.sigCluster);
+                .bind(this.sigCluster);
             this.helpOverlay = document.createElement("div");
             this.helpOverlay.style.pointerEvents = "none";
             this.container.appendChild(this.helpOverlay);
@@ -5826,8 +5826,8 @@ marmoset = {};
             this.hideSigOnStrips = !0;
             g = [8, 8];
             d ? (e = 198 + 2 * g[0],
-            f = 258 + 2 * g[1]) : (e = 354 + 2 * g[0],
-            f = 218 + 2 * g[1]);
+                f = 258 + 2 * g[1]) : (e = 354 + 2 * g[0],
+                    f = 218 + 2 * g[1]);
             h = document.createElement("div");
             h.style.position = "absolute";
             h.style.width = h.style.height = "100%";
@@ -5862,11 +5862,11 @@ marmoset = {};
             f.style.width = f.style.height = marmoset.largeUI ? "32px" : "16px";
             f.style.pointerEvents = "auto";
             f.style.cursor = "pointer";
-            f.onclick = function(a) {
+            f.onclick = function (a) {
                 this.helpOverlay.toggle();
                 this.refreshUI()
             }
-            .bind(this, f);
+                .bind(this, f);
             h.appendChild(f);
             f = document.createElement("center");
             f.style.position = "absolute";
@@ -5919,18 +5919,18 @@ marmoset = {};
             k.style.opacity = 0;
             g.appendChild(k);
             k.targetOpacity = 0;
-            g.onmouseover = function() {
+            g.onmouseover = function () {
                 this.targetOpacity = 0.65
             }
-            .bind(k);
-            g.onmouseout = function() {
+                .bind(k);
+            g.onmouseout = function () {
                 this.targetOpacity = 0
             }
-            .bind(k);
-            window.setInterval(function() {
+                .bind(k);
+            window.setInterval(function () {
                 this.style.opacity = 0.1 * this.targetOpacity + 0.9 * this.style.opacity
             }
-            .bind(k), 20);
+                .bind(k), 20);
             f = document.createElement("img");
             f.src = marmoset.dataLocale + "helptitle.png";
             f.style.position = "absolute";
@@ -5957,37 +5957,37 @@ marmoset = {};
             g.innerHTML = "www.marmoset.co/viewer";
             g.href = "http://www.marmoset.co/viewer?utm_source=inapp&utm_medium=menu&utm_campaign=viewer";
             g.target = "_blank";
-            g.onmouseover = function(a) {
+            g.onmouseover = function (a) {
                 this.style.textDecoration = "underline";
                 a.targetOpacity = 0.65
             }
-            .bind(g, k);
-            g.onmouseout = function(a) {
+                .bind(g, k);
+            g.onmouseout = function (a) {
                 this.style.textDecoration = "none";
                 a.targetOpacity = 0
             }
-            .bind(g, k);
+                .bind(g, k);
             d.appendChild(g);
             this.helpOverlay.active = !1;
-            this.helpOverlay.toggle = function(a) {
+            this.helpOverlay.toggle = function (a) {
                 this.active ? this.removeChild(this.contents) : this.appendChild(this.contents);
                 this.active = !this.active
             }
-            .bind(this.helpOverlay, this.viewer);
+                .bind(this.helpOverlay, this.viewer);
             this.menuCluster = document.createElement("div");
             this.menuCluster.style.position = "absolute";
             this.menuCluster.style.right = marmoset.largeUI ? "4px" : "8px";
             this.menuCluster.style.top = marmoset.largeUI ? "70px" : "40px";
             marmoset.largeUI ? (this.menuCluster.style.width = "72px",
-            this.menuCluster.style.height = "64px") : (this.menuCluster.style.width = "36px",
-            this.menuCluster.style.height = "36px");
+                this.menuCluster.style.height = "64px") : (this.menuCluster.style.width = "36px",
+                    this.menuCluster.style.height = "36px");
             h = document.createElement("div");
             h.style.left = h.style.top = "0px";
             h.style.width = h.style.height = "100%";
             this.menuCluster.contents = h;
             this.menuCluster.appendChild(h);
             d = 0;
-            e = function(a, b, c, d, e) {
+            e = function (a, b, c, d, e) {
                 var f = document.createElement("input");
                 f.type = "image";
                 f.src = marmoset.dataLocale + c;
@@ -5999,87 +5999,87 @@ marmoset = {};
                 f.title = b;
                 f.style.opacity = e;
                 marmoset.largeUI ? (f.style.width = "64px",
-                f.style.height = "48px") : (f.style.width = "32px",
-                f.style.height = "24px");
-                f.onmouseover = function(a) {
+                    f.style.height = "48px") : (f.style.width = "32px",
+                        f.style.height = "24px");
+                f.onmouseover = function (a) {
                     this.style.opacity = a
                 }
-                .bind(f, 1);
-                f.onmouseout = function(a) {
+                    .bind(f, 1);
+                f.onmouseout = function (a) {
                     this.style.opacity = a
                 }
-                .bind(f, e);
-                f.onmouseup = function(a) {
+                    .bind(f, e);
+                f.onmouseup = function (a) {
                     this.style.opacity = a
                 }
-                .bind(f, e);
+                    .bind(f, e);
                 b = new XMLHttpRequest;
                 b.open("HEAD", f.src, !0);
-                b.onload = function(a) {
+                b.onload = function (a) {
                     a.appendChild(this)
                 }
-                .bind(f, a);
+                    .bind(f, a);
                 b.send();
                 return f
             }
-            ;
+                ;
             b && (b = e(this.menuCluster.contents, "Full Screen", "fullscreen" + a + "x.png", d++, c),
-            b.onclick = function(a) {
-                FullScreen.active() ? FullScreen.end() : FullScreen.begin(this.viewer.domRoot, this.viewer.fullscreenChange.bind(this.viewer));
-                a.style.opacity = c;
-                this.refreshUI()
-            }
-            .bind(this, b));
+                b.onclick = function (a) {
+                    FullScreen.active() ? FullScreen.end() : FullScreen.begin(this.viewer.domRoot, this.viewer.fullscreenChange.bind(this.viewer));
+                    a.style.opacity = c;
+                    this.refreshUI()
+                }
+                    .bind(this, b));
             b = e(this.menuCluster.contents, "Layer Views", "strips" + a + "x.png", d++, c);
-            b.onclick = function(a) {
+            b.onclick = function (a) {
                 this.stripData.toggleMenu();
                 this.helpOverlay.active && this.helpOverlay.toggle();
                 this.viewer.wake();
                 this.refreshUI()
             }
-            .bind(this, b);
+                .bind(this, b);
             b = e(this.menuCluster.contents, "Help", "help" + a + "x.png", d++, c);
-            b.onclick = function(a) {
+            b.onclick = function (a) {
                 this.stripData.selectedStrip == this.stripData.STRIP_MENU && this.stripData.toggleMenu();
                 this.helpOverlay.toggle();
                 this.refreshUI()
             }
-            .bind(this, b);
+                .bind(this, b);
             this.guiScreen && this.guiScreen.setupActiveView(this);
             this.container.appendChild(this.menuCluster);
             this.menuCluster.active = !0;
-            this.menuCluster.toggle = function() {
+            this.menuCluster.toggle = function () {
                 this.active ? this.removeChild(this.contents) : this.appendChild(this.contents);
                 this.active = !this.active
             }
-            .bind(this.menuCluster);
+                .bind(this.menuCluster);
             void 0 !== marmoset.hostImage && (marmoset.hostURL && (g = document.createElement("a"),
-            g.href = marmoset.hostURL,
-            g.target = "_blank"),
-            f = document.createElement("img"),
-            f.src = marmoset.hostImage,
-            f.style.position = "absolute",
-            f.style.top = "4px",
-            f.style.left = "4px",
-            f.style.opacity = 0.65,
-            f.style["-webkit-transform"] = f.style.transform = "translate(-50%,-50%) scale(0.5,0.5) translate(50%,50%)",
-            marmoset.hostURL ? (f.onmouseover = function() {
-                this.style.opacity = 1
-            }
-            .bind(f),
-            f.onmouseout = function() {
-                this.style.opacity = 0.5
-            }
-            .bind(f),
-            g.appendChild(f),
-            this.hostLogo = g) : this.hostLogo = f,
-            d = new XMLHttpRequest,
-            d.open("HEAD", f.src, !0),
-            d.onload = function() {
-                this.container.appendChild(this.hostLogo)
-            }
-            .bind(this),
-            d.send());
+                g.href = marmoset.hostURL,
+                g.target = "_blank"),
+                f = document.createElement("img"),
+                f.src = marmoset.hostImage,
+                f.style.position = "absolute",
+                f.style.top = "4px",
+                f.style.left = "4px",
+                f.style.opacity = 0.65,
+                f.style["-webkit-transform"] = f.style.transform = "translate(-50%,-50%) scale(0.5,0.5) translate(50%,50%)",
+                marmoset.hostURL ? (f.onmouseover = function () {
+                    this.style.opacity = 1
+                }
+                    .bind(f),
+                    f.onmouseout = function () {
+                        this.style.opacity = 0.5
+                    }
+                        .bind(f),
+                    g.appendChild(f),
+                    this.hostLogo = g) : this.hostLogo = f,
+                d = new XMLHttpRequest,
+                d.open("HEAD", f.src, !0),
+                d.onload = function () {
+                    this.container.appendChild(this.hostLogo)
+                }
+                    .bind(this),
+                d.send());
             this.sceneStats = document.createElement("text");
             this.sceneStats.style.position = "absolute";
             this.sceneStats.style.left = "9px";
@@ -6089,32 +6089,32 @@ marmoset = {};
             this.sceneStats.style.fontSize = "75%";
             for (d = b = a = 0; d < this.viewer.scene.meshes.length; ++d)
                 e = this.viewer.scene.meshes[d],
-                a += e.indexCount / 3,
-                b += e.vertexCount;
+                    a += e.indexCount / 3,
+                    b += e.vertexCount;
             this.sceneStats.innerHTML = "Triangles: " + (a | 0).toLocaleString() + "<br>Vertices: " + (b | 0).toLocaleString();
             marmoset.showFrameTime && (this.frameTimer = document.createElement("text"),
-            this.frameTimer.style.position = "absolute",
-            this.frameTimer.style.left = this.frameTimer.style.top = "5px",
-            this.frameTimer.style.color = "gray",
-            this.frameTimer.style.fontSize = "75%",
-            this.container.appendChild(this.frameTimer),
-            this.frameTimer.innerHTML = "--",
-            this.frameCount = 1E20);
+                this.frameTimer.style.position = "absolute",
+                this.frameTimer.style.left = this.frameTimer.style.top = "5px",
+                this.frameTimer.style.color = "gray",
+                this.frameTimer.style.fontSize = "75%",
+                this.container.appendChild(this.frameTimer),
+                this.frameTimer.innerHTML = "--",
+                this.frameCount = 1E20);
             this.animateStrips()
         }
     }
-    ;
-    UI.prototype.refreshUI = function() {
+        ;
+    UI.prototype.refreshUI = function () {
         if (this.sigCluster) {
             var a = !1
-              , b = this.stripData.selectedStrip == this.stripData.STRIP_MENU;
+                , b = this.stripData.selectedStrip == this.stripData.STRIP_MENU;
             this.hideSigOnStrips && (a = a || b);
             this.hideSigOnHelp && (a = a || this.helpOverlay.active);
             this.sigCluster.active == a && this.sigCluster.toggle()
         }
     }
-    ;
-    UI.prototype.signalLoadProgress = function(a, b) {
+        ;
+    UI.prototype.signalLoadProgress = function (a, b) {
         if (this.thumbnail) {
             if (!this.progressBar) {
                 var c = document.createElement("div");
@@ -6134,28 +6134,28 @@ marmoset = {};
                 c.appendChild(this.progressBar);
                 this.container.appendChild(c);
                 this.playButton && (this.container.removeChild(this.playButton),
-                delete this.playButton)
+                    delete this.playButton)
             }
             this.progressBar.style.width = 0 >= b ? (100 * a / (2097152 + a) | 0) + "%" : (100 * a / b | 0) + "%"
         }
     }
-    ;
-    UI.prototype.animating = function() {
+        ;
+    UI.prototype.animating = function () {
         return !!this.fadeThumbnail || !!this.frameTimer
     }
-    ;
-    UI.prototype.animate = function() {
+        ;
+    UI.prototype.animate = function () {
         this.fadeThumbnail && (this.fadeThumbnailTimer = this.fadeThumbnailTimer || Date.now(),
-        this.fadeThumbnail.style.opacity = 1 - 0.0015 * (Date.now() - this.fadeThumbnailTimer),
-        0.01 > this.fadeThumbnail.style.opacity && (this.container.removeChild(this.fadeThumbnail),
-        delete this.fadeThumbnail,
-        delete this.fadeThumbnailTimer));
-        if (this.frameTimer && (this.frameCount++,
-        60 <= this.frameCount)) {
+            this.fadeThumbnail.style.opacity = 1 - 0.0015 * (Date.now() - this.fadeThumbnailTimer),
+            0.01 > this.fadeThumbnail.style.opacity && (this.container.removeChild(this.fadeThumbnail),
+                delete this.fadeThumbnail,
+                delete this.fadeThumbnailTimer));
+        if (this.frameTimer && (this.frameCount++ ,
+            60 <= this.frameCount)) {
             var a = (new Date).getTime();
             if (void 0 !== this.frameTime) {
                 var b = (a - this.frameTime) / this.frameCount
-                  , b = Math.floor(100 * b) / 100;
+                    , b = Math.floor(100 * b) / 100;
                 this.frameTimer.innerHTML = b + " ms";
                 this.frameTimer.style.color = 32 > b ? "green" : "red"
             }
@@ -6163,69 +6163,69 @@ marmoset = {};
             this.frameTime = a
         }
         this.guiScreen && this.guiScreen.playbackControls && (a = this.guiScreen.playbackControls.timelineSlider,
-        a.draggingSlider ? this.viewer.scene.sceneAnimator.setAnimationProgress(a.sliderPercent, !0) : a.setSliderPercent(this.viewer.scene.sceneAnimator.animationProgress));
+            a.draggingSlider ? this.viewer.scene.sceneAnimator.setAnimationProgress(a.sliderPercent, !0) : a.setSliderPercent(this.viewer.scene.sceneAnimator.animationProgress));
         if (this.sceneStats) {
             for (var c = b = a = 0; c < this.viewer.scene.meshes.length; ++c)
                 var d = this.viewer.scene.meshes[c]
-                  , a = a + d.indexCount / 3
-                  , b = b + d.vertexCount;
+                    , a = a + d.indexCount / 3
+                    , b = b + d.vertexCount;
             this.sceneStats.innerHTML = "Triangles: " + (a | 0).toLocaleString() + "<br>Vertices: " + (b | 0).toLocaleString();
             this.viewer.scene.sceneAnimator && this.viewer.scene.sceneAnimator.showPlayControls && (this.sceneStats.innerHTML += "<br><br><br><br>");
             a = !!this.sceneStats.parentElement;
             b = this.stripData.active() || !1;
             a && !b ? (this.container.removeChild(this.sceneStats),
-            this.hostLogo && this.container.appendChild(this.hostLogo)) : !a && b && (this.container.appendChild(this.sceneStats),
-            this.hostLogo && this.container.removeChild(this.hostLogo))
+                this.hostLogo && this.container.appendChild(this.hostLogo)) : !a && b && (this.container.appendChild(this.sceneStats),
+                    this.hostLogo && this.container.removeChild(this.hostLogo))
         }
         this.refreshUI();
         if (this.stripData.animationActive || this.stripData.active())
             this.animateStrips(),
-            this.stripData.animationActive && this.viewer.wake()
+                this.stripData.animationActive && this.viewer.wake()
     }
-    ;
-    UI.prototype.animateStrips = function() {
+        ;
+    UI.prototype.animateStrips = function () {
         if (this.stripText)
             for (var a = Math.atan(this.viewer.canvas.height / this.viewer.canvas.width / this.stripData.stripSlant), b = 0; b < this.stripData.labels.length; ++b) {
                 var c = this.stripData.strips[b]
-                  , c = c - this.stripData.stripSlant
-                  , c = 0.5 + 0.5 * c;
+                    , c = c - this.stripData.stripSlant
+                    , c = 0.5 + 0.5 * c;
                 b == this.stripData.selectedStrip ? (this.stripText[b].style["-ms-transform"] = this.stripText[b].style["-webkit-transform"] = this.stripText[b].style.transform = "none",
-                this.stripText[b].style.top = "4px",
-                this.stripText[b].style.left = "0px",
-                this.stripText[b].style.width = "150px",
-                this.stripText[b].txt.style.textAlign = "center",
-                this.stripText[b].txt.style.background = "rgba(0, 0, 0, 0.75)",
-                this.stripText[b].txt.style.background = "-webkit-linear-gradient(left, rgba(0,0,0,0.75), rgba(0,0,0,0))",
-                this.stripText[b].txt.style.background = "-o-linear-gradient(left,      rgba(0,0,0,0.75), rgba(0,0,0,0))",
-                this.stripText[b].txt.style.background = "-moz-linear-gradient(left,    rgba(0,0,0,0.75), rgba(0,0,0,0))",
-                this.stripText[b].txt.style.background = "linear-gradient(left,         rgba(0,0,0,0.75), rgba(0,0,0,0))",
-                this.stripText[b].txt.style.paddingLeft = "32px",
-                this.stripText[b].txt.style.paddingTop = "6px",
-                this.stripText[b].txt.style.paddingBottom = "4px",
-                this.stripText[b].txt.style.textShadow = "1px 1px 2px rgba(0,0,0,0.7)",
-                this.stripText[b].line.style.opacity = 0.5,
-                this.stripText[b].line.style.top = "100%",
-                this.stripText[b].line.style.width = "100%",
-                this.stripText[b].line.style.height = "1px") : (this.stripText[b].style["-ms-transform"] = this.stripText[b].style["-webkit-transform"] = this.stripText[b].style.transform = "translate(-50%, -50%) rotate(" + a + "rad) translate(50%, 50%)",
-                this.stripText[b].style.left = 100 * c + "%",
-                this.stripText[b].style.top = "0px",
-                this.stripText[b].style.width = "85px",
-                this.stripText[b].txt.style.textAlign = "left",
-                this.stripText[b].txt.style.background = "none",
-                this.stripText[b].txt.style.paddingLeft = "8px",
-                this.stripText[b].txt.style.paddingTop = "6px",
-                this.stripText[b].txt.style.paddingBottom = "4px",
-                this.stripText[b].txt.style.textShadow = "2px 0px 3px rgba(0,0,0,0.7)",
-                this.stripText[b].line.style.opacity = 1,
-                this.stripText[b].line.style.top = "-1px",
-                this.stripText[b].line.style.width = "10000px",
-                this.stripText[b].line.style.height = "2px")
+                    this.stripText[b].style.top = "4px",
+                    this.stripText[b].style.left = "0px",
+                    this.stripText[b].style.width = "150px",
+                    this.stripText[b].txt.style.textAlign = "center",
+                    this.stripText[b].txt.style.background = "rgba(0, 0, 0, 0.75)",
+                    this.stripText[b].txt.style.background = "-webkit-linear-gradient(left, rgba(0,0,0,0.75), rgba(0,0,0,0))",
+                    this.stripText[b].txt.style.background = "-o-linear-gradient(left,      rgba(0,0,0,0.75), rgba(0,0,0,0))",
+                    this.stripText[b].txt.style.background = "-moz-linear-gradient(left,    rgba(0,0,0,0.75), rgba(0,0,0,0))",
+                    this.stripText[b].txt.style.background = "linear-gradient(left,         rgba(0,0,0,0.75), rgba(0,0,0,0))",
+                    this.stripText[b].txt.style.paddingLeft = "32px",
+                    this.stripText[b].txt.style.paddingTop = "6px",
+                    this.stripText[b].txt.style.paddingBottom = "4px",
+                    this.stripText[b].txt.style.textShadow = "1px 1px 2px rgba(0,0,0,0.7)",
+                    this.stripText[b].line.style.opacity = 0.5,
+                    this.stripText[b].line.style.top = "100%",
+                    this.stripText[b].line.style.width = "100%",
+                    this.stripText[b].line.style.height = "1px") : (this.stripText[b].style["-ms-transform"] = this.stripText[b].style["-webkit-transform"] = this.stripText[b].style.transform = "translate(-50%, -50%) rotate(" + a + "rad) translate(50%, 50%)",
+                        this.stripText[b].style.left = 100 * c + "%",
+                        this.stripText[b].style.top = "0px",
+                        this.stripText[b].style.width = "85px",
+                        this.stripText[b].txt.style.textAlign = "left",
+                        this.stripText[b].txt.style.background = "none",
+                        this.stripText[b].txt.style.paddingLeft = "8px",
+                        this.stripText[b].txt.style.paddingTop = "6px",
+                        this.stripText[b].txt.style.paddingBottom = "4px",
+                        this.stripText[b].txt.style.textShadow = "2px 0px 3px rgba(0,0,0,0.7)",
+                        this.stripText[b].line.style.opacity = 1,
+                        this.stripText[b].line.style.top = "-1px",
+                        this.stripText[b].line.style.width = "10000px",
+                        this.stripText[b].line.style.height = "2px")
             }
     }
-    ;
+        ;
     var Vect = {
         type: Float32Array,
-        create: function(a, b, c, d) {
+        create: function (a, b, c, d) {
             var e = new Vect.type(4);
             e[0] = a;
             e[1] = b;
@@ -6233,99 +6233,99 @@ marmoset = {};
             e[3] = d;
             return e
         },
-        empty: function() {
+        empty: function () {
             return new Vect.type(4)
         },
-        set: function(a, b, c, d, e) {
+        set: function (a, b, c, d, e) {
             a[0] = b;
             a[1] = c;
             a[2] = d;
             a[3] = e
         },
-        copy: function(a, b) {
+        copy: function (a, b) {
             a[0] = b[0];
             a[1] = b[1];
             a[2] = b[2];
             a[3] = b[3]
         },
-        add: function(a, b, c) {
+        add: function (a, b, c) {
             a[0] = b[0] + c[0];
             a[1] = b[1] + c[1];
             a[2] = b[2] + c[2];
             a[3] = b[3] + c[3];
             return a
         },
-        sub: function(a, b, c) {
+        sub: function (a, b, c) {
             a[0] = b[0] - c[0];
             a[1] = b[1] - c[1];
             a[2] = b[2] - c[2];
             a[3] = b[3] - c[3];
             return a
         },
-        scale: function(a, b, c) {
+        scale: function (a, b, c) {
             a[0] = c[0] * b;
             a[1] = c[1] * b;
             a[2] = c[2] * b;
             a[3] = c[3] * b;
             return a
         },
-        mul: function(a, b, c) {
+        mul: function (a, b, c) {
             a[0] = b[0] * c[0];
             a[1] = b[1] * c[1];
             a[2] = b[2] * c[2];
             a[3] = b[3] * c[3];
             return a
         },
-        mad: function(a, b, c, d) {
+        mad: function (a, b, c, d) {
             a[0] = b[0] * c[0] + d[0];
             a[1] = b[1] * c[1] + d[1];
             a[2] = b[2] * c[2] + d[2];
             a[3] = b[3] * c[3] + d[3];
             return a
         },
-        smad: function(a, b, c, d) {
+        smad: function (a, b, c, d) {
             a[0] = b * c[0] + d[0];
             a[1] = b * c[1] + d[1];
             a[2] = b * c[2] + d[2];
             a[3] = b * c[3] + d[3];
             return a
         },
-        negate: function(a, b) {
+        negate: function (a, b) {
             a[0] = -b[0];
             a[1] = -b[1];
             a[2] = -b[2];
             return a
         },
-        negate4: function(a, b) {
+        negate4: function (a, b) {
             a[0] = -b[0];
             a[1] = -b[1];
             a[2] = -b[2];
             a[3] = -b[3];
             return a
         },
-        length: function(a) {
+        length: function (a) {
             var b = a[0]
-              , c = a[1];
+                , c = a[1];
             a = a[2];
             return Math.sqrt(b * b + c * c + a * a)
         },
-        distance: function(a, b) {
+        distance: function (a, b) {
             var c = a[0] - b[0]
-              , d = a[1] - b[1]
-              , e = a[2] - b[2];
+                , d = a[1] - b[1]
+                , e = a[2] - b[2];
             return Math.sqrt(c * c + d * d + e * e)
         },
-        dot: function(a, b) {
+        dot: function (a, b) {
             return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
         },
-        dot4: function(a, b) {
+        dot4: function (a, b) {
             return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3]
         },
-        normalize: function(a, b) {
+        normalize: function (a, b) {
             var c = b[0]
-              , d = b[1]
-              , e = b[2]
-              , f = Math.sqrt(c * c + d * d + e * e);
+                , d = b[1]
+                , e = b[2]
+                , f = Math.sqrt(c * c + d * d + e * e);
             if (0 == f)
                 return Vect.set(a, 0, 0, 0, 0);
             f = 1 / f;
@@ -6334,21 +6334,21 @@ marmoset = {};
             a[2] = e * f;
             return a
         },
-        cross: function(a, b, c) {
+        cross: function (a, b, c) {
             a[0] = b[1] * c[2];
             a[0] += -b[2] * c[1];
             a[1] = b[2] * c[0] - b[0] * c[2];
             a[2] = b[0] * c[1] - b[1] * c[0];
             return a
         },
-        lerp: function(a, b, c, d) {
+        lerp: function (a, b, c, d) {
             var e = 1 - d;
             a[0] = b[0] * e + c[0] * d;
             a[1] = b[1] * e + c[1] * d;
             a[2] = b[2] * e + c[2] * d;
             return a
         },
-        lerp4: function(a, b, c, d) {
+        lerp4: function (a, b, c, d) {
             var e = 1 - d;
             a[0] = b[0] * e + c[0] * d;
             a[1] = b[1] * e + c[1] * d;
@@ -6356,21 +6356,21 @@ marmoset = {};
             a[3] = b[3] * e + c[3] * d;
             return a
         },
-        min: function(a, b, c) {
+        min: function (a, b, c) {
             a[0] = Math.min(b[0], c[0]);
             a[1] = Math.min(b[1], c[1]);
             a[2] = Math.min(b[2], c[2]);
             a[3] = Math.min(b[3], c[3]);
             return a
         },
-        max: function(a, b, c) {
+        max: function (a, b, c) {
             a[0] = Math.max(b[0], c[0]);
             a[1] = Math.max(b[1], c[1]);
             a[2] = Math.max(b[2], c[2]);
             a[3] = Math.max(b[3], c[3]);
             return a
         },
-        projectOnPlane: function(a, b, c, d) {
+        projectOnPlane: function (a, b, c, d) {
             var e = Vect.empty();
             Vect.sub(e, b, c);
             c = Vect.dot(e, d);
@@ -6390,10 +6390,10 @@ marmoset = {};
         this.projectionMatrix = Matrix.empty();
         this.viewProjectionMatrix = Matrix.empty();
         a ? this.loadView(a, !0) : (this.saveResetView(),
-        this.updateView(),
-        this.updateProjection())
+            this.updateView(),
+            this.updateProjection())
     }
-    View.prototype.saveResetView = function() {
+    View.prototype.saveResetView = function () {
         this.resetDesc = {
             angles: [this.rotation[0], this.rotation[1]],
             pivot: [this.pivot[0], this.pivot[1], this.pivot[2]],
@@ -6402,48 +6402,48 @@ marmoset = {};
             fov: this.fov
         }
     }
-    ;
-    View.prototype.loadView = function(a, b) {
+        ;
+    View.prototype.loadView = function (a, b) {
         a && (this.rotation[0] = a.angles[0],
-        this.rotation[1] = a.angles[1],
-        this.pivot[0] = a.pivot[0],
-        this.pivot[1] = a.pivot[1],
-        this.pivot[2] = a.pivot[2],
-        this.radius = a.orbitRadius,
-        this.fov = a.fov,
-        this.limits = a.limits,
-        b && this.saveResetView(),
-        this.updateView(),
-        this.updateProjection())
+            this.rotation[1] = a.angles[1],
+            this.pivot[0] = a.pivot[0],
+            this.pivot[1] = a.pivot[1],
+            this.pivot[2] = a.pivot[2],
+            this.radius = a.orbitRadius,
+            this.fov = a.fov,
+            this.limits = a.limits,
+            b && this.saveResetView(),
+            this.updateView(),
+            this.updateProjection())
     }
-    ;
-    View.prototype.reset = function() {
+        ;
+    View.prototype.reset = function () {
         this.loadView(this.resetDesc)
     }
-    ;
-    View.prototype.updateView = function() {
+        ;
+    View.prototype.updateView = function () {
         if (void 0 !== this.limits) {
             if (this.limits.angles) {
                 var a = this.limits.angles.x
-                  , b = this.limits.angles.y;
+                    , b = this.limits.angles.y;
                 if (void 0 !== a) {
                     var c = this.rotation[0] - a.offset
-                      , a = Math.min(Math.max(c, a.min), a.max);
+                        , a = Math.min(Math.max(c, a.min), a.max);
                     this.rotation[0] += a - c
                 }
                 void 0 !== b && (c = this.rotation[1] - b.offset,
-                a = Math.min(Math.max(c, b.min), b.max),
-                this.rotation[1] += a - c)
+                    a = Math.min(Math.max(c, b.min), b.max),
+                    this.rotation[1] += a - c)
             }
             void 0 !== this.limits.orbitRadius && (b = this.limits.orbitRadius.min,
-            c = this.limits.orbitRadius.max,
-            void 0 !== b && (this.radius = Math.max(this.radius, b)),
-            void 0 !== c && (this.radius = Math.min(this.radius, c)));
+                c = this.limits.orbitRadius.max,
+                void 0 !== b && (this.radius = Math.max(this.radius, b)),
+                void 0 !== c && (this.radius = Math.min(this.radius, c)));
             void 0 !== this.limits.pan && (b = this.limits.pan,
-            c = this.resetDesc.pivot,
-            b.x && (this.pivot[0] = c[0]),
-            b.y && (this.pivot[1] = c[1]),
-            b.z && (this.pivot[2] = c[2]))
+                c = this.resetDesc.pivot,
+                b.x && (this.pivot[0] = c[0]),
+                b.y && (this.pivot[1] = c[1]),
+                b.z && (this.pivot[2] = c[2]))
         }
         Matrix.translation(this.transform, 0, 0, this.radius);
         b = Matrix.rotation(Matrix.empty(), this.rotation[0], 0);
@@ -6456,12 +6456,12 @@ marmoset = {};
         Matrix.invert(this.viewMatrix, this.transform);
         Matrix.mul(this.viewProjectionMatrix, this.viewMatrix, this.projectionMatrix)
     }
-    ;
-    View.prototype.updateProjection = function(a) {
+        ;
+    View.prototype.updateProjection = function (a) {
         Matrix.perspectiveInfinite(this.projectionMatrix, this.fov, this.size[0] / this.size[1], this.nearPlane, a);
         Matrix.mul(this.viewProjectionMatrix, this.projectionMatrix, this.viewMatrix)
     }
-    ;
+        ;
     function WebViewer(a, b, c, d) {
         this.mobile = !!/Android|iPhone|iPod|iPad|Windows Phone|IEMobile|BlackBerry|webOS/.test(navigator.userAgent);
         this.mobileFast = !!/iPhone|iPad/.test(navigator.userAgent);
@@ -6484,7 +6484,7 @@ marmoset = {};
                     e = !1
                 }
         }
-      
+
         this.desktopSlow = e;
         this.domRoot = document.createElement("div");
         this.domRoot.style.width = a + "px";
@@ -6499,7 +6499,7 @@ marmoset = {};
         this.ui.setSize(a, b);
         this.ui.showPreview(d)
     }
-    WebViewer.prototype.initCanvas = function(a, b) {
+    WebViewer.prototype.initCanvas = function (a, b) {
         this.canvas && this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas);
         this.canvas = document.createElement("canvas");
         this.pixelRatio = window.devicePixelRatio || 1;
@@ -6515,8 +6515,8 @@ marmoset = {};
         this.canvas.style.position = "absolute";
         this.domRoot.appendChild(this.canvas)
     }
-    ;
-    WebViewer.prototype.initGL = function() {
+        ;
+    WebViewer.prototype.initGL = function () {
         var a = {
             alpha: !!marmoset.transparentBackground,
             depth: !1,
@@ -6527,7 +6527,7 @@ marmoset = {};
         }
             ;
 
-      
+
         if (window["webgl"]) {
             a = this.gl = window["webgl"]
         } else {
@@ -6538,15 +6538,15 @@ marmoset = {};
 
         if (!this.gl)
             return this.ui.showFailure('Please <a href="http://get.webgl.org/" target=_blank>check<a/> to ensure your browser has support for WebGL.'),
-            !1;
-        this.canvas.addEventListener("webglcontextlost", function(a) {
+                !1;
+        this.canvas.addEventListener("webglcontextlost", function (a) {
             a.preventDefault()
         }
-        .bind(this), !1);
-        this.canvas.addEventListener("webglcontextrestored", function(a) {
+            .bind(this), !1);
+        this.canvas.addEventListener("webglcontextrestored", function (a) {
             this.loadScene(this.sceneURL)
         }
-        .bind(this), !1);
+            .bind(this), !1);
         a.ext = {
             textureAniso: a.getExtension("EXT_texture_filter_anisotropic") || a.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || a.getExtension("MOZ_EXT_texture_filter_anisotropic"),
             textureFloat: a.getExtension("OES_texture_float"),
@@ -6582,60 +6582,60 @@ marmoset = {};
         this.allocBacking();
         return !0
     }
-    ;
-    WebViewer.prototype.allocBacking = function() {
+        ;
+    WebViewer.prototype.allocBacking = function () {
         var a = this.gl
-          , b = !1
-          , c = {
-            width: this.canvas.width,
-            height: this.canvas.height
-        };
-        this.mainColor = new Texture(a,c);
+            , b = !1
+            , c = {
+                width: this.canvas.width,
+                height: this.canvas.height
+            };
+        this.mainColor = new Texture(a, c);
         this.mainDepth = null;
-        a.ext.textureDepth && (this.mainDepth = new Texture(a,{
+        a.ext.textureDepth && (this.mainDepth = new Texture(a, {
             width: this.canvas.width,
             height: this.canvas.height,
             nofilter: !0
         }),
-        this.mainDepth.loadArray(null, a.DEPTH_COMPONENT, a.UNSIGNED_INT));
+            this.mainDepth.loadArray(null, a.DEPTH_COMPONENT, a.UNSIGNED_INT));
         a.ext.textureHalf && a.ext.textureHalfLinear && (this.mainColor.loadArray(null, a.RGBA, a.ext.textureHalf.HALF_FLOAT_OES),
-        this.mainBuffer = new Framebuffer(a,{
-            color0: this.mainColor,
-            depth: this.mainDepth,
-            createDepth: !this.mainDepth
-        }),
-        b = this.mainBuffer.valid);
-        !b && a.ext.textureFloat && a.ext.textureFloatLinear && !a.hints.mobile && (this.mainColor.loadArray(null, a.RGBA, a.FLOAT),
-        this.mainBuffer = new Framebuffer(a,{
-            color0: this.mainColor,
-            depth: this.mainDepth,
-            createDepth: !this.mainDepth
-        }),
-        b = this.mainBuffer.valid);
-        for (; !b; )
-            this.mainColor = new Texture(a,c),
-            this.mainColor.loadArray(null, a.RGBA, a.UNSIGNED_BYTE),
-            this.mainBuffer = new Framebuffer(a,{
+            this.mainBuffer = new Framebuffer(a, {
                 color0: this.mainColor,
                 depth: this.mainDepth,
                 createDepth: !this.mainDepth
             }),
-            b = this.mainBuffer.valid,
-            c.width /= 2,
-            c.height /= 2,
-            this.mainDepth && (this.mainDepth.destroy(),
-            this.mainDepth = null);
-        this.mainBufferNoDepth = new Framebuffer(a,{
+            b = this.mainBuffer.valid);
+        !b && a.ext.textureFloat && a.ext.textureFloatLinear && !a.hints.mobile && (this.mainColor.loadArray(null, a.RGBA, a.FLOAT),
+            this.mainBuffer = new Framebuffer(a, {
+                color0: this.mainColor,
+                depth: this.mainDepth,
+                createDepth: !this.mainDepth
+            }),
+            b = this.mainBuffer.valid);
+        for (; !b;)
+            this.mainColor = new Texture(a, c),
+                this.mainColor.loadArray(null, a.RGBA, a.UNSIGNED_BYTE),
+                this.mainBuffer = new Framebuffer(a, {
+                    color0: this.mainColor,
+                    depth: this.mainDepth,
+                    createDepth: !this.mainDepth
+                }),
+                b = this.mainBuffer.valid,
+                c.width /= 2,
+                c.height /= 2,
+                this.mainDepth && (this.mainDepth.destroy(),
+                    this.mainDepth = null);
+        this.mainBufferNoDepth = new Framebuffer(a, {
             color0: this.mainColor
         })
     }
-    ;
-    WebViewer.prototype.loadScene = function(a) {
+        ;
+    WebViewer.prototype.loadScene = function (a) {
         this.sceneURL = a || this.sceneURL;
         this.scene = this.input = null;
         if (this.initGL() && this.sceneURL) {
             var b = this.ui.signalLoadProgress.bind(this.ui);
-            a = function(a) {
+            a = function (a) {
                 b(1, 1);
                 this.scene = new Scene(this.gl);
                 this.scene.stripData = this.stripData;
@@ -6644,23 +6644,23 @@ marmoset = {};
                         this.ui.showFailure("This .mview file is from an out-of-date beta version of Toolbag. Please re-export it with the new version. Thanks!");
                     else {
                         if (this.bindInput(),
-                        this.requestFrame(this.updateLoad.bind(this)),
-                        this.onLoad)
+                            this.requestFrame(this.updateLoad.bind(this)),
+                            this.onLoad)
                             this.onLoad()
                     }
                 else
                     this.ui.showFailure("Package file could not be read or is invalid.")
             }
-            .bind(this);
-            var c = function() {
+                .bind(this);
+            var c = function () {
                 this.ui.showFailure("Package file (" + this.sceneURL + ") could not be retrieved.")
             }
-            .bind(this);
+                .bind(this);
             Network.fetchBinary(this.sceneURL, a, c, b)
         }
     }
-    ;
-    WebViewer.prototype.unload = function() {
+        ;
+    WebViewer.prototype.unload = function () {
         delete this.scene;
         delete this.input;
         delete this.ui;
@@ -6668,17 +6668,17 @@ marmoset = {};
         delete this.mainBuffer;
         delete this.gl;
         var a = this.domRoot.clientWidth
-          , b = this.domRoot.clientHeight;
+            , b = this.domRoot.clientHeight;
         this.initCanvas(a, b);
         this.ui = new UI(this);
         this.ui.setSize(a, b);
         this.ui.showPreview();
         this.cancelFrame()
     }
-    ;
-    WebViewer.prototype.bindInput = function() {
+        ;
+    WebViewer.prototype.bindInput = function () {
         this.input = new Input(this.ui.container);
-        this.input.onDrag.push(function(a, b, c, d) {
+        this.input.onDrag.push(function (a, b, c, d) {
             a = 1 - 2.2 / (Math.sqrt(c * c + d * d) + 2.2);
             b = this.scene.view;
             b.rotation[1] -= 0.4 * c * a;
@@ -6688,26 +6688,26 @@ marmoset = {};
             b.updateView();
             this.wake()
         }
-        .bind(this));
-        this.input.onPan.push(function(a, b) {
+            .bind(this));
+        this.input.onPan.push(function (a, b) {
             var c = this.scene.view
-              , d = c.fov / 45 * 0.8 * (c.radius / this.domRoot.clientHeight)
-              , e = -a * d
-              , d = b * d;
+                , d = c.fov / 45 * 0.8 * (c.radius / this.domRoot.clientHeight)
+                , e = -a * d
+                , d = b * d;
             c.pivot[0] += e * c.transform[0] + d * c.transform[4];
             c.pivot[1] += e * c.transform[1] + d * c.transform[5];
             c.pivot[2] += e * c.transform[2] + d * c.transform[6];
             c.updateView();
             this.wake()
         }
-        .bind(this));
-        this.input.onPan2.push(function(a, b) {
+            .bind(this));
+        this.input.onPan2.push(function (a, b) {
             var c = 1 - 2.2 / (Math.sqrt(a * a + b * b) + 2.2);
             this.scene.lights.rotation -= 0.4 * a * c;
             this.wake()
         }
-        .bind(this));
-        this.input.onZoom.push(function(a) {
+            .bind(this));
+        this.input.onZoom.push(function (a) {
             var b = this.scene.view;
             b.radius *= 1 - 0.002 * a;
             b.radius = 0.001 > b.radius ? 0.001 : b.radius;
@@ -6715,52 +6715,52 @@ marmoset = {};
             b.updateView();
             this.wake()
         }
-        .bind(this));
-        this.input.onDoubleTap.push(function(a, b) {
+            .bind(this));
+        this.input.onDoubleTap.push(function (a, b) {
             this.scene.view.reset();
             this.scene.sceneAnimator && this.scene.sceneAnimator.resetCustomView();
             this.wake()
         }
-        .bind(this));
+            .bind(this));
         this.ui.bindInput(this.input)
     }
-    ;
-    WebViewer.prototype.wake = function(a) {
+        ;
+    WebViewer.prototype.wake = function (a) {
         a = a || 16;
         this.sleepCounter = this.sleepCounter < a ? a : this.sleepCounter;
         this.scene.postRender.discardAAHistory();
         this.requestFrame(this.update.bind(this))
     }
-    ;
-    WebViewer.prototype.requestFrame = function(a) {
+        ;
+    WebViewer.prototype.requestFrame = function (a) {
         var b = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
         if (!this.frameRequestPending) {
-            var c = function() {
+            var c = function () {
                 this.frameRequestPending = 0;
                 a()
             }
-            .bind(this);
+                .bind(this);
             this.frameRequestPending = b(c, this.canvas)
         }
     }
-    ;
-    WebViewer.prototype.cancelFrame = function() {
+        ;
+    WebViewer.prototype.cancelFrame = function () {
         this.frameRequestPending && (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame)(this.frameRequestPending)
     }
-    ;
-    WebViewer.prototype.fullscreenChange = function() {
+        ;
+    WebViewer.prototype.fullscreenChange = function () {
         FullScreen.active() ? (this.oldRootWidth = this.domRoot.style.width,
-        this.oldRootHeight = this.domRoot.style.height,
-        this.domRoot.style.width = "100%",
-        this.domRoot.style.height = "100%") : (this.domRoot.style.width = this.oldRootWidth,
-        this.domRoot.style.height = this.oldRootHeight);
+            this.oldRootHeight = this.domRoot.style.height,
+            this.domRoot.style.width = "100%",
+            this.domRoot.style.height = "100%") : (this.domRoot.style.width = this.oldRootWidth,
+                this.domRoot.style.height = this.oldRootHeight);
         this.wake()
     }
-    ;
-    WebViewer.prototype.resize = function(a, b) {
+        ;
+    WebViewer.prototype.resize = function (a, b) {
         a && b ? (this.domRoot.style.width = a + "px",
-        this.domRoot.style.height = b + "px") : (a = this.domRoot.clientWidth,
-        b = this.domRoot.clientHeight);
+            this.domRoot.style.height = b + "px") : (a = this.domRoot.clientWidth,
+                b = this.domRoot.clientHeight);
         this.canvas.width = a * this.pixelRatio;
         this.canvas.height = b * this.pixelRatio;
         this.canvas.style.width = a + "px";
@@ -6769,30 +6769,30 @@ marmoset = {};
         this.allocBacking();
         this.wake()
     }
-    ;
-    WebViewer.prototype.updateLoad = function() {
+        ;
+    WebViewer.prototype.updateLoad = function () {
         this.scene.complete() ? this.start() : this.requestFrame(this.updateLoad.bind(this));
         this.ui.animate()
     }
-    ;
-    WebViewer.prototype.start = function() {
+        ;
+    WebViewer.prototype.start = function () {
         this.scene.view.updateView();
         this.ui.showActiveView();
         this.requestFrame(this.update.bind(this))
     }
-    ;
-    WebViewer.prototype.update = function() {
+        ;
+    WebViewer.prototype.update = function () {
         var a = this.scene.sceneAnimator && !this.scene.sceneAnimator.paused;
         if (0 < this.sleepCounter || this.ui.animating() || a || this.stripData.animationActive)
             this.stripData.update(),
-            this.ui.animate(),
-            this.scene.update(),
-            this.drawScene(),
-            this.requestFrame(this.update.bind(this));
+                this.ui.animate(),
+                this.scene.update(),
+                this.drawScene(),
+                this.requestFrame(this.update.bind(this));
         a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--
     }
-    ;
-    WebViewer.prototype.reDrawScene = function() {
+        ;
+    WebViewer.prototype.reDrawScene = function () {
         this.stripData.update();
         this.ui.animate();
         this.scene.update();
@@ -6800,30 +6800,30 @@ marmoset = {};
         this.requestFrame(this.update.bind(this));
         this.scene.postRender.discardAAHistory()
     }
-    ;
-    WebViewer.prototype.drawScene = function() {
+        ;
+    WebViewer.prototype.drawScene = function () {
         this.gl.isContextLost() || (this.domRoot.clientWidth == this.canvas.clientWidth && this.domRoot.clientHeight == this.canvas.clientHeight || this.resize(),
-        this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height],
-        this.scene.view.updateProjection(),
-        this.scene.postRender.adjustProjectionForSupersampling(this.scene.view),
-        this.scene.collectShadows(this.mainBuffer),
-        this.mainBuffer.bind(),
-        this.scene.draw(this.mainBuffer),
-        this.mainDepth && (this.mainBufferNoDepth.bind(),
-        this.scene.drawSecondary(this.mainDepth)),
-        this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active()))
+            this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height],
+            this.scene.view.updateProjection(),
+            this.scene.postRender.adjustProjectionForSupersampling(this.scene.view),
+            this.scene.collectShadows(this.mainBuffer),
+            this.mainBuffer.bind(),
+            this.scene.draw(this.mainBuffer),
+            this.mainDepth && (this.mainBufferNoDepth.bind(),
+                this.scene.drawSecondary(this.mainDepth)),
+            this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active()))
     }
-    ;
+        ;
     marmoset = "undefined" == typeof marmoset ? {} : marmoset;
     marmoset.WebViewer = WebViewer;
-	marmoset.Scene = Scene;
-	marmoset.TextureCache = TextureCache;
-	marmoset.Mesh = Mesh;
-	marmoset.Archive = Archive;
-	marmoset.ByteStream = ByteStream;
-	marmoset.Matrix = Matrix;
-	marmoset.Vect = Vect;
-	marmoset.Shader = Shader;
+    marmoset.Scene = Scene;
+    marmoset.TextureCache = TextureCache;
+    marmoset.Mesh = Mesh;
+    marmoset.Archive = Archive;
+    marmoset.ByteStream = ByteStream;
+    marmoset.Matrix = Matrix;
+    marmoset.Vect = Vect;
+    marmoset.Shader = Shader;
     marmoset.dataLocale = (0 == window.location.protocol.indexOf("https") ? "https:" : "http:") + "//viewer.marmoset.co/main/data/";
     var ShaderTable = {
         "alphaprepassfrag.glsl": "precision mediump float;\n#include <matdither.glsl>\nuniform sampler2D tAlbedo;varying mediump vec2 d;void main(){float e=texture2D(tAlbedo,d).a;if(e<=f(d.x)){discard;}gl_FragColor=vec4(0.0);}",
