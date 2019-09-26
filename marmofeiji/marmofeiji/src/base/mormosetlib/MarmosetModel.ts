@@ -25,11 +25,11 @@
             return this._instance;
         }
         public static meshItem: Array<Mars3Dmesh>
-        private static preaMeshFile(modeInfo: any, fileDic: any): void {
+        private static preaMeshFile(modeInfo: any, material: any, fileDic: any): void {
             if (!this.meshItem) {
                 this.meshItem=[]
             }
-            this.meshItem.push(new Mars3Dmesh(Scene_data.context3D.renderContext, modeInfo, fileDic[modeInfo.file]))
+            this.meshItem.push(new Mars3Dmesh(Scene_data.context3D.renderContext, modeInfo, material, fileDic[modeInfo.file]))
  
         }
         public viewFileName: string
@@ -64,8 +64,9 @@
                     }
                 }
                 let tempBack = marmosetFun.call(this, Scene_load, a)
+                this.meshRenderables
                 for (var g: number = 0; g < sceneInfo.meshes.length; ++g) {
-                    MarmosetModel.preaMeshFile(sceneInfo.meshes[g], fileDic)
+                    MarmosetModel.preaMeshFile(sceneInfo.meshes[g], sceneInfo.materials[g] , fileDic)
                 }
                 console.log(fileDic)
                // this.sky = new Sky(this.gl, a, c.sky);

@@ -20,11 +20,11 @@ var mars3D;
             }
             return this._instance;
         };
-        MarmosetModel.preaMeshFile = function (modeInfo, fileDic) {
+        MarmosetModel.preaMeshFile = function (modeInfo, material, fileDic) {
             if (!this.meshItem) {
                 this.meshItem = [];
             }
-            this.meshItem.push(new mars3D.Mars3Dmesh(Scene_data.context3D.renderContext, modeInfo, fileDic[modeInfo.file]));
+            this.meshItem.push(new mars3D.Mars3Dmesh(Scene_data.context3D.renderContext, modeInfo, material, fileDic[modeInfo.file]));
         };
         MarmosetModel.makeSkyData = function (a) {
             this.tSkySpecularTexture = Scene_data.context3D.creatTexture(256, 2048);
@@ -58,8 +58,9 @@ var mars3D;
                     }
                 }
                 var tempBack = marmosetFun.call(this, Scene_load, a);
+                this.meshRenderables;
                 for (var g = 0; g < sceneInfo.meshes.length; ++g) {
-                    MarmosetModel.preaMeshFile(sceneInfo.meshes[g], fileDic);
+                    MarmosetModel.preaMeshFile(sceneInfo.meshes[g], sceneInfo.materials[g], fileDic);
                 }
                 console.log(fileDic);
                 // this.sky = new Sky(this.gl, a, c.sky);

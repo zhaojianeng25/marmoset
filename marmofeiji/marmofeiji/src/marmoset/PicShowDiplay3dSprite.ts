@@ -341,7 +341,7 @@ module mars3D {
 
         private drawTempMesh(mesh: Mars3Dmesh): void {
             if (mesh.tAlbedo && mesh.tNormal && mesh.tReflectivity) {
-              
+                console.log(mesh.modeInfo)
 
                 this.makeTbnBuff(mesh)
                 var gl = Scene_data.context3D.renderContext;

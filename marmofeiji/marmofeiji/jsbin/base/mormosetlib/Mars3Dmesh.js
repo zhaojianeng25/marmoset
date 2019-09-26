@@ -22,8 +22,11 @@ var mars3D;
     var Vect = marmoset.Vect;
     var Mars3Dmesh = /** @class */ (function (_super) {
         __extends(Mars3Dmesh, _super);
-        function Mars3Dmesh() {
-            return _super !== null && _super.apply(this, arguments) || this;
+        function Mars3Dmesh(gl, modeInfo, material, c) {
+            var _this = _super.call(this, gl, modeInfo, c) || this;
+            _this.modeInfo = modeInfo;
+            _this.material = material;
+            return _this;
         }
         Mars3Dmesh.prototype.setAlbedoUrl = function (value) {
             var _this = this;

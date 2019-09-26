@@ -263,6 +263,7 @@ var mars3D;
         };
         PicShowDiplay3dSprite.prototype.drawTempMesh = function (mesh) {
             if (mesh.tAlbedo && mesh.tNormal && mesh.tReflectivity) {
+                console.log(mesh.modeInfo);
                 this.makeTbnBuff(mesh);
                 var gl = Scene_data.context3D.renderContext;
                 Scene_data.context3D.setProgram(this.program);

@@ -12,6 +12,14 @@
  
     export class Mars3Dmesh extends marmoset.Mesh {
 
+        public modeInfo: any
+        public material: any
+        public constructor(gl: any, modeInfo: any, material: any, c: any) {
+            super(gl, modeInfo, c)
+            this.modeInfo = modeInfo;
+            this.material = material;
+        }
+
         public tAlbedo: TextureRes
         public setAlbedoUrl(value: string): void {
             TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "pan/marmoset/feiji/pic/" + value + ".jpg", (a: TextureRes) => {
