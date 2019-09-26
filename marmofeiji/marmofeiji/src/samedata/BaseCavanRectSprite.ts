@@ -116,9 +116,7 @@
                 Scene_data.context3D.setRenderTexture(this.shader, "s_texture", this._uvTextureRes.texture, 0);
  
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
-
-     
-
+ 
                 Scene_data.context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
 
             }
