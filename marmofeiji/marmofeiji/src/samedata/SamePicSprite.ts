@@ -156,6 +156,7 @@ module same {
 
     export class SamePicSprite extends BaseDiplay3dSprite {
         private tAlbedo: TextureRes;
+
         constructor() {
             super();
             this.initData()

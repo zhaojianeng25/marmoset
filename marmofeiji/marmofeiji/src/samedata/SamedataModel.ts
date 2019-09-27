@@ -18,13 +18,21 @@
             SamedataModel.resetSize();
             this.initmosort()
         }
-        private static mianpian: SamePicSprite;
+        private static drawRenderSprite: DrawRenderSprite;
         private static initmosort(): void {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext
             mars3D.MarmosetModel.getInstance().initData();
 
-            SceneManager.getInstance().addDisplay(new SamePicSprite())
-            SceneManager.getInstance().addDisplay(new BaseCavanRectSprite)
+
+            this.drawRenderSprite = new DrawRenderSprite();
+
+            var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
+            _samePicSprite.otherSprite = this.drawRenderSprite;
+            SceneManager.getInstance().addDisplay(new SamePicSprite);
+            SceneManager.getInstance().addDisplay(_samePicSprite);
+
+
+
             SceneManager.getInstance().ready = true
 
             MarmosetModel.getInstance().viewFileName = "karen1.mview"
@@ -57,13 +65,9 @@
             SamedataModel.upFrame()
         }
         public static upDataLightShadow(): void {
-            if (!MarmosetLightVo.marmosetLightVo) {
-                if (window["uShadowMatrices"]) {
-                    MarmosetLightVo.marmosetLightVo = new MarmosetLightVo();
-                }
-            } else {
-                MarmosetLightVo.marmosetLightVo.update(MarmosetModel.meshItem);
-            }
+            this.drawRenderSprite.update()
+ 
+
         }
         private static upFrame(): void {
             this.upDataLightShadow();

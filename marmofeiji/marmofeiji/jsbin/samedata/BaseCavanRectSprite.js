@@ -111,6 +111,13 @@ var same;
                 Scene_data.context3D.setVa(0, 3, this.objData.vertexBuffer);
                 Scene_data.context3D.setVa(1, 2, this.objData.uvBuffer);
                 Scene_data.context3D.setRenderTexture(this.shader, "s_texture", this._uvTextureRes.texture, 0);
+                if (window["inputTexture"]) {
+                    var temp = window["inputTexture"];
+                    console.log(temp);
+                    if (temp.id) {
+                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
+                    }
+                }
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
                 Scene_data.context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
             }

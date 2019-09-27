@@ -4,7 +4,6 @@ var same;
     var LoadManager = Pan3d.LoadManager;
     var SceneManager = Pan3d.SceneManager;
     var MarmosetModel = mars3D.MarmosetModel;
-    var MarmosetLightVo = mars3D.MarmosetLightVo;
     var SamePicSprite = same.SamePicSprite;
     var SamedataModel = /** @class */ (function () {
         function SamedataModel() {
@@ -23,8 +22,11 @@ var same;
         SamedataModel.initmosort = function () {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext;
             mars3D.MarmosetModel.getInstance().initData();
-            SceneManager.getInstance().addDisplay(new SamePicSprite());
-            SceneManager.getInstance().addDisplay(new same.BaseCavanRectSprite);
+            this.drawRenderSprite = new same.DrawRenderSprite();
+            var _samePicSprite = new same.BaseCavanRectSprite;
+            _samePicSprite.otherSprite = this.drawRenderSprite;
+            SceneManager.getInstance().addDisplay(new SamePicSprite);
+            SceneManager.getInstance().addDisplay(_samePicSprite);
             SceneManager.getInstance().ready = true;
             MarmosetModel.getInstance().viewFileName = "karen1.mview";
             var rootpath = "pan/marmoset/feiji/6_14/";
@@ -52,14 +54,7 @@ var same;
             SamedataModel.upFrame();
         };
         SamedataModel.upDataLightShadow = function () {
-            if (!MarmosetLightVo.marmosetLightVo) {
-                if (window["uShadowMatrices"]) {
-                    MarmosetLightVo.marmosetLightVo = new MarmosetLightVo();
-                }
-            }
-            else {
-                MarmosetLightVo.marmosetLightVo.update(MarmosetModel.meshItem);
-            }
+            this.drawRenderSprite.update();
         };
         SamedataModel.upFrame = function () {
             this.upDataLightShadow();

@@ -49,7 +49,7 @@
     }
 
     export class BaseCavanRectSprite extends Display3D {
-
+        public otherSprite: DrawRenderSprite;
         constructor() {
             super();
             this.initData()
@@ -114,6 +114,18 @@
                 Scene_data.context3D.setVa(1, 2, this.objData.uvBuffer);
 
                 Scene_data.context3D.setRenderTexture(this.shader, "s_texture", this._uvTextureRes.texture, 0);
+                if (window["inputTexture"]) {
+                    var temp = window["inputTexture"]
+
+                    console.log(temp)
+                    if (temp.id) {
+                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
+                       
+                    }
+
+   
+                }
+             
  
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
  

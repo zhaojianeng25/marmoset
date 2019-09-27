@@ -2378,6 +2378,8 @@ marmoset = {};
             normal: a.textureCache.fromFile(b.get(c.normalTex), d),
             extras: a.textureCache.fromFilesMergeAlpha(b.get(c.extrasTex), b.get(c.extrasTexA), d)
         };
+
+
         this.extrasTexCoordRanges = {};
         if (c.extrasTexCoordRanges)
             for (var f in c.extrasTexCoordRanges)
@@ -3480,6 +3482,8 @@ marmoset = {};
             this.fillScreen(this.bloomShader.attribs.vCoord);
             this.bloomTargets[1].bind();
             this.bloomTextures[0].bind(this.bloomShader.samplers.tInput);
+
+        
             for (d = 0; d < this.bloomSamples; ++d)
                 c = b[4 * d + 0],
                     c *= a.desc.width / a.desc.height,
@@ -3526,8 +3530,12 @@ marmoset = {};
                 , g = d.params
                 , h = this.computeParams(b, c);
             a.bind(f.tInput);
+       
             this.bloomResult.bind(f.tBloom);
             this.noiseTexture.bind(f.tGrain);
+
+            window["inputTexture"] = a
+            console.log(f)
             this.colorLUT && this.colorLUT.bind(f.tLUT);
             e.uniform3fv(g.uScale, h.scale);
             e.uniform3fv(g.uBias, h.bias);
@@ -3605,6 +3613,8 @@ marmoset = {};
         this.aaShader.bind();
         a.bind(this.aaShader.samplers.tInput);
         this.fillScreen(this.aaShader.attribs.vCoord)
+
+ 
     }
         ;
     function Scene(a) {
