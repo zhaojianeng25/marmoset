@@ -10,6 +10,9 @@
     class Shader {
         public build(a: any, b: any): void
     }
+    class WebViewer {
+        public drawScene(): void
+    }
     class Mesh {
         constructor(a?: any, b?: any, c?: any);
         public gl: any;
@@ -43,9 +46,7 @@
     class Archive {
         public files: any
     }
-    class WebViewer {
-
-    }
+  
     class ByteStream {
         constructor(value: any)
         public asString(): string

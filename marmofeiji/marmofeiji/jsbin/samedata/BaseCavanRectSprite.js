@@ -113,7 +113,6 @@ var same;
                 Scene_data.context3D.setRenderTexture(this.shader, "s_texture", this._uvTextureRes.texture, 0);
                 if (window["inputTexture"]) {
                     var temp = window["inputTexture"];
-                    console.log(temp);
                     if (temp.id) {
                         Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
                     }

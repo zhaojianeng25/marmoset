@@ -33,6 +33,7 @@ void main(void){
 vec4 jc=texture2D(tInput,j);
 
 	outcolor=texture2D(tInput,j);
+vec4	outtest=texture2D(tInput,j);
 	
 vec3 c=jc.xyz;
 #ifdef SHARPEN
@@ -84,8 +85,6 @@ c*=c;
 gl_FragColor.xyz=iY(c);
 gl_FragColor.w=jc.w;
 
-if (outcolor.w>0.0) { 
-     gl_FragColor=outcolor;
-} 
+   gl_FragColor=outtest;
 
 }

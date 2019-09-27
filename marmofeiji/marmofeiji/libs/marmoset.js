@@ -3534,8 +3534,9 @@ marmoset = {};
             this.bloomResult.bind(f.tBloom);
             this.noiseTexture.bind(f.tGrain);
 
-            window["inputTexture"] = a
-            console.log(f)
+       
+
+ 
             this.colorLUT && this.colorLUT.bind(f.tLUT);
             e.uniform3fv(g.uScale, h.scale);
             e.uniform3fv(g.uBias, h.bias);
@@ -6808,16 +6809,30 @@ marmoset = {};
     }
         ;
     WebViewer.prototype.drawScene = function () {
-        this.gl.isContextLost() || (this.domRoot.clientWidth == this.canvas.clientWidth && this.domRoot.clientHeight == this.canvas.clientHeight || this.resize(),
-            this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height],
-            this.scene.view.updateProjection(),
-            this.scene.postRender.adjustProjectionForSupersampling(this.scene.view),
-            this.scene.collectShadows(this.mainBuffer),
-            this.mainBuffer.bind(),
-            this.scene.draw(this.mainBuffer),
-            this.mainDepth && (this.mainBufferNoDepth.bind(),
-                this.scene.drawSecondary(this.mainDepth)),
-            this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active()))
+
+ 
+        if (!this.gl.isContextLost()) {
+            if (this.domRoot.clientWidth == this.canvas.clientWidth && this.domRoot.clientHeight == this.canvas.clientHeight) {
+            } else {
+                this.resize()
+            }
+            this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
+            this.scene.view.updateProjection();
+            this.scene.postRender.adjustProjectionForSupersampling(this.scene.view);
+            this.scene.collectShadows(this.mainBuffer);
+            this.mainBuffer.bind();
+            this.scene.draw(this.mainBuffer);
+            if (this.mainDepth) {
+                this.mainBufferNoDepth.bind();
+                this.scene.drawSecondary(this.mainDepth);
+                this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active());
+            }
+        }
+
+ 
+
+  
+
     }
         ;
     marmoset = "undefined" == typeof marmoset ? {} : marmoset;

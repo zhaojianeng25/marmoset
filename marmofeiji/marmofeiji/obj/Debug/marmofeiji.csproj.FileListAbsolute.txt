@@ -4,4 +4,3 @@ E:\github\marmoset\marmofeiji\marmofeiji\bin\marmofeiji.pdb
 E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.csproj.CoreCompileInputs.cache
 E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.dll
 E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.pdb
-E:\github\marmoset\marmofeiji\marmofeiji\obj\Debug\marmofeiji.csprojAssemblyReference.cache
