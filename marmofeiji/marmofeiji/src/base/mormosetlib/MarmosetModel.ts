@@ -286,7 +286,36 @@
         }
         public initData(): void {
             this.overrideFun()
+            this.overrideDrawScene();
  
+        }
+
+        private  overrideDrawScene(): void {
+            marmoset.WebViewer.prototype.drawScene = function (): void {
+   
+                if (!this.gl.isContextLost()) {
+                    Pan3d.GlReset.saveBasePrarame(this.gl);
+                    if (this.domRoot.clientWidth == this.canvas.clientWidth && this.domRoot.clientHeight == this.canvas.clientHeight) {
+                    } else {
+                        this.resize()
+                    }
+                    this.resize()
+                    this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
+                    this.scene.view.updateProjection();
+                    this.scene.postRender.adjustProjectionForSupersampling(this.scene.view);
+                    this.scene.collectShadows(this.mainBuffer);
+                    this.mainBuffer.bind();
+                    this.scene.draw(this.mainBuffer);
+                    if (this.mainDepth) {
+                        this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active());
+               
+                    }
+                    Pan3d.GlReset.resetBasePrarame(this.gl);
+                }
+
+
+
+            }
         }
        
     }

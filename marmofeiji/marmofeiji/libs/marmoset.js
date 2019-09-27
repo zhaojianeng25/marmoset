@@ -3525,15 +3525,16 @@ marmoset = {};
         1 < this.sampleCount && this.allocAABuffer(b, c);
         d = d ? this.plainShader : this.shader;
         if (d.bind()) {
-            var e = this.gl
-                , f = d.samplers
-                , g = d.params
-                , h = this.computeParams(b, c);
+            var e = this.gl;
+            var f = d.samplers;
+            var g = d.params;
+            var h = this.computeParams(b, c);
+             a.bind(f.tInput);
+
             a.bind(f.tInput);
-       
             this.bloomResult.bind(f.tBloom);
             this.noiseTexture.bind(f.tGrain);
-
+            window["inputTexture"] =a
        
 
  

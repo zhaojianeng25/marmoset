@@ -22,7 +22,7 @@
         private static initmosort(): void {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext
             mars3D.MarmosetModel.getInstance().initData();
-            this.overrideFun()
+           
 
 
             this.drawRenderSprite = new DrawRenderSprite();
@@ -52,31 +52,7 @@
 
 
         }
-        private static overrideFun(): void {
-            marmoset.WebViewer.prototype.drawScene = function (): void {
-                if (!this.gl.isContextLost()) {
-                    if (this.domRoot.clientWidth == this.canvas.clientWidth && this.domRoot.clientHeight == this.canvas.clientHeight) {
-                    } else {
-                        this.resize()
-                    }
-                    this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
-                    this.scene.view.updateProjection();
-                    this.scene.postRender.adjustProjectionForSupersampling(this.scene.view);
-                    this.scene.collectShadows(this.mainBuffer);
-                    this.mainBuffer.bind();
-                    this.scene.draw(this.mainBuffer);
-                    if (this.mainDepth) {
-                        this.mainBufferNoDepth.bind();
-                        this.scene.drawSecondary(this.mainDepth);
-                        this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active());
 
-                        window["inputTexture"] = { id: this.mainBuffer.color0 }
-                        window["inputTexture"] = this.mainColor
-                    }
-                }
-
-            }
-        }
         public static resetSize(): void {
             if (mainpan3d_me.canvas) {
                 mainpan3d_me.canvas.width = document.body.clientWidth

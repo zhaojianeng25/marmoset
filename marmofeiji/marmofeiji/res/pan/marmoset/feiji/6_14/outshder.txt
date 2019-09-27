@@ -85,6 +85,6 @@ c*=c;
 gl_FragColor.xyz=iY(c);
 gl_FragColor.w=jc.w;
 
-   gl_FragColor=outtest;
+   gl_FragColor=vec4(outtest.x,outtest.y,outtest.z,outtest.w);
 
 }

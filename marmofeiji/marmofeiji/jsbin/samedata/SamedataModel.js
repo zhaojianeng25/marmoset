@@ -22,7 +22,6 @@ var same;
         SamedataModel.initmosort = function () {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext;
             mars3D.MarmosetModel.getInstance().initData();
-            this.overrideFun();
             this.drawRenderSprite = new same.DrawRenderSprite();
             var _samePicSprite = new same.BaseCavanRectSprite;
             _samePicSprite.otherSprite = this.drawRenderSprite;
@@ -41,30 +40,6 @@ var same;
                     });
                 });
             });
-        };
-        SamedataModel.overrideFun = function () {
-            marmoset.WebViewer.prototype.drawScene = function () {
-                if (!this.gl.isContextLost()) {
-                    if (this.domRoot.clientWidth == this.canvas.clientWidth && this.domRoot.clientHeight == this.canvas.clientHeight) {
-                    }
-                    else {
-                        this.resize();
-                    }
-                    this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
-                    this.scene.view.updateProjection();
-                    this.scene.postRender.adjustProjectionForSupersampling(this.scene.view);
-                    this.scene.collectShadows(this.mainBuffer);
-                    this.mainBuffer.bind();
-                    this.scene.draw(this.mainBuffer);
-                    if (this.mainDepth) {
-                        this.mainBufferNoDepth.bind();
-                        this.scene.drawSecondary(this.mainDepth);
-                        this.scene.postRender.present(this.mainColor, this.canvas.width, this.canvas.height, this.stripData.active());
-                        window["inputTexture"] = { id: this.mainBuffer.color0 };
-                        window["inputTexture"] = this.mainColor;
-                    }
-                }
-            };
         };
         SamedataModel.resetSize = function () {
             if (mainpan3d_me.canvas) {
