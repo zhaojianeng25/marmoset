@@ -290,7 +290,56 @@
  
         }
 
-        private  overrideDrawScene(): void {
+        private overrideDrawScene(): void {
+
+            marmoset.Scene.prototype.draw = function (a) {
+                var b = this.gl;
+                if (this.sceneLoaded) {
+                    this.sky.setClearColor();
+                    b.clear(b.COLOR_BUFFER_BIT | b.DEPTH_BUFFER_BIT | b.STENCIL_BUFFER_BIT);
+                    b.enable(b.DEPTH_TEST);
+                    this.sky.draw(this);
+                    this.shadowFloor && this.shadowFloor.draw(this);
+                    for (var c = 0; c < this.meshRenderables.length; ++c)
+                        this.meshRenderables[c].material.usesBlending || this.meshRenderables[c].material.usesRefraction || !this.meshRenderables[c].visible || this.meshRenderables[c].draw(this);
+                    b.enable(b.POLYGON_OFFSET_FILL);
+                    b.polygonOffset(1, 1);
+                    b.colorMask(!1, !1, !1, !1);
+                    for (c = 0; c < this.meshRenderables.length; ++c)
+                        this.meshRenderables[c].drawAlphaPrepass(this);
+                    b.colorMask(!0, !0, !0, !0);
+                    b.disable(b.POLYGON_OFFSET_FILL);
+                    b.depthFunc(b.LEQUAL);
+                    b.depthMask(!1);
+                    for (c = 0; c < this.meshRenderables.length; ++c)
+                        this.meshRenderables[c].material.usesBlending && this.meshRenderables[c].visible && this.meshRenderables[c].draw(this);
+                    b.disable(b.BLEND);
+                    b.depthMask(!0);
+                    b.depthFunc(b.LESS);
+                    for (var d = !1, c = 0; c < this.meshRenderables.length; ++c)
+                        if (this.meshRenderables[c].material.usesRefraction) {
+                            d = !0;
+                            break
+                        }
+                    if (d)
+                        for (this.refractionSurface && this.refractionSurface.desc.width == a.color0.desc.width && this.refractionSurface.desc.height == a.color0.desc.height || (this.refractionSurface = new marmoset.Texture(b, a.color0.desc),
+                            this.refractionSurface.loadArray(null, a.color0.format, a.color0.componentType),
+                            this.refractionBuffer = new marmoset.Framebuffer(this.gl, {
+                                color0: this.refractionSurface
+                            })),
+                            this.refractionBuffer.bind(),
+                            this.postRender.blitTexture(a.color0),
+                            a.bind(),
+                            c = 0; c < this.meshRenderables.length; ++c)
+                            this.meshRenderables[c].material.usesRefraction && this.meshRenderables[c].visible && this.meshRenderables[c].draw(this);
+                    if (this.stripData.activeWireframe() && 0 < this.meshRenderables.length) {
+                        for (c = 0; c < this.meshRenderables.length; ++c)
+                            this.meshRenderables[c].visible && this.meshRenderables[c].drawWire(this);
+                        b.depthMask(!0)
+                    }
+                    b.disable(b.BLEND)
+                }
+            }
             marmoset.WebViewer.prototype.drawScene = function (): void {
    
                 if (!this.gl.isContextLost()) {
@@ -299,6 +348,7 @@
                     } else {
                         this.resize()
                     }
+                    console.log(this.mainBuffer.width, this.mainBuffer.height)
                     this.resize()
                     this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
                     this.scene.view.updateProjection();

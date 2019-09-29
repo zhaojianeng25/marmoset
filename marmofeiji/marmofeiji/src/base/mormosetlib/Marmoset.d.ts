@@ -3,12 +3,20 @@
     function embed(name: string, info: any): void
     class Scene {
         public load(value: any): void
+        public draw(a: any): void
+    }
+    class Framebuffer {
+        constructor(a?: any, b?: any);
+    }
+    class Texture {
+        constructor(a?: any, b?: any);
     }
     class TextureCache {
         public static parseFile(a?: any, b?: any, c?: any): void
     }
     class Shader {
         public build(a: any, b: any): void
+ 
     }
     class WebViewer {
         public drawScene(): void

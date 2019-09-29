@@ -437,4 +437,5 @@ gl_FragColor.w=e;
 if (outcolor.w>0.0) { 
      gl_FragColor=outcolor;
 } 
+   gl_FragColor=vec4(1.0,0.0,1.0,1.0);
 }
