@@ -82,6 +82,7 @@
             win.LayerManager.getInstance().update();
 
             SceneManager.getInstance().update()
+          
  
 
         }

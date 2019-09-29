@@ -242,10 +242,12 @@ var mars3D;
                     this.sky.setClearColor();
                     b.clear(b.COLOR_BUFFER_BIT | b.DEPTH_BUFFER_BIT | b.STENCIL_BUFFER_BIT);
                     b.enable(b.DEPTH_TEST);
-                    this.sky.draw(this);
-                    this.shadowFloor && this.shadowFloor.draw(this);
-                    for (var c = 0; c < this.meshRenderables.length; ++c)
+                    //   this.sky.draw(this);
+                    //   this.shadowFloor && this.shadowFloor.draw(this);
+                    for (var c = 0; c < this.meshRenderables.length && c < 1; ++c) {
                         this.meshRenderables[c].material.usesBlending || this.meshRenderables[c].material.usesRefraction || !this.meshRenderables[c].visible || this.meshRenderables[c].draw(this);
+                    }
+                    Scene_data.context3D.setCullFaceModel(2);
                     b.enable(b.POLYGON_OFFSET_FILL);
                     b.polygonOffset(1, 1);
                     b.colorMask(!1, !1, !1, !1);
@@ -260,11 +262,12 @@ var mars3D;
                     b.disable(b.BLEND);
                     b.depthMask(!0);
                     b.depthFunc(b.LESS);
-                    for (var d = !1, c = 0; c < this.meshRenderables.length; ++c)
+                    for (var d = !1, c = 0; c < this.meshRenderables.length; ++c) {
                         if (this.meshRenderables[c].material.usesRefraction) {
                             d = !0;
                             break;
                         }
+                    }
                     if (d)
                         for (this.refractionSurface && this.refractionSurface.desc.width == a.color0.desc.width && this.refractionSurface.desc.height == a.color0.desc.height || (this.refractionSurface = new marmoset.Texture(b, a.color0.desc),
                             this.refractionSurface.loadArray(null, a.color0.format, a.color0.componentType),
@@ -292,7 +295,6 @@ var mars3D;
                     else {
                         this.resize();
                     }
-                    console.log(this.mainBuffer.width, this.mainBuffer.height);
                     this.resize();
                     this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
                     this.scene.view.updateProjection();
