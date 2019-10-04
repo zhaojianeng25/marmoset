@@ -63,7 +63,7 @@
             this.objData.vertices = new Array();
             var sizeNum: number = 0.3;
             var tx: number = -0.7
-            var ty: number = -0.7
+            var ty: number = +0.7
 
             var setDepth: number = 0.001;
             this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, setDepth);
@@ -72,10 +72,10 @@
             this.objData.vertices.push(-sizeNum + tx, -sizeNum + ty, setDepth);
 
             this.objData.uvs = new Array()
-            this.objData.uvs.push(0, 0);
-            this.objData.uvs.push(1, 0);
-            this.objData.uvs.push(1, 1);
             this.objData.uvs.push(0, 1);
+            this.objData.uvs.push(1, 1);
+            this.objData.uvs.push(1, 0);
+            this.objData.uvs.push(0, 0);
 
             this.objData.indexs = new Array();
             this.objData.indexs.push(0, 1, 2);
