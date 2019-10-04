@@ -295,6 +295,7 @@ declare module Pan3d {
         static resetBasePrarame(gl: WebGLRenderingContext): void;
     }
     class Context3D {
+ 
         renderContext: WebGLRenderingContext;
         _contextSetTest: ContextSetTest;
         init($caves: HTMLCanvasElement): void;

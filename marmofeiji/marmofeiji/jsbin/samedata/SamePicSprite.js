@@ -169,7 +169,6 @@ var same;
                 }
                 //{ albedo: Texture, reflectivity: Texture, normal: Texture, extras: Texture }
                 Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", mesh.materials.textures.albedo.id, 0);
-                console.log(mesh.materials.textures);
                 gl.disable(gl.CULL_FACE);
                 gl.cullFace(gl.FRONT);
                 Scene_data.context3D.setCullFaceModel(0);

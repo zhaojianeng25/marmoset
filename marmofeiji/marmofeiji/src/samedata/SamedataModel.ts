@@ -48,7 +48,7 @@
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext
             mars3D.MarmosetModel.getInstance().initData();
             this.overrideFunUpData()
-
+          //  this.addBaseRectSprite()
 
             this.drawRenderSprite = new DrawRenderSprite();
 
@@ -96,6 +96,21 @@
  
 
         }
+
+        private static addBaseRectSprite(): void {
+            window["baseRect"] = new BaseSametRectSprite();
+            Pan3d.TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "256.jpg", (a: Pan3d.TextureRes) => {
+                window["baseRect"]._uvTextureRes = a;
+
+            });
+  
+            window["baseRectSprite"] = new dis.BaseRectSprite();
+            Pan3d.TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "256.jpg", (a: Pan3d.TextureRes) => {
+                window["baseRectSprite"]._uvTextureRes = a;
+            });
+ 
+
+        }
         private static upFrame(): void {
              
             this.upDataLightShadow();
@@ -105,11 +120,17 @@
             let gl = Pan3d.Scene_data.context3D.renderContext
             gl.clearColor(255 / 255, 0, 0, 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-            win.LayerManager.getInstance().update();
 
+    
+       
             SceneManager.getInstance().update()
+
+       
           
- 
+            if (window["baseRect"]) {
+                window["baseRect"].update();
+            }
+
 
         }
 

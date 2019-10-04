@@ -69,7 +69,7 @@
             this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, setDepth);
             this.objData.vertices.push(+sizeNum + tx, +sizeNum + ty, 0.999);
             this.objData.vertices.push(+sizeNum + tx, -sizeNum + ty, 0.999);
-            this.objData.vertices.push(-sizeNum + tx, -sizeNum + ty, setDepth);
+            this.objData.vertices.push(-sizeNum  + tx, -sizeNum + ty, setDepth);
 
             this.objData.uvs = new Array()
             this.objData.uvs.push(0, 1);

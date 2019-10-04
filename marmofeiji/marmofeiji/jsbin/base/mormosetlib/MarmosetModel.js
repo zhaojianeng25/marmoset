@@ -244,6 +244,9 @@ var mars3D;
                     b.enable(b.DEPTH_TEST);
                     this.sky.draw(this);
                     this.shadowFloor && this.shadowFloor.draw(this);
+                    if (window["baseRectSprite"]) {
+                        window["baseRectSprite"].update();
+                    }
                     for (var c = 0; c < this.meshRenderables.length; ++c)
                         this.meshRenderables[c].material.usesBlending || this.meshRenderables[c].material.usesRefraction || !this.meshRenderables[c].visible || this.meshRenderables[c].draw(this);
                     b.enable(b.POLYGON_OFFSET_FILL);

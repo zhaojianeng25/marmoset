@@ -40,7 +40,7 @@
                 "vec4 infoUv = texture2D(s_texture, v_texCoord.xy);\n" +
              //   "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
  
-                "gl_FragColor = fColor;\n" +
+                "gl_FragColor = infoUv;\n" +
                 "}"
             return $str
 
@@ -85,7 +85,7 @@
 
 
         }
-        private loadTexture(): void {
+        protected loadTexture(): void {
             var $ctx: CanvasRenderingContext2D = UIManager.getInstance().getContext2D(128, 128, false);
             $ctx.fillStyle = "rgb(0,0,255)";
             $ctx.fillRect(0, 0, 128, 128);
@@ -105,9 +105,19 @@
   
         public update(): void {
             if (this.objData && this.objData.indexBuffer && this._uvTextureRes) {
-               Scene_data.context3D.setCullFaceModel(2)
+ 
                 var gl: WebGLRenderingContext = Scene_data.context3D.renderContext
-                gl.disable(gl.CULL_FACE);
+
+                var tf: boolean = false;
+
+                if (tf) { //反面渲染
+                    gl.enable(gl.CULL_FACE);
+                    gl.cullFace(gl.FRONT);
+
+                } else { //正面渲染
+                    gl.enable(gl.CULL_FACE);
+                    gl.cullFace(gl.BACK);
+                }
 
 
                 Scene_data.context3D.setProgram(this.program);

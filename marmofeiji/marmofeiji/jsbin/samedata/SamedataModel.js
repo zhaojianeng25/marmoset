@@ -37,6 +37,7 @@ var same;
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext;
             mars3D.MarmosetModel.getInstance().initData();
             this.overrideFunUpData();
+            //  this.addBaseRectSprite()
             this.drawRenderSprite = new same.DrawRenderSprite();
             var _samePicSprite = new same.BaseCavanRectSprite;
             _samePicSprite.otherSprite = this.drawRenderSprite;
@@ -70,6 +71,16 @@ var same;
         SamedataModel.upDataLightShadow = function () {
             this.drawRenderSprite.update();
         };
+        SamedataModel.addBaseRectSprite = function () {
+            window["baseRect"] = new same.BaseSametRectSprite();
+            Pan3d.TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "256.jpg", function (a) {
+                window["baseRect"]._uvTextureRes = a;
+            });
+            window["baseRectSprite"] = new dis.BaseRectSprite();
+            Pan3d.TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "256.jpg", function (a) {
+                window["baseRectSprite"]._uvTextureRes = a;
+            });
+        };
         SamedataModel.upFrame = function () {
             this.upDataLightShadow();
             Pan3d.TimeUtil.update();
@@ -78,8 +89,10 @@ var same;
             var gl = Pan3d.Scene_data.context3D.renderContext;
             gl.clearColor(255 / 255, 0, 0, 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-            win.LayerManager.getInstance().update();
             SceneManager.getInstance().update();
+            if (window["baseRect"]) {
+                window["baseRect"].update();
+            }
         };
         return SamedataModel;
     }());
