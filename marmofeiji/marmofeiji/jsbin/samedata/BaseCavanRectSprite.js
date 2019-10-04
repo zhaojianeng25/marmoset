@@ -48,7 +48,7 @@ var same;
                 "void main(void)\n" +
                 "{\n" +
                 "vec4 infoUv = texture2D(s_texture, v_texCoord.xy);\n" +
-                "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
+                //   "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
                 "gl_FragColor = infoUv;\n" +
                 "}";
             return $str;
@@ -70,13 +70,14 @@ var same;
             this.program = this.shader.program;
             this.objData = new ObjData;
             this.objData.vertices = new Array();
-            var sizeNum = 0.5;
-            var tx = -0.5;
+            var sizeNum = 0.3;
+            var tx = -0.7;
+            var ty = -0.7;
             var setDepth = 0.001;
-            this.objData.vertices.push(-sizeNum + tx, +sizeNum, setDepth);
-            this.objData.vertices.push(+sizeNum + tx, +sizeNum, 0.999);
-            this.objData.vertices.push(+sizeNum + tx, -sizeNum, 0.999);
-            this.objData.vertices.push(-sizeNum + tx, -sizeNum, setDepth);
+            this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, setDepth);
+            this.objData.vertices.push(+sizeNum + tx, +sizeNum + ty, 0.999);
+            this.objData.vertices.push(+sizeNum + tx, -sizeNum + ty, 0.999);
+            this.objData.vertices.push(-sizeNum + tx, -sizeNum + ty, setDepth);
             this.objData.uvs = new Array();
             this.objData.uvs.push(0, 0);
             this.objData.uvs.push(1, 0);
@@ -93,6 +94,8 @@ var same;
             $ctx.fillStyle = "rgb(255,0,255)";
             $ctx.fillRect(0, 0, 128, 128);
             this._uvTextureRes = TextureManager.getInstance().getCanvasTexture($ctx);
+            TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "512.jpg", function (a) {
+            });
         };
         BaseCavanRectSprite.prototype.upToGpu = function () {
             if (this.objData.indexs.length) {

@@ -21,7 +21,6 @@ var same;
         };
         SamedataModel.overrideFunUpData = function () {
             marmoset.WebViewer.prototype.update = function () {
-                SamedataModel.upFrame();
                 var a = this.scene.sceneAnimator && !this.scene.sceneAnimator.paused;
                 if (0 < this.sleepCounter || this.ui.animating() || a || this.stripData.animationActive) {
                     this.stripData.update();
@@ -31,6 +30,7 @@ var same;
                     this.requestFrame(this.update.bind(this));
                 }
                 a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--;
+                SamedataModel.upFrame();
             };
         };
         SamedataModel.initmosort = function () {

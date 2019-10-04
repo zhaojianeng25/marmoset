@@ -38,7 +38,7 @@
                 "void main(void)\n" +
                 "{\n" +
                 "vec4 infoUv = texture2D(s_texture, v_texCoord.xy);\n" +
-                 "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
+              //   "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
 
                 "gl_FragColor = infoUv;\n" +
                 "}"
@@ -61,14 +61,15 @@
 
             this.objData = new ObjData;
             this.objData.vertices = new Array();
-            var sizeNum: number = 0.5;
-            var tx: number = -0.5
+            var sizeNum: number = 0.3;
+            var tx: number = -0.7
+            var ty: number = -0.7
 
             var setDepth: number = 0.001;
-            this.objData.vertices.push(-sizeNum + tx, +sizeNum, setDepth);
-            this.objData.vertices.push(+sizeNum + tx, +sizeNum, 0.999);
-            this.objData.vertices.push(+sizeNum + tx, -sizeNum, 0.999);
-            this.objData.vertices.push(-sizeNum + tx, -sizeNum, setDepth);
+            this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, setDepth);
+            this.objData.vertices.push(+sizeNum + tx, +sizeNum + ty, 0.999);
+            this.objData.vertices.push(+sizeNum + tx, -sizeNum + ty, 0.999);
+            this.objData.vertices.push(-sizeNum + tx, -sizeNum + ty, setDepth);
 
             this.objData.uvs = new Array()
             this.objData.uvs.push(0, 0);
@@ -90,7 +91,11 @@
             $ctx.fillStyle = "rgb(255,0,255)";
             $ctx.fillRect(0, 0, 128, 128);
             this._uvTextureRes = TextureManager.getInstance().getCanvasTexture($ctx);
+ 
+            TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "512.jpg", (a: TextureRes) => {
+                
 
+            });
         }
         private _uvTextureRes: TextureRes
 
@@ -117,7 +122,7 @@
                 if (window["inputTexture"]) {
                     var temp = window["inputTexture"]
                     if (temp.id) {
-                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
+                       Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
                     }
                 }
              

@@ -21,7 +21,7 @@
         private static overrideFunUpData(): void {
 
             marmoset.WebViewer.prototype.update = function () {
-                SamedataModel.upFrame()
+
                 var a = this.scene.sceneAnimator && !this.scene.sceneAnimator.paused;
            
 
@@ -36,7 +36,7 @@
                 a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--
 
 
-              
+                SamedataModel.upFrame()
          
             }
 
