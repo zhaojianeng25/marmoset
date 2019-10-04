@@ -141,8 +141,9 @@ module same {
                 "void main(void) " +
                 "{ " +
 
-
+                "vec4 m=texture2D(tAlbedo,d);" +
                 "gl_FragColor =vec4(1.0,0.0,0.0,1.0); " +
+                "gl_FragColor =vec4(m.xyz,1.0); " +
 
 
 
@@ -222,6 +223,9 @@ module same {
                 if (materialsSp["uSkyMatrix"]) {
                     Scene_data.context3D.setVcMatrix4fv(this.shader, "uSkyMatrix", materialsSp["uSkyMatrix"]);
                 }
+          
+                Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", mesh.materials.textures.albedo.id, 0);
+             
 
                 gl.disable(gl.CULL_FACE);
                 gl.cullFace(gl.FRONT);

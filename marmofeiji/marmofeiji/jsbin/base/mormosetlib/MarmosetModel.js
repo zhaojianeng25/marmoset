@@ -292,7 +292,6 @@ var mars3D;
                     else {
                         this.resize();
                     }
-                    console.log(this.mainBuffer.width, this.mainBuffer.height);
                     this.resize();
                     this.scene.view.size = [this.mainBuffer.width, this.mainBuffer.height];
                     this.scene.view.updateProjection();
