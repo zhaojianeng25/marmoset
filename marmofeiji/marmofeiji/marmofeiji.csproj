@@ -42,6 +42,7 @@
     <TypeScriptCompile Include="libs\h5web.d.ts" />
     <TypeScriptCompile Include="libs\LayaAir.d.ts" />
     <TypeScriptCompile Include="src\base\BaseSprite.ts" />
+    <TypeScriptCompile Include="src\base\dis\BaseRectSprite.ts" />
     <TypeScriptCompile Include="src\base\dis\DepthRectSprite.ts" />
     <TypeScriptCompile Include="src\base\dis\DetphTestRectSprite.ts" />
     <TypeScriptCompile Include="src\base\mormosetlib\Marmoset.d.ts" />
