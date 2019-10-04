@@ -20,6 +20,8 @@
     }
     class WebViewer {
         public drawScene(): void
+        public update(): void
+     
     }
     class Mesh {
         constructor(a?: any, b?: any, c?: any);

@@ -19,9 +19,24 @@ var same;
             SamedataModel.resetSize();
             this.initmosort();
         };
+        SamedataModel.overrideFunUpData = function () {
+            marmoset.WebViewer.prototype.update = function () {
+                SamedataModel.upFrame();
+                var a = this.scene.sceneAnimator && !this.scene.sceneAnimator.paused;
+                if (0 < this.sleepCounter || this.ui.animating() || a || this.stripData.animationActive) {
+                    this.stripData.update();
+                    this.ui.animate();
+                    this.scene.update();
+                    this.drawScene();
+                    this.requestFrame(this.update.bind(this));
+                }
+                a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--;
+            };
+        };
         SamedataModel.initmosort = function () {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext;
             mars3D.MarmosetModel.getInstance().initData();
+            this.overrideFunUpData();
             this.drawRenderSprite = new same.DrawRenderSprite();
             var _samePicSprite = new same.BaseCavanRectSprite;
             _samePicSprite.otherSprite = this.drawRenderSprite;
@@ -51,7 +66,6 @@ var same;
         };
         SamedataModel.step = function (timestamp) {
             requestAnimationFrame(SamedataModel.step);
-            SamedataModel.upFrame();
         };
         SamedataModel.upDataLightShadow = function () {
             this.drawRenderSprite.update();

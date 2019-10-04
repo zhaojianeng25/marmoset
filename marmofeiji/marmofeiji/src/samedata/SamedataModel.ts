@@ -18,11 +18,36 @@
             SamedataModel.resetSize();
             this.initmosort()
         }
+        private static overrideFunUpData(): void {
+
+            marmoset.WebViewer.prototype.update = function () {
+                SamedataModel.upFrame()
+                var a = this.scene.sceneAnimator && !this.scene.sceneAnimator.paused;
+           
+
+                if (0 < this.sleepCounter || this.ui.animating() || a || this.stripData.animationActive) {
+                    this.stripData.update();
+                    this.ui.animate();
+                    this.scene.update();
+                    this.drawScene();
+                    this.requestFrame(this.update.bind(this));
+                }
+                 
+                a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--
+
+
+              
+         
+            }
+
+          
+
+        }
         private static drawRenderSprite: DrawRenderSprite;
         private static initmosort(): void {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext
             mars3D.MarmosetModel.getInstance().initData();
-           
+            this.overrideFunUpData()
 
 
             this.drawRenderSprite = new DrawRenderSprite();
@@ -64,7 +89,7 @@
         }
         private static step(timestamp): void {
             requestAnimationFrame(SamedataModel.step);
-            SamedataModel.upFrame()
+      
         }
         public static upDataLightShadow(): void {
             this.drawRenderSprite.update()
@@ -72,6 +97,7 @@
 
         }
         private static upFrame(): void {
+             
             this.upDataLightShadow();
             Pan3d.TimeUtil.update();
             Pan3d.Engine.resetSize()
