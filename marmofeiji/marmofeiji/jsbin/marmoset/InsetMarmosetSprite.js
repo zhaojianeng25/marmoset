@@ -13,59 +13,43 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var mars3D;
 (function (mars3D) {
-    var Shader3D = Pan3d.Shader3D;
     var Display3D = Pan3d.Display3D;
-    var InsetMarmosetShader = /** @class */ (function (_super) {
-        __extends(InsetMarmosetShader, _super);
-        function InsetMarmosetShader() {
-            return _super.call(this) || this;
-        }
-        InsetMarmosetShader.prototype.binLocation = function ($context) {
-            $context.bindAttribLocation(this.program, 0, "v3Position");
-            $context.bindAttribLocation(this.program, 1, "u2Texture");
-        };
-        InsetMarmosetShader.prototype.getVertexShaderString = function () {
-            var $str = "attribute vec3 v3Position;" +
-                "attribute vec2 u2Texture;" +
-                "varying vec2 v_texCoord;" +
-                "void main(void)" +
-                "{" +
-                "   v_texCoord = vec2(u2Texture.x, u2Texture.y);" +
-                "   vec4 vt0= vec4(v3Position.xyz, 1.0);" +
-                "   gl_Position = vt0;" +
-                "}";
-            return $str;
-        };
-        InsetMarmosetShader.prototype.getFragmentShaderString = function () {
-            var $str = "precision mediump float;\n" +
-                "uniform sampler2D s_texture;\n" +
-                "uniform vec4 fColor;" +
-                "varying vec2 v_texCoord;\n" +
-                "void main(void)\n" +
-                "{\n" +
-                "vec4 infoUv = texture2D(s_texture, v_texCoord.xy);\n" +
-                //   "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
-                "gl_FragColor = infoUv;\n" +
-                "}";
-            return $str;
-        };
-        InsetMarmosetShader.InsetMarmosetShader = "InsetMarmosetShader";
-        return InsetMarmosetShader;
-    }(Shader3D));
-    mars3D.InsetMarmosetShader = InsetMarmosetShader;
     var InsetMarmosetSprite = /** @class */ (function (_super) {
         __extends(InsetMarmosetSprite, _super);
         function InsetMarmosetSprite() {
             return _super.call(this) || this;
         }
+        InsetMarmosetSprite.prototype.initBuffers = function (gl, shaderProgram) {
+            var vertices = new Float32Array([
+                0.0, 0.5, -0.5, -0.5, 0.5, -0.5
+            ]);
+            var n = 3; //点的个数
+            //创建缓冲区对象
+            var vertexBuffer = gl.createBuffer();
+            if (!vertexBuffer) {
+                console.log("Failed to create the butter object");
+                return -1;
+            }
+            //将缓冲区对象绑定到目标
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            //向缓冲区写入数据
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+            //获取坐标点
+            var a_Position = gl.getAttribLocation(shaderProgram, 'a_Position');
+            //将缓冲区对象分配给a_Position变量
+            gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+            //连接a_Position变量与分配给它的缓冲区对象
+            gl.enableVertexAttribArray(a_Position);
+            return n;
+        };
         InsetMarmosetSprite.prototype.makeInsetMesh = function () {
             if (!this._insetMarmose) {
-                this._insetMarmose = this;
-                var VSHADER_SOURCE = "void main() {" +
+                //   this._insetMarmose = this;
+                //顶点着色器程序
+                var VSHADER_SOURCE = "attribute vec4 a_Position;" +
+                    "void main() {" +
                     //设置坐标
-                    "gl_Position = vec4(0.0, 0.0, 0.0, 1.0); " +
-                    //设置尺寸
-                    "gl_PointSize = 10.0; " +
+                    "gl_Position = a_Position; " +
                     "} ";
                 //片元着色器
                 var FSHADER_SOURCE = "void main() {" +
@@ -75,6 +59,10 @@ var mars3D;
                 //获取canvas元素
                 //获取绘制二维上下文
                 var gl = this._gl;
+                if (!gl) {
+                    console.log("Failed");
+                    return;
+                }
                 //编译着色器
                 var vertShader = gl.createShader(gl.VERTEX_SHADER);
                 gl.shaderSource(vertShader, VSHADER_SOURCE);
@@ -87,15 +75,20 @@ var mars3D;
                 gl.attachShader(shaderProgram, vertShader);
                 gl.attachShader(shaderProgram, fragShader);
                 gl.linkProgram(shaderProgram);
-                this.shaderProgram = shaderProgram;
+                gl.useProgram(shaderProgram);
+                //获取坐标点
+                var a_Position = gl.getAttribLocation(shaderProgram, 'a_Position');
+                if (a_Position < 0) {
+                    console.log('Failed to get the storage location of a_Position');
+                    return;
+                }
+                var n = this.initBuffers(gl, shaderProgram);
+                gl.drawArrays(gl.TRIANGLES, 0, n);
             }
         };
         InsetMarmosetSprite.prototype.upDataBygl = function (value) {
             this._gl = value;
-            var gl = this._gl;
             this.makeInsetMesh();
-            gl.useProgram(this.shaderProgram);
-            gl.drawArrays(gl.POINTS, 0, 1);
         };
         return InsetMarmosetSprite;
     }(Display3D));

@@ -1,52 +1,8 @@
 ﻿module mars3D {
-    import Shader3D = Pan3d.Shader3D
-    import Display3D = Pan3d.Display3D
-    import ProgrmaManager = Pan3d.ProgrmaManager
-    import UIManager = Pan3d.UIManager
-    import Scene_data = Pan3d.Scene_data
-    import TextureRes = Pan3d.TextureRes
-    import TextureManager = Pan3d.TextureManager
-    export class InsetMarmosetShader extends Shader3D {
-        static InsetMarmosetShader: string = "InsetMarmosetShader";
-        constructor() {
-            super();
-        }
-        binLocation($context: WebGLRenderingContext): void {
-            $context.bindAttribLocation(this.program, 0, "v3Position");
-            $context.bindAttribLocation(this.program, 1, "u2Texture");
-        }
-        getVertexShaderString(): string {
-            var $str: string =
-                "attribute vec3 v3Position;" +
-                "attribute vec2 u2Texture;" +
-                "varying vec2 v_texCoord;" +
-                "void main(void)" +
-                "{" +
-                "   v_texCoord = vec2(u2Texture.x, u2Texture.y);" +
-                "   vec4 vt0= vec4(v3Position.xyz, 1.0);" +
-                "   gl_Position = vt0;" +
-                "}"
-            return $str
-        }
-        getFragmentShaderString(): string {
-            var $str: string =
-                "precision mediump float;\n" +
-                "uniform sampler2D s_texture;\n" +
-                "uniform vec4 fColor;" +
-                "varying vec2 v_texCoord;\n" +
-
-                "void main(void)\n" +
-                "{\n" +
-                "vec4 infoUv = texture2D(s_texture, v_texCoord.xy);\n" +
-             //   "infoUv.xyz=(infoUv.xxx-0.5)*2.0 ;\n " +
  
-                "gl_FragColor = infoUv;\n" +
-                "}"
-            return $str
-
-        }
-
-    }
+    import Display3D = Pan3d.Display3D
+ 
+    
 
     export class InsetMarmosetSprite extends Display3D {
 
@@ -56,17 +12,40 @@
         }
         private _gl: WebGLRenderingContext
         private _insetMarmose: InsetMarmosetSprite
+        private initBuffers(gl: WebGLRenderingContext, shaderProgram: WebGLProgram): number {
+            var vertices = new Float32Array([
+                0.0, 0.5, -0.5, -0.5, 0.5, -0.5
+            ]);
+            var n = 3;//点的个数
+            //创建缓冲区对象
+            var vertexBuffer = gl.createBuffer();
+            if (!vertexBuffer) {
+                console.log("Failed to create the butter object");
+                return -1;
+            }
+            //将缓冲区对象绑定到目标
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            //向缓冲区写入数据
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+            //获取坐标点
+            var a_Position = gl.getAttribLocation(shaderProgram, 'a_Position');
+            //将缓冲区对象分配给a_Position变量
+            gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+            //连接a_Position变量与分配给它的缓冲区对象
+            gl.enableVertexAttribArray(a_Position);
+            return n;
 
+        }
         private makeInsetMesh(): void {
             if (!this._insetMarmose) {
-                this._insetMarmose = this;
+             //   this._insetMarmose = this;
 
+                //顶点着色器程序
                 var VSHADER_SOURCE =
+                    "attribute vec4 a_Position;" +
                     "void main() {" +
                     //设置坐标
-                    "gl_Position = vec4(0.0, 0.0, 0.0, 1.0); " +
-                    //设置尺寸
-                    "gl_PointSize = 10.0; " +
+                    "gl_Position = a_Position; " +
                     "} ";
 
                 //片元着色器
@@ -76,10 +55,13 @@
                     "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);" +
                     "}";
                 //获取canvas元素
-
+             
                 //获取绘制二维上下文
                 var gl = this._gl
-
+                if (!gl) {
+                    console.log("Failed");
+                    return;
+                }
                 //编译着色器
                 var vertShader = gl.createShader(gl.VERTEX_SHADER);
                 gl.shaderSource(vertShader, VSHADER_SOURCE);
@@ -93,22 +75,34 @@
                 gl.attachShader(shaderProgram, vertShader);
                 gl.attachShader(shaderProgram, fragShader);
                 gl.linkProgram(shaderProgram);
+                gl.useProgram(shaderProgram);
 
-                this.shaderProgram = shaderProgram
+                //获取坐标点
+                var a_Position = gl.getAttribLocation(shaderProgram, 'a_Position');
+
+                if (a_Position < 0) {
+                    console.log('Failed to get the storage location of a_Position');
+                    return;
+                }
+
+                var n = this.initBuffers(gl, shaderProgram);
+ 
+              
+
+                gl.drawArrays(gl.TRIANGLES, 0, n);
                
             }
 
 
             
         }
-        private shaderProgram: WebGLProgram;
+    
         public upDataBygl(value: WebGLRenderingContext): void {
             this._gl = value;
-            var gl = this._gl
+     
 
             this.makeInsetMesh()
-            gl.useProgram(this.shaderProgram);
-            gl.drawArrays(gl.POINTS, 0, 1);
+     
       
         }
 
