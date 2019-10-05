@@ -1,0 +1,82 @@
+﻿<html>
+
+<head>
+    <title>index</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta content="IE=11.00" http-equiv="X-UA-Compatible" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.5, maximum-scale=0.5,minimum-scale=0.5">
+    <link rel="apple-touch-icon-precomposed" href="icon.png" />
+    <link rel="touch-icon-precomposed" href="icon.png" />
+    <style>
+
+        canvas {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        ul {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        menu {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+
+    <script src="libs/inflate.min.js"></script>
+    <script src="libs/laya.core.js"></script>
+    <script src="libs/laya.webgl.js"></script>
+    <script src="libs/laya.ui.js"></script>
+    <script src="libs/h5web.js"></script>
+    <script src="libs/marmoset.js"></script>
+    <script src="libs/oss/aliyun-oss-sdk-4.4.4.min.js"></script>
+
+
+
+    <script src="jsbin/base/mormosetlib/Mars3Dmesh.js"></script>
+    <script src="jsbin/base/mormosetlib/MarmosetModel.js"></script>
+
+    <script src="jsbin/base/dis/BaseRectSprite.js"></script>
+    <script src="jsbin/base/dis/DepthRectSprite.js"></script>
+    <script src="jsbin/base/dis/DetphTestRectSprite.js"></script>
+
+
+    <script src="jsbin/marmoset/MarmosetLightVo.js"></script>
+    <script src="jsbin/marmoset/PicShowDiplay3dSprite.js"></script>
+
+    <script src="jsbin/marmoset/InsetMarmosetSprite.js"></script>
+    <script src="jsbin/marmoset/Marmoset3dScene.js"></script>
+    <script src="jsbin/marmoset/MarmosetLaunch.js"></script>
+
+    <script src="jsbin/samedata/BaseSametRectSprite.js"></script>
+    <script src="jsbin/samedata/DrawRenderSprite.js"></script>
+    <script src="jsbin/samedata/BaseCavanRectSprite.js"></script>
+    <script src="jsbin/samedata/SamePicSprite.js"></script>
+    <script src="jsbin/samedata/SamedataModel.js"></script>
+
+
+    <script>
+
+        function init() {
+            same.SamedataModel.initCanvas(document.getElementById('ArpgStageCanvas'));
+        }
+        function resetSize() {
+            same.SamedataModel.resetSize();
+
+        }
+
+    </script>
+</head>
+
+<body onload='init()' onresize="resetSize()" style="overflow-x: hidden; overflow-y: hidden;background-color:#000000">
+    <canvas id="ArpgStageCanvas" width="800" height="600" style="z-index:0"></canvas>
+
+</html>
