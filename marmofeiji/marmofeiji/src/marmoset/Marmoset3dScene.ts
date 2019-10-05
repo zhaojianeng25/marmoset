@@ -49,7 +49,7 @@ module mars3D {
         }
         private mianpian: PicShowDiplay3dSprite
         protected initScene(): void {
-            this.addInsetMarmosetSprite()
+            //this.addInsetMarmosetSprite()
             ProgrmaManager.getInstance().registe(LineDisplayShader.LineShader, new LineDisplayShader);
             this.sceneManager = new EdItorSceneManager()
    

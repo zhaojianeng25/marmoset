@@ -52,7 +52,7 @@
             mars3D.MarmosetModel.getInstance().initData();
             this.overrideFunUpData()
           //  this.addBaseRectSprite()
-            this.addInsetMarmosetSprite()
+         //   this.addInsetMarmosetSprite()
             this.drawRenderSprite = new DrawRenderSprite();
 
             var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
@@ -72,7 +72,7 @@
                     MarmosetModel.changerVshader = vstr
                     LoadManager.getInstance().load(Scene_data.fileuiRoot + rootpath + "fshader.txt", LoadManager.XML_TYPE, (fstr: any) => {
                         MarmosetModel.changerFshader = fstr
-                        marmoset.embed("res/" + MarmosetModel.getInstance().viewFileName, { width: 350, height: 256, autoStart: true, fullFrame: false, pagePreset: false });
+                        marmoset.embed("res/" + MarmosetModel.getInstance().viewFileName, { width: 400, height: 300, autoStart: true, fullFrame: false, pagePreset: false });
                     });
 
                 });

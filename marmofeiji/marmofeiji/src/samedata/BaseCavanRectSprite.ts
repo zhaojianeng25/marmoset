@@ -61,9 +61,9 @@
 
             this.objData = new ObjData;
             this.objData.vertices = new Array();
-            var sizeNum: number = 0.3;
-            var tx: number = -0.7
-            var ty: number = +0.7
+            var sizeNum: number = 0.399;
+            var tx: number = -0.6
+            var ty: number = +0.6
 
             var setDepth: number = 0.001;
             this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, setDepth);
@@ -125,8 +125,6 @@
                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
                     }
                 }
-             
- 
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
  
                 Scene_data.context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
