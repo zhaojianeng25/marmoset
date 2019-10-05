@@ -116,7 +116,6 @@
 
         public setRenderTexture($program: WebGLProgram, $name: string, $textureObject: WebGLTexture, $level: number, test: boolean = true) {
             var gl: WebGLRenderingContext = this._gl
- 
             if ($level == 0) {
                 gl.activeTexture(gl.TEXTURE0);
             } else if ($level == 1) {
@@ -136,20 +135,34 @@
             gl.uniform1i(gl.getUniformLocation($program, $name), $level);
     
         }
+        private skipNum: number=0
         public upDataBygl(value: WebGLRenderingContext): void {
             this._gl = value;
             if (!this.objData) {
                 this.makeBaseObjData();
             }
-            this._gl.useProgram(this.program);
-            this._context3D.setVa(0, 3, this.objData.vertexBuffer);
-            this._context3D.setVa(1, 2, this.objData.uvBuffer);
+            let gl = this._gl 
             if (this._uvTextureRes) {
-               this.setRenderTexture(this.program, "s_texture", this._uvTextureRes.texture, 0);
+
+ 
+                var tf: boolean = true;
+                if (tf) { //反面渲染
+                    gl.enable(gl.CULL_FACE);
+                    gl.cullFace(gl.FRONT);
+
+                } else { //正面渲染
+                    gl.enable(gl.CULL_FACE);
+                    gl.cullFace(gl.BACK);
+                }
+
+
+                this._gl.useProgram(this.program);
+                this._context3D.setVa(0, 3, this.objData.vertexBuffer);
+                this._context3D.setVa(1, 2, this.objData.uvBuffer);
+                this.setRenderTexture(this.program, "s_texture", this._uvTextureRes.texture, 0);
+                this._context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
             }
-            this._context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
- 
- 
+
         }
 
 

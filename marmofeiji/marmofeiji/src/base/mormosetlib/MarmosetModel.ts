@@ -303,11 +303,9 @@
 
                     if (window["baseRectSprite"]) {
                         window["baseRectSprite"].update();
-            
                     }
                     if (window["InsetMarmosetSprite"]) {
                         window["InsetMarmosetSprite"].upDataBygl(b);
-            
                     }
 
                     for (var c = 0; c < this.meshRenderables.length; ++c)

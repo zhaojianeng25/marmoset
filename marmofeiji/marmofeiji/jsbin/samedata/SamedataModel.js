@@ -32,6 +32,19 @@ var same;
                 a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--;
                 SamedataModel.upFrame();
             };
+            var marmosetFun = function (fun) {
+                var args = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    args[_i - 1] = arguments[_i];
+                }
+                var v = fun.apply(this, args);
+                return v;
+            };
+            var context3DupDate = Pan3d.Context3D.prototype.update;
+            Pan3d.Context3D.prototype.update = function () {
+                marmosetFun.call(this, context3DupDate);
+                this.renderContext.frontFace(this.renderContext.CCW);
+            };
         };
         SamedataModel.initmosort = function () {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext;

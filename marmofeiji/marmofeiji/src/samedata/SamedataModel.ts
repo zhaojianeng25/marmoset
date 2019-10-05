@@ -19,12 +19,8 @@
             this.initmosort()
         }
         private static overrideFunUpData(): void {
-
             marmoset.WebViewer.prototype.update = function () {
-
                 var a = this.scene.sceneAnimator && !this.scene.sceneAnimator.paused;
-           
-
                 if (0 < this.sleepCounter || this.ui.animating() || a || this.stripData.animationActive) {
                     this.stripData.update();
                     this.ui.animate();
@@ -32,14 +28,21 @@
                     this.drawScene();
                     this.requestFrame(this.update.bind(this));
                 }
-                 
                 a ? this.scene.postRender.discardAAHistory() : this.sleepCounter--
-
-
                 SamedataModel.upFrame()
          
             }
 
+            let marmosetFun = function (fun: Function, ...args): any {
+                let v = fun.apply(this, args);
+                return v;
+            }
+    
+            let context3DupDate = Pan3d.Context3D.prototype.update
+            Pan3d.Context3D.prototype.update = function () {
+                marmosetFun.call(this, context3DupDate)
+                this.renderContext.frontFace(this.renderContext.CCW);
+            }
           
 
         }
@@ -124,7 +127,7 @@
             let gl = Pan3d.Scene_data.context3D.renderContext
             gl.clearColor(255 / 255, 0, 0, 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-
+          
     
        
             SceneManager.getInstance().update()
