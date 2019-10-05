@@ -346,7 +346,7 @@ eo*=eo;
 float eu=eo*(1.0/(8.0*3.1415926))+(4.0/(8.0*3.1415926));
 eu=min(eu,1.0e3);
 
-  outcolor=vec4(eu,eu,eu,1.0); //默认
+ // outcolor=vec4(eu,eu,eu,1.0); //默认
  
  
 ev eA;
@@ -369,7 +369,7 @@ for(int k=0;k<LIGHT_COUNT;++k){
 		ei+=eN*eJ;
 		
 		
-	//	 outcolor=vec4(eA.eL[k],eA.eL[k],eA.eL[k],1.0); //直接阴影
+	//  outcolor=vec4(eA.eL[k],eA.eL[k],eA.eL[k],1.0); //直接阴影
 		
 	vec3 eO=eH+dO;
  
