@@ -53,7 +53,7 @@ var same;
                     MarmosetModel.changerVshader = vstr;
                     LoadManager.getInstance().load(Scene_data.fileuiRoot + rootpath + "fshader.txt", LoadManager.XML_TYPE, function (fstr) {
                         MarmosetModel.changerFshader = fstr;
-                        marmoset.embed("res/" + MarmosetModel.getInstance().viewFileName, { width: 256, height: 256, autoStart: true, fullFrame: false, pagePreset: false });
+                        marmoset.embed("res/" + MarmosetModel.getInstance().viewFileName, { width: 350, height: 256, autoStart: true, fullFrame: false, pagePreset: false });
                     });
                 });
             });

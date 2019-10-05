@@ -15,39 +15,58 @@
         private _context3D: InsetContext3D
         constructor() {
             super();
-       
         }
         private _gl: WebGLRenderingContext
-        private _insetMarmose: InsetMarmosetSprite
-        private initBuffers(gl: WebGLRenderingContext): void {
-            var vertices = new Float32Array([
-                -0.0, 0.5, -0.5, -0.5, 0.5, -0.5
-            ]);
-            //创建缓冲区对象
-            this.objData.vertexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.objData.vertexBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-            this.objData.treNum=3
-
-  
-
-        }
-        private makeInsetMesh(): void {
-            if (!this._insetMarmose) {
+ 
+        private makeBaseObjData(): void {
+            if (!this._context3D) {
+                this._context3D = new InsetContext3D(this._gl)
+            }
+            if (!this.objData) {
                 this.objData = new ObjData;
-               // this._insetMarmose = this;
+                this.objData.vertices = new Array();
+                var sizeNum: number = 0.5;
+                var tx: number = -0.5
+
+                var setDepth: number = 0.001;
+                this.objData.vertices.push(-sizeNum + tx, +sizeNum, setDepth);
+                this.objData.vertices.push(+sizeNum + tx, +sizeNum, 0.999);
+                this.objData.vertices.push(+sizeNum + tx, -sizeNum, 0.999);
+                this.objData.vertices.push(-sizeNum + tx, -sizeNum, setDepth);
+
+                this.objData.uvs = new Array()
+                this.objData.uvs.push(0, 0);
+                this.objData.uvs.push(1, 0);
+                this.objData.uvs.push(1, 1);
+                this.objData.uvs.push(0, 1);
+
+                this.objData.indexs = new Array();
+                this.objData.indexs.push(0, 1, 2);
+                this.objData.indexs.push(0, 2, 3);
+                this.upToGpu()
+
+
                 var VSHADER_SOURCE =
-                    "attribute vec4 a_Position;" +
-                    "void main() {" +
-                    "gl_Position = a_Position; " +
-                    "} ";
+                    "attribute vec3 v3Position;" +
+                    "attribute vec2 u2Texture;" +
+                    "varying vec2 v_texCoord;" +
+                    "void main(void)" +
+                    "{" +
+                    "   v_texCoord = vec2(u2Texture.x, u2Texture.y);" +
+                    "   vec4 vt0= vec4(v3Position.xyz, 1.0);" +
+                    "   gl_Position = vt0;" +
+                    "}";
 
                 var FSHADER_SOURCE =
-                    "void main() {" +
-                    "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);" +
+                    "precision mediump float;\n" +
+ 
+                    "varying vec2 v_texCoord;\n" +
+                    "void main(void)\n" +
+                    "{\n" +
+                        "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n" +
                     "}";
                 var gl = this._gl
-      
+
                 var vertShader = gl.createShader(gl.VERTEX_SHADER);
                 gl.shaderSource(vertShader, VSHADER_SOURCE);
                 gl.compileShader(vertShader);
@@ -60,30 +79,34 @@
                 gl.attachShader(this.program, vertShader);
                 gl.attachShader(this.program, fragShader);
                 gl.linkProgram(this.program);
-
-                this.initBuffers(gl);
-
-               
             }
-
-
-            
+     
         }
+        public upToGpu(): void {
+            if (this.objData.indexs.length) {
+                this.objData.treNum = this.objData.indexs.length
+                this.objData.vertexBuffer = this._context3D.uploadBuff3D(this.objData.vertices);
+                this.objData.uvBuffer = this._context3D.uploadBuff3D(this.objData.uvs);
+                this.objData.indexBuffer = this._context3D.uploadIndexBuff3D(this.objData.indexs);
+    
+            }
+        }
+
     
         public upDataBygl(value: WebGLRenderingContext): void {
             this._gl = value;
-            if (!this._context3D) {
-                this._context3D = new InsetContext3D(this._gl)
-            }
-            this.makeInsetMesh()
 
-            var gl = this._gl
+            this.makeBaseObjData();
+
+            var gl = this._gl;
             gl.useProgram(this.program);
-            var temp = gl.getAttribLocation(this.program, 'a_Position')
-            gl.vertexAttribPointer(temp, 2, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(temp);
-            gl.drawArrays(gl.TRIANGLES, 0, this.objData.treNum);
-      
+            this._context3D.setVa(0, 3, this.objData.vertexBuffer);
+            this._context3D.setVa(1, 2, this.objData.uvBuffer);
+            this._context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
+
+          
+
+ 
         }
 
 
