@@ -48,7 +48,11 @@ var mars3D;
             });
             return _this;
         }
+        Marmoset3dScene.prototype.addInsetMarmosetSprite = function () {
+            window["InsetMarmosetSprite"] = new mars3D.InsetMarmosetSprite();
+        };
         Marmoset3dScene.prototype.initScene = function () {
+            this.addInsetMarmosetSprite();
             ProgrmaManager.getInstance().registe(LineDisplayShader.LineShader, new LineDisplayShader);
             this.sceneManager = new EdItorSceneManager();
             this.sceneManager.addDisplay(new GridLineSprite());

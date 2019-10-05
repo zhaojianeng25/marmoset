@@ -49,7 +49,7 @@
             mars3D.MarmosetModel.getInstance().initData();
             this.overrideFunUpData()
           //  this.addBaseRectSprite()
-
+            this.addInsetMarmosetSprite()
             this.drawRenderSprite = new DrawRenderSprite();
 
             var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
@@ -109,6 +109,10 @@
                 window["baseRectSprite"]._uvTextureRes = a;
             });
  
+
+        }
+        private static addInsetMarmosetSprite(): void {
+            window["InsetMarmosetSprite"] = new mars3D.InsetMarmosetSprite();
 
         }
         private static upFrame(): void {

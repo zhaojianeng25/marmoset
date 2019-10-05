@@ -38,6 +38,7 @@ var same;
             mars3D.MarmosetModel.getInstance().initData();
             this.overrideFunUpData();
             //  this.addBaseRectSprite()
+            this.addInsetMarmosetSprite();
             this.drawRenderSprite = new same.DrawRenderSprite();
             var _samePicSprite = new same.BaseCavanRectSprite;
             _samePicSprite.otherSprite = this.drawRenderSprite;
@@ -80,6 +81,9 @@ var same;
             Pan3d.TextureManager.getInstance().getTexture(Scene_data.fileuiRoot + "256.jpg", function (a) {
                 window["baseRectSprite"]._uvTextureRes = a;
             });
+        };
+        SamedataModel.addInsetMarmosetSprite = function () {
+            window["InsetMarmosetSprite"] = new mars3D.InsetMarmosetSprite();
         };
         SamedataModel.upFrame = function () {
             this.upDataLightShadow();

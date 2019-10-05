@@ -3035,11 +3035,11 @@ marmoset = {};
             this.mesh.desc.cullBackFaces ? (b.enable(b.CULL_FACE),
                 b.cullFace(b.BACK)) : b.disable(b.CULL_FACE);;
 
-            console.log("need  cullFace需要修改的显示方向。有可能是创建GL的时间就设置的")
+           // console.log("need  cullFace需要修改的显示方向。有可能是创建GL的时间就设置的")
 
       
 
-            console.log(this.mesh.desc.cullBackFaces)
+           // console.log(this.mesh.desc.cullBackFaces)
 
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
             b.bindBuffer(b.ARRAY_BUFFER, this.mesh.vertexBuffer);
@@ -4693,6 +4693,7 @@ marmoset = {};
         a.bufferData(a.ARRAY_BUFFER, b, a.STATIC_DRAW);
         a.bindBuffer(a.ARRAY_BUFFER, null)
     }
+ 
     ShadowFloor.prototype.draw = function (a) {
 
 
