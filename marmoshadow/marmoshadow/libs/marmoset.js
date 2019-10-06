@@ -2520,10 +2520,21 @@ marmoset = {};
             , u = Matrix.mul(Matrix.empty(), d.matrix, u);
         m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
 
+     
+
         var materialsSp = this
+        var vfinfo = {};
+        materialsSp["vfinfo"] = vfinfo;
+
+
         materialsSp["mview"] = q
+        vfinfo["uModelViewProjectionMatrix"] = q
+ 
+ 
+
         m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
         materialsSp["uSkyMatrix"] = u
+        vfinfo["uSkyMatrix"] = u
 
         u = Matrix.mulPoint(Vect.empty(), d.matrix, c.transform[12], c.transform[13], c.transform[14]);
         m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
@@ -2614,6 +2625,8 @@ marmoset = {};
         g === this.stripShader && (m.uniform1fv(p.uStrips, a.stripData.strips),
             m.uniform2f(p.uStripRes, 2 / c.size[0], 2 / c.size[1]));
         m.uniform2f(p.uUVOffset, this.uOffset, this.vOffset);
+
+        vfinfo["uUVOffset"] = { uOffset: this.uOffset, vOffset: this.vOffset };
         return !0
     }
         ;
