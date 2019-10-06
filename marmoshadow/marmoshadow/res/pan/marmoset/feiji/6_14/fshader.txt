@@ -118,6 +118,7 @@ highp float hN(sampler2D hL,highp vec3 hA,float hO){
 }
 struct ev{
 float eL[LIGHT_COUNT];
+vec3 oT[LIGHT_COUNT];
 };
 void eB(out ev ss,float hO){
 	highp vec3 hP[SHADOW_COUNT];
@@ -132,6 +133,7 @@ void eB(out ev ss,float hO){
 		#endif
 		highp vec4 hS=h(uShadowMatrices[k],dv+hR*hu);
 		hP[k]=hS.xyz/hS.w;
+		ss.oT[2] =vec3(hP[k]);
 	}
 	float m;
 	#if SHADOW_COUNT > 0
@@ -353,6 +355,8 @@ eu=min(eu,1.0e3);
 ev eA;
 eB(eA,SHADOW_KERNEL);
  	   outcolor=vec4(eA.eL[2],eA.eL[2],eA.eL[2],1.0); //直接阴影
+ 	   outcolor=vec4(eA.oT[2],1.0); //直接阴影
+ 
 
 for(int k=0;k<LIGHT_COUNT;++k){
 	vec3 eH=uLightPositions[k].xyz-dv*uLightPositions[k].w;
