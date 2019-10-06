@@ -2538,7 +2538,10 @@ marmoset = {};
 
         u = Matrix.mulPoint(Vect.empty(), d.matrix, c.transform[12], c.transform[13], c.transform[14]);
         m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
-        materialsSp["uCameraPosition"] = u
+        materialsSp["uCameraPosition"] = u;
+        vfinfo["uCameraPosition"] = u;
+
+
 
         m.uniform3fv(p.uFresnel, this.fresnel);
         m.uniform1f(p.uAlphaTest, this.alphaTest);

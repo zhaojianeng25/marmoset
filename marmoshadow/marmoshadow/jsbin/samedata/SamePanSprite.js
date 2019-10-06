@@ -59,10 +59,23 @@ var samepan;
             return $str;
         };
         SamePanShader.prototype.getFragmentShaderString = function () {
-            var $str = "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;" +
+            var $str = "#define SHADOW_COUNT 3;\n" +
+                "#define LIGHT_COUNT 3;\n" +
+                "uniform sampler2D tAlbedo;uniform sampler2D tReflectivity;uniform sampler2D tNormal;uniform sampler2D tExtras;uniform sampler2D tSkySpecular;\n" +
+                "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;\n" +
+                "uniform vec4 uDiffuseCoefficients[9];uniform vec3 uCameraPosition;uniform float uAlphaTest;uniform vec3 uFresnel;uniform float uHorizonOcclude;uniform float uHorizonSmoothing;" +
+                "vec3 dJ(vec3 n) {" +
+                "vec3 hn = dA;" +
+                "vec3 ho = dB;" +
+                "vec3 hu = dC;" +
+                "n = 2.0 * n - vec3(1.0);" +
+                "return normalize(hn * n.x + ho * n.y + hu * n.z);" +
+                "}" +
                 "void main(void) " +
                 "{ " +
-                "gl_FragColor =vec4(dA,1.0); " +
+                "vec3 dI = dJ(texture2D(tNormal, d).xyz);" +
+                "vec3 dO = normalize(uCameraPosition - dv);" +
+                "gl_FragColor =vec4(dO.xyz,1.0); " +
                 "}";
             return $str;
         };
@@ -152,8 +165,13 @@ var samepan;
             p.uModelViewProjectionMatrix = gl.getUniformLocation(this.shader.program, "uModelViewProjectionMatrix");
             p.uSkyMatrix = gl.getUniformLocation(this.shader.program, "uSkyMatrix");
             p.uUVOffset = gl.getUniformLocation(this.shader.program, "uUVOffset");
+            p.uCameraPosition = gl.getUniformLocation(this.shader.program, "uCameraPosition");
             m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
             m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
+            var u = vfinfo["uCameraPosition"];
+            m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
+            Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
+            Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
             m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
         };
         SamePanSprite.prototype.drawBaseMesh = function (value) {
