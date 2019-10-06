@@ -2528,7 +2528,9 @@ marmoset = {};
 
 
         materialsSp["mview"] = q
-        vfinfo["uModelViewProjectionMatrix"] = q
+        vfinfo["uModelViewProjectionMatrix"] = q;
+        vfinfo["s"] = s;
+        vfinfo["r"] = r;
  
  
 

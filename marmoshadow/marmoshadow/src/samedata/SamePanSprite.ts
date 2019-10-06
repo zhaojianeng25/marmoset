@@ -79,7 +79,9 @@ module samepan {
                 "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;\n" +
 
                 "uniform vec4 uDiffuseCoefficients[9];uniform vec3 uCameraPosition;uniform float uAlphaTest;uniform vec3 uFresnel;uniform float uHorizonOcclude;uniform float uHorizonSmoothing;" +
-          
+
+                "vec3 dG(vec3 c){return c*c;}" +
+
                 "vec3 dJ(vec3 n) {" +
                     "vec3 hn = dA;" +
                     "vec3 ho = dB;" +
@@ -87,18 +89,20 @@ module samepan {
                     "n = 2.0 * n - vec3(1.0);" +
                     "return normalize(hn * n.x + ho * n.y + hu * n.z);" +
                 "}" +
-
  
 
                 "void main(void) " +
                 "{ " +
 
+                "vec4 m = texture2D(tAlbedo, d);" +
+                "vec3 dF = dG(m.xyz);" +
+
                 "vec3 dI = dJ(texture2D(tNormal, d).xyz);" +
                 "vec3 dO = normalize(uCameraPosition - dv);"+
-
        
-                
-                    "gl_FragColor =vec4(dO.xyz,1.0); " +
+                 "m=texture2D(tReflectivity,d);"+
+
+                 "gl_FragColor =vec4(dF.xyz,1.0); " +
 
 
                 "}"
@@ -203,6 +207,7 @@ module samepan {
 
         }
         private materialbind(value: Mars3Dmesh): void {
+            this.mesh = value
             var gl: WebGLRenderingContext = Scene_data.context3D.renderContext;
             var m: WebGLRenderingContext = gl;
             var vfinfo: any = value.materials["vfinfo"]
@@ -231,6 +236,7 @@ module samepan {
  
             Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
             Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
+            Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.materials.textures.reflectivity.id, 2);
 
             m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
  

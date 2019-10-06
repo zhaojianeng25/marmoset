@@ -306,11 +306,11 @@ vec3 dI=dJ(texture2D(tNormal,d).xyz);
 
 vec3 dO=normalize(uCameraPosition-dv);
 
-    outcolor=vec4(dO.xyz,1.0);;
+ //   outcolor=vec4(dO.xyz,1.0);;
    
 m=texture2D(tReflectivity,d);
 
- // outcolor=vec4(m.w,m.w,m.w,1.0);;
+ outcolor=vec4(dF.xyz,1.0);;
   
   
 vec3 dP=dG(m.xyz);

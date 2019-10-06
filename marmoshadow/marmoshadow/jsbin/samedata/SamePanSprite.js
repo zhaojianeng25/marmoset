@@ -64,6 +64,7 @@ var samepan;
                 "uniform sampler2D tAlbedo;uniform sampler2D tReflectivity;uniform sampler2D tNormal;uniform sampler2D tExtras;uniform sampler2D tSkySpecular;\n" +
                 "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;\n" +
                 "uniform vec4 uDiffuseCoefficients[9];uniform vec3 uCameraPosition;uniform float uAlphaTest;uniform vec3 uFresnel;uniform float uHorizonOcclude;uniform float uHorizonSmoothing;" +
+                "vec3 dG(vec3 c){return c*c;}" +
                 "vec3 dJ(vec3 n) {" +
                 "vec3 hn = dA;" +
                 "vec3 ho = dB;" +
@@ -73,9 +74,12 @@ var samepan;
                 "}" +
                 "void main(void) " +
                 "{ " +
+                "vec4 m = texture2D(tAlbedo, d);" +
+                "vec3 dF = dG(m.xyz);" +
                 "vec3 dI = dJ(texture2D(tNormal, d).xyz);" +
                 "vec3 dO = normalize(uCameraPosition - dv);" +
-                "gl_FragColor =vec4(dO.xyz,1.0); " +
+                "m=texture2D(tReflectivity,d);" +
+                "gl_FragColor =vec4(dF.xyz,1.0); " +
                 "}";
             return $str;
         };
@@ -155,6 +159,7 @@ var samepan;
             }
         };
         SamePanSprite.prototype.materialbind = function (value) {
+            this.mesh = value;
             var gl = Scene_data.context3D.renderContext;
             var m = gl;
             var vfinfo = value.materials["vfinfo"];
@@ -172,6 +177,7 @@ var samepan;
             m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
             Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
             Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
+            Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.materials.textures.reflectivity.id, 2);
             m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
         };
         SamePanSprite.prototype.drawBaseMesh = function (value) {
