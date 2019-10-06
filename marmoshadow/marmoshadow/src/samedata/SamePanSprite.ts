@@ -83,20 +83,74 @@ module samepan {
  
 
                 "uniform sampler2D tAlbedo;uniform sampler2D tReflectivity;uniform sampler2D tNormal;uniform sampler2D tExtras;uniform sampler2D tSkySpecular;\n" +
+
+                "uniform sampler2D tDepth0;\n" +
+                "uniform sampler2D tDepth1;\n" +
+                "uniform sampler2D tDepth2;\n" +
  
                 "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;\n" +
 
                 "uniform vec4 uDiffuseCoefficients[9];uniform vec3 uCameraPosition;uniform float uAlphaTest;uniform vec3 uFresnel;uniform float uHorizonOcclude;uniform float uHorizonSmoothing;\n" +
 
+                "uniform highp vec2 uShadowKernelRotation;uniform highp vec2 uShadowMapSize;uniform highp mat4 uShadowMatrices[SHADOW_COUNT];uniform highp vec4 uShadowTexelPadProjections[SHADOW_COUNT];\n"+
 
-        
+                "\n#define SHADOW_COMPARE(a,b) ((a) < (b) ? 1.0 : 0.0)\n" +
 
                 "vec3 dG(vec3 c){return c*c;} \n" +
 
                 "struct ev{\n" +
                    "float eL[LIGHT_COUNT];\n" +
                 "};\n" +
- 
+
+                "highp float hJ(highp vec3 G) {\n" +
+                    "return  G.x ;\n" +
+                "}\n" +
+
+                "float hK(sampler2D hL, highp vec2 hA, highp float H) {" +
+                     "highp float G = hJ(texture2D(hL, hA.xy).xyz);" +
+                     "return SHADOW_COMPARE(H,G);" +
+            
+                "}" +
+  
+
+                "highp float hN(sampler2D hL, highp vec3 hA, float hO) {\n" +
+                     "highp vec2 l = uShadowKernelRotation * hO;\n" +
+                    "float s;\n" +
+                    "s = hK(hL, hA.xy + l, hA.z);\n" +
+                    "s += hK(hL, hA.xy - l, hA.z);\n" +
+                    "s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
+                    "s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
+                    "s *= 0.25;\n" +
+                    "return s * s;\n" +
+             
+                "}\n" +
+
+                "void eB(out ev ss, float hO){" +
+                     "highp vec3 hP[SHADOW_COUNT];" +
+                     "vec3 hu = gl_FrontFacing ? dC : -dC;" +
+                    "for (int k = 0; k < SHADOW_COUNT; ++k) {" +
+                        "vec4 hQ = uShadowTexelPadProjections[k];" +
+                         "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
+                         "hR*=.0005+0.5 * hO;" +
+       
+                         "highp vec4 hS =uShadowMatrices[2]* vec4(dv, 1.0);" +
+                         "hP[k]=hS.xyz/hS.w;" +
+                    "}" +
+                    "float m;\n" +
+                    "\n#if SHADOW_COUNT > 0 \n" +
+                        "m = hN(tDepth0, hP[0], hO);" +
+                        "ss.eL[0] = m;" +
+                    "\n#endif\n" +
+                    "\n#if SHADOW_COUNT > 1\n" +
+                        "m = hN(tDepth1, hP[1], hO);" +
+                        "ss.eL[1] =m;" +
+                    "\n#endif\n" +
+                        "\n#if SHADOW_COUNT > 2\n" +
+                        "m = hN(tDepth2, hP[2], hO);\n" +
+                        "ss.eL[2] =m;\n" +
+                     "\n#endif\n" +
+
+                "}" +
 
                 "vec3 dJ(vec3 n) {" +
                     "vec3 hn = dA;" +
@@ -120,6 +174,8 @@ module samepan {
 
                 " }" +
 
+
+
       
  
 
@@ -139,12 +195,16 @@ module samepan {
                 "vec3 ek = reflect(-dO, dI);" +
 
               
+                "ev eA;" +
+                "eB(eA,SHADOW_KERNEL);"+
 
+
+                "vec4 outcolor=vec4(eA.eL[0], eA.eL[0], eA.eL[0], 1.0);" +
 
                 "gl_FragColor =vec4(ek.xyz,1.0); " +
 
 
-
+                
 
 
 
@@ -264,7 +324,10 @@ module samepan {
                 var p: any = {};
                 var q = vfinfo["uModelViewProjectionMatrix"]
                 var u = vfinfo["uSkyMatrix"]
+                var s = vfinfo["s"];
+                var f = vfinfo["f"];
                 var uUVOffset = vfinfo["uUVOffset"];
+    
 
 
 
@@ -273,7 +336,10 @@ module samepan {
                 p.uUVOffset = gl.getUniformLocation(this.shader.program, "uUVOffset")
                 p.uCameraPosition = gl.getUniformLocation(this.shader.program, "uCameraPosition")
 
+                Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", vfinfo["uShadowTexelPadProjections"]);
+                Scene_data.context3D.setVcMatrix4fv(this.shader, "uShadowMatrices", vfinfo["uShadowMatrices"]);
 
+                Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
 
 
                 m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
@@ -291,6 +357,12 @@ module samepan {
                 Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.tNormal.texture, 1);
                 Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.tReflectivity.texture, 2);
 
+                Scene_data.context3D.setRenderTexture(this.shader, "tDepth0", f.depthTextures[0].id, 3);
+                Scene_data.context3D.setRenderTexture(this.shader, "tDepth1", f.depthTextures[1].id, 4);
+                Scene_data.context3D.setRenderTexture(this.shader, "tDepth2", f.depthTextures[2].id, 5);
+             
+
+      
  
 
                 m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);

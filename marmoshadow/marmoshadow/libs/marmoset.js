@@ -2531,6 +2531,7 @@ marmoset = {};
         vfinfo["uModelViewProjectionMatrix"] = q;
         vfinfo["s"] = s;
         vfinfo["r"] = r;
+        vfinfo["f"] = f;
  
  
 
@@ -2556,11 +2557,17 @@ marmoset = {};
         materialsSp["uDiffuseCoefficients"] = e.diffuseCoefficients;
  
         materialsSp["uShadowMatrices"] = []
+        vfinfo["uShadowMatrices"] = []
         for (var kt = d.finalTransformBuffer.length - 16; kt < d.finalTransformBuffer.length; kt++) {
+
             materialsSp["uShadowMatrices"].push(d.finalTransformBuffer[kt])
         }
+     
         materialsSp["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
+        vfinfo["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
+
         materialsSp["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
+        vfinfo["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
 
 
         0 < d.count && (m.uniform4fv(p.uLightPositions, d.positionBuffer),
@@ -2574,8 +2581,8 @@ marmoset = {};
             m.uniform2f(p.uShadowKernelRotation, u, u),
 
             0 < d.shadowCount && (u = f.depthTextures[0].desc.width,
-                m.uniform2f(p.uShadowMapSize, u, 1 / u),
-                m.uniformMatrix4fv(p.uShadowMatrices, !1, d.finalTransformBuffer),
+            m.uniform2f(p.uShadowMapSize, u, 1 / u),
+            m.uniformMatrix4fv(p.uShadowMatrices, !1, d.finalTransformBuffer),
 
 
                 m.uniformMatrix4fv(p.uInvShadowMatrices, !1, d.inverseTransformBuffer),

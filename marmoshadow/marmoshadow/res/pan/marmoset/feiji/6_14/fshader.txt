@@ -352,7 +352,7 @@ eu=min(eu,1.0e3);
  
 ev eA;
 eB(eA,SHADOW_KERNEL);
- 
+ 	   outcolor=vec4(eA.eL[0],eA.eL[0],eA.eL[0],1.0); //直接阴影
 
 for(int k=0;k<LIGHT_COUNT;++k){
 	vec3 eH=uLightPositions[k].xyz-dv*uLightPositions[k].w;
@@ -370,7 +370,7 @@ for(int k=0;k<LIGHT_COUNT;++k){
 		ei+=eN*eJ;
 		
 		
-	//  outcolor=vec4(eA.eL[k],eA.eL[k],eA.eL[k],1.0); //直接阴影
+	  // outcolor=vec4(eA.eL[0],eA.eL[0],eA.eL[0],1.0); //直接阴影
 		
 	vec3 eO=eH+dO;
  
@@ -384,6 +384,7 @@ for(int k=0;k<LIGHT_COUNT;++k){
 #ifdef SHADOW_COUNT 
  
 #endif
+
 
 	//   outcolor=vec4(el.xyz,1.0); //默认
 	//   outcolor=texture2D(tAlbedo,d); //默认
