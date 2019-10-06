@@ -102,7 +102,7 @@ module samepan {
        
                  "m=texture2D(tReflectivity,d);"+
 
-                 "gl_FragColor =vec4(dF.xyz,1.0); " +
+                 "gl_FragColor =vec4(m.xyz,1.0); " +
 
 
                 "}"
@@ -208,38 +208,43 @@ module samepan {
         }
         private materialbind(value: Mars3Dmesh): void {
             this.mesh = value
-            var gl: WebGLRenderingContext = Scene_data.context3D.renderContext;
-            var m: WebGLRenderingContext = gl;
-            var vfinfo: any = value.materials["vfinfo"]
+            if (this.mesh.tAlbedo && this.mesh.tNormal && this. mesh.tReflectivity) {
+                var gl: WebGLRenderingContext = Scene_data.context3D.renderContext;
+                var m: WebGLRenderingContext = gl;
+                var vfinfo: any = value.materials["vfinfo"]
 
-            var p: any = {};
-            var q = vfinfo["uModelViewProjectionMatrix"]
-            var u = vfinfo["uSkyMatrix"]
-            var uUVOffset = vfinfo["uUVOffset"];
-
-    
-
-            p.uModelViewProjectionMatrix = gl.getUniformLocation(this.shader.program, "uModelViewProjectionMatrix")
-            p.uSkyMatrix = gl.getUniformLocation(this.shader.program, "uSkyMatrix")
-            p.uUVOffset = gl.getUniformLocation(this.shader.program, "uUVOffset")
-            p.uCameraPosition = gl.getUniformLocation(this.shader.program, "uCameraPosition")
+                var p: any = {};
+                var q = vfinfo["uModelViewProjectionMatrix"]
+                var u = vfinfo["uSkyMatrix"]
+                var uUVOffset = vfinfo["uUVOffset"];
 
 
-  
 
-            m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
-            m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
-            var u = vfinfo["uCameraPosition"];
-            m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
+                p.uModelViewProjectionMatrix = gl.getUniformLocation(this.shader.program, "uModelViewProjectionMatrix")
+                p.uSkyMatrix = gl.getUniformLocation(this.shader.program, "uSkyMatrix")
+                p.uUVOffset = gl.getUniformLocation(this.shader.program, "uUVOffset")
+                p.uCameraPosition = gl.getUniformLocation(this.shader.program, "uCameraPosition")
 
 
- 
-            Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
-            Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
-            Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.materials.textures.reflectivity.id, 2);
 
-            m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
- 
+
+                m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
+                m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
+                var u = vfinfo["uCameraPosition"];
+                m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
+
+
+
+                //  Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
+               // Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
+               // Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.materials.textures.reflectivity.id, 2);
+                Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.tAlbedo.texture, 0);
+                Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.tNormal.texture, 1);
+                Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.tReflectivity.texture, 2);
+         
+
+                m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
+            }
     
 
         }
