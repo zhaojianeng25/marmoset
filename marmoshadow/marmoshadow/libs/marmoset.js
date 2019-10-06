@@ -2625,7 +2625,8 @@ marmoset = {};
         r.extras.bind(s.tExtras);
         e.specularTexture.bind(s.tSkySpecular);
 
-
+        vfinfo["albedo"] = r.albedo;
+        console.log(this)
 
         g === this.stripShader && (m.uniform1fv(p.uStrips, a.stripData.strips),
             m.uniform2f(p.uStripRes, 2 / c.size[0], 2 / c.size[1]));

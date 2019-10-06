@@ -57,7 +57,9 @@ module samepan {
 
                 "gl_Position=h(uModelViewProjectionMatrix,vPosition.xyz);" +
 
-                "d=vTexCoord+uUVOffset;" +
+                "d=vTexCoord;" +
+      
+
                 "dA = u(uSkyMatrix, iW(vTangent));" +
                 "dB = u(uSkyMatrix, iW(vBitangent));" +
                 "dC = u(uSkyMatrix, iW(vNormal));" +
@@ -200,9 +202,10 @@ module samepan {
                     this.makeMeshItemTexture()
                 }
                 for (var i: number = 0; i < MarmosetModel.meshItem.length; i++) {
-                    // this.drawBaseMesh(MarmosetModel.meshItem[i])
-                    this.drawBaseMesh(MarmosetModel.meshItem[i])
+                     this.drawBaseMesh(MarmosetModel.meshItem[i])
+                  
                 }
+               // this.drawBaseMesh(MarmosetModel.meshItem[0])
             }
 
         }
@@ -233,7 +236,7 @@ module samepan {
                 var u = vfinfo["uCameraPosition"];
                 m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
 
-
+ 
 
                 //  Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
                // Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
@@ -241,13 +244,15 @@ module samepan {
                 Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.tAlbedo.texture, 0);
                 Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.tNormal.texture, 1);
                 Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.tReflectivity.texture, 2);
-         
+
+ 
 
                 m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
             }
     
 
         }
+        private lastTexture: WebGLTexture
         private mesh: Mars3Dmesh
         private indexCount: number
         private indexOffset: number
@@ -258,13 +263,7 @@ module samepan {
 
             this.materialbind(value)
 
-
-            Scene_data.context3D.setVcMatrix4fv(this.shader, "posMatrix3D", this.posMatrix.m);
-            var viewM = Scene_data.viewMatrx3D.clone()
-            viewM.prepend(Scene_data.cam3D.cameraMatrix)
-            viewM.prepend(this.posMatrix)
-
-         
+ 
      
             this.indexCount = this.mesh.indexCount;
             this.indexOffset = 0;

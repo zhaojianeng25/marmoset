@@ -50,7 +50,7 @@ var samepan;
                 "void main(void)" +
                 "{" +
                 "gl_Position=h(uModelViewProjectionMatrix,vPosition.xyz);" +
-                "d=vTexCoord+uUVOffset;" +
+                "d=vTexCoord;" +
                 "dA = u(uSkyMatrix, iW(vTangent));" +
                 "dB = u(uSkyMatrix, iW(vBitangent));" +
                 "dC = u(uSkyMatrix, iW(vNormal));" +
@@ -153,9 +153,9 @@ var samepan;
                     this.makeMeshItemTexture();
                 }
                 for (var i = 0; i < MarmosetModel.meshItem.length; i++) {
-                    // this.drawBaseMesh(MarmosetModel.meshItem[i])
                     this.drawBaseMesh(MarmosetModel.meshItem[i]);
                 }
+                // this.drawBaseMesh(MarmosetModel.meshItem[0])
             }
         };
         SamePanSprite.prototype.materialbind = function (value) {
@@ -189,10 +189,6 @@ var samepan;
             this.mesh = value;
             Scene_data.context3D.setProgram(this.program);
             this.materialbind(value);
-            Scene_data.context3D.setVcMatrix4fv(this.shader, "posMatrix3D", this.posMatrix.m);
-            var viewM = Scene_data.viewMatrx3D.clone();
-            viewM.prepend(Scene_data.cam3D.cameraMatrix);
-            viewM.prepend(this.posMatrix);
             this.indexCount = this.mesh.indexCount;
             this.indexOffset = 0;
             var a = this.mesh.materials.shader.attribs;
