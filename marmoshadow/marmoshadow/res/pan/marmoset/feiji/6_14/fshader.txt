@@ -352,7 +352,7 @@ eu=min(eu,1.0e3);
  
 ev eA;
 eB(eA,SHADOW_KERNEL);
- 	   outcolor=vec4(eA.eL[0],eA.eL[0],eA.eL[0],1.0); //直接阴影
+ 	   outcolor=vec4(eA.eL[2],eA.eL[2],eA.eL[2],1.0); //直接阴影
 
 for(int k=0;k<LIGHT_COUNT;++k){
 	vec3 eH=uLightPositions[k].xyz-dv*uLightPositions[k].w;
