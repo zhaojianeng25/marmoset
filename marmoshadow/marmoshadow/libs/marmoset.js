@@ -2625,8 +2625,7 @@ marmoset = {};
         r.extras.bind(s.tExtras);
         e.specularTexture.bind(s.tSkySpecular);
 
-        vfinfo["albedo"] = r.albedo;
-        console.log(this)
+ 
 
         g === this.stripShader && (m.uniform1fv(p.uStrips, a.stripData.strips),
             m.uniform2f(p.uStripRes, 2 / c.size[0], 2 / c.size[1]));
@@ -3733,10 +3732,11 @@ marmoset = {};
         var b = this.gl;
         if (this.sceneLoaded) {
             this.sky.setClearColor();
+            b.clearColor(0, 0, 0, 1);
             b.clear(b.COLOR_BUFFER_BIT | b.DEPTH_BUFFER_BIT | b.STENCIL_BUFFER_BIT);
             b.enable(b.DEPTH_TEST);
-            this.sky.draw(this);
-            this.shadowFloor && this.shadowFloor.draw(this);
+        //    this.sky.draw(this);
+       //     this.shadowFloor && this.shadowFloor.draw(this);
             for (var c = 0; c < this.meshRenderables.length; ++c)
                 this.meshRenderables[c].material.usesBlending || this.meshRenderables[c].material.usesRefraction || !this.meshRenderables[c].visible || this.meshRenderables[c].draw(this);
             b.enable(b.POLYGON_OFFSET_FILL);

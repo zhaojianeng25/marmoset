@@ -59,12 +59,19 @@ var samepan;
             return $str;
         };
         SamePanShader.prototype.getFragmentShaderString = function () {
-            var $str = "#define SHADOW_COUNT 3;\n" +
-                "#define LIGHT_COUNT 3;\n" +
+            var $str = "#define UV_OFFSET\n" +
+                "#define SHADOW_NATIVE_DEPTH\n" +
+                "#define NOBLEND\n" +
+                "#define SHADOW_COUNT 3\n" +
+                "#define LIGHT_COUNT 3\n" +
+                "#define SHADOW_KERNEL (4.0/1536.0)\n" +
                 "uniform sampler2D tAlbedo;uniform sampler2D tReflectivity;uniform sampler2D tNormal;uniform sampler2D tExtras;uniform sampler2D tSkySpecular;\n" +
                 "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;\n" +
-                "uniform vec4 uDiffuseCoefficients[9];uniform vec3 uCameraPosition;uniform float uAlphaTest;uniform vec3 uFresnel;uniform float uHorizonOcclude;uniform float uHorizonSmoothing;" +
-                "vec3 dG(vec3 c){return c*c;}" +
+                "uniform vec4 uDiffuseCoefficients[9];uniform vec3 uCameraPosition;uniform float uAlphaTest;uniform vec3 uFresnel;uniform float uHorizonOcclude;uniform float uHorizonSmoothing;\n" +
+                "vec3 dG(vec3 c){return c*c;} \n" +
+                "struct ev{\n" +
+                "float eL[LIGHT_COUNT];\n" +
+                "};\n" +
                 "vec3 dJ(vec3 n) {" +
                 "vec3 hn = dA;" +
                 "vec3 ho = dB;" +
@@ -72,6 +79,18 @@ var samepan;
                 "n = 2.0 * n - vec3(1.0);" +
                 "return normalize(hn * n.x + ho * n.y + hu * n.z);" +
                 "}" +
+                " vec3 em(vec3 fJ, float dQ) {" +
+                "fJ /= dot(vec3(1.0), abs(fJ));" +
+                "vec2 fU = abs(fJ.zx) - vec2(1.0, 1.0);" +
+                "vec2 fV = vec2(fJ.x < 0.0 ? fU.x : -fU.x, fJ.z < 0.0 ? fU.y : -fU.y);" +
+                "vec2 fW = (fJ.y < 0.0) ? fV : fJ.xz;" +
+                "fW = vec2(0.5 * (254.0 / 256.0), 0.125 * 0.5 * (254.0 / 256.0)) * fW + vec2(0.5, 0.125 * 0.5);" +
+                "float fX = fract(7.0 * dQ);" +
+                "fW.y += 0.125 * (7.0 * dQ - fX); vec2 fY = fW + vec2(0.0, 0.125);" +
+                "vec4 fZ = mix(texture2D(tSkySpecular, fW), texture2D(tSkySpecular, fY), fX);" +
+                "vec3 r = fZ.xyz * (7.0 * fZ.w);" +
+                "return r * r; " +
+                " }" +
                 "void main(void) " +
                 "{ " +
                 "vec4 m = texture2D(tAlbedo, d);" +
@@ -79,7 +98,10 @@ var samepan;
                 "vec3 dI = dJ(texture2D(tNormal, d).xyz);" +
                 "vec3 dO = normalize(uCameraPosition - dv);" +
                 "m=texture2D(tReflectivity,d);" +
-                "gl_FragColor =vec4(texture2D(tAlbedo, d).xyz,1.0); " +
+                "float dQ = m.w;" +
+                "vec3 dP = dG(m.xyz);" +
+                "vec3 ek = reflect(-dO, dI);" +
+                "gl_FragColor =vec4(ek.xyz,1.0); " +
                 "}";
             return $str;
         };
@@ -152,6 +174,10 @@ var samepan;
                 if (!this.isFinish) {
                     this.makeMeshItemTexture();
                 }
+                var gl = Scene_data.context3D.renderContext;
+                gl.clearColor(0, 0, 0, 1.0);
+                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+                gl.clearColor(0, 0, 0, 1.0);
                 for (var i = 0; i < MarmosetModel.meshItem.length; i++) {
                     this.drawBaseMesh(MarmosetModel.meshItem[i]);
                 }
@@ -176,7 +202,7 @@ var samepan;
                 m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
                 var u = vfinfo["uCameraPosition"];
                 m.uniform3f(p.uCameraPosition, u[0], u[1], u[2]);
-                //  Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
+                // Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.materials.textures.albedo.id, 0);
                 // Scene_data.context3D.setRenderTexture(this.shader, "tNormal", this.mesh.materials.textures.normal.id, 1);
                 // Scene_data.context3D.setRenderTexture(this.shader, "tReflectivity", this.mesh.materials.textures.reflectivity.id, 2);
                 Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", this.mesh.tAlbedo.texture, 0);

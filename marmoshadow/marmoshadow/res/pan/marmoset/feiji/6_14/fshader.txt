@@ -310,12 +310,12 @@ vec3 dO=normalize(uCameraPosition-dv);
    
 m=texture2D(tReflectivity,d);
 
- outcolor=vec4(texture2D(tAlbedo,d).xyz,1.0);;
+ //outcolor=vec4(texture2D(tAlbedo,d).xyz,1.0);;
   
   
 vec3 dP=dG(m.xyz);
 
- //outcolor=vec4(dP.xyz,1.0);;
+  outcolor=vec4(dP.xyz,1.0);;
  
 float dQ=m.w;
 float dR=dQ;
@@ -326,14 +326,14 @@ vec3 ei=ej(dI);
  
 vec3 ek=reflect(-dO,dI);
 
-//outcolor=vec4(ek.xyz,1.0);;
+outcolor=vec4(ek.xyz,1.0);;
 
  
 
 vec3 el=em(ek,dQ);
  
  
-  // outcolor=vec4(el.xyz,1.0); 
+ // outcolor=vec4(el.xyz,1.0); 
  
  
 el*=en(ek,dC);
@@ -347,7 +347,7 @@ eo*=eo;
 float eu=eo*(1.0/(8.0*3.1415926))+(4.0/(8.0*3.1415926));
 eu=min(eu,1.0e3);
 
- // outcolor=vec4(eu,eu,eu,1.0); //默认
+// outcolor=vec4(eu,eu,eu,1.0); //默认
  
  
 ev eA;
