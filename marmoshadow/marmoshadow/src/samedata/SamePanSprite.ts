@@ -72,12 +72,12 @@ module samepan {
         }
         getFragmentShaderString(): string {
             var $str: string =
-                "#define UV_OFFSET\n" +
+                "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;" +
 
                 "void main(void) " +
                 "{ " +
 
-                "gl_FragColor =vec4(1.0,0.0,1.0,1.0); " +
+                   "gl_FragColor =vec4(dA,1.0); " +
 
 
 
@@ -204,6 +204,8 @@ module samepan {
 
             m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
             m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
+
+
 
             m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
  

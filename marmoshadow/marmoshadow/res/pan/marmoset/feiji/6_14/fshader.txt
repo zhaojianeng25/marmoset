@@ -292,6 +292,7 @@ vec4 m=texture2D(tAlbedo,d);
 vec3 dF=dG(m.xyz);
 
  //outcolor=vec4(dF,1.0);;
+ outcolor=vec4(dA,1.0);;
 
 
 
@@ -369,7 +370,7 @@ for(int k=0;k<LIGHT_COUNT;++k){
 		ei+=eN*eJ;
 		
 		
-	  outcolor=vec4(eA.eL[k],eA.eL[k],eA.eL[k],1.0); //直接阴影
+	//  outcolor=vec4(eA.eL[k],eA.eL[k],eA.eL[k],1.0); //直接阴影
 		
 	vec3 eO=eH+dO;
  

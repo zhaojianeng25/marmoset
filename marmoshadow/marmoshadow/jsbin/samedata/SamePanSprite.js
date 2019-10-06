@@ -59,10 +59,10 @@ var samepan;
             return $str;
         };
         SamePanShader.prototype.getFragmentShaderString = function () {
-            var $str = "#define UV_OFFSET\n" +
+            var $str = "precision mediump float;varying highp vec3 dv;varying mediump vec2 d;varying mediump vec3 dA;varying mediump vec3 dB;varying mediump vec3 dC;" +
                 "void main(void) " +
                 "{ " +
-                "gl_FragColor =vec4(1.0,0.0,1.0,1.0); " +
+                "gl_FragColor =vec4(dA,1.0); " +
                 "}";
             return $str;
         };
