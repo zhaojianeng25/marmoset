@@ -102,7 +102,7 @@ module samepan {
        
                  "m=texture2D(tReflectivity,d);"+
 
-                 "gl_FragColor =vec4(m.xyz,1.0); " +
+                 "gl_FragColor =vec4(texture2D(tAlbedo, d).xyz,1.0); " +
 
 
                 "}"
