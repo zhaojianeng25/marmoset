@@ -102,10 +102,9 @@ var samepan;
                 "vec4 hQ = uShadowTexelPadProjections[k];" +
                 "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
                 "hR*=.0005+0.5 * hO;" +
-                "highp vec4 hS =uShadowMatrices[2]* vec4(dv, 1.0);" +
+                "highp vec4 hS =uShadowMatrices[k]* vec4(dv, 1.0);" +
                 "hP[k]=hS.xyz/hS.w;" +
                 "ss.oT[2] =vec3(hP[k]);" +
-                "ss.oT[2] =vec3(1.0,0.0,1.0);" +
                 "}" +
                 "float m;\n" +
                 "\n#if SHADOW_COUNT > 0 \n" +
@@ -253,7 +252,7 @@ var samepan;
                 p.uUVOffset = gl.getUniformLocation(this.shader.program, "uUVOffset");
                 p.uCameraPosition = gl.getUniformLocation(this.shader.program, "uCameraPosition");
                 Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", vfinfo["uShadowTexelPadProjections"]);
-                Scene_data.context3D.setVcMatrix4fv(this.shader, "uShadowMatrices", vfinfo["uShadowMatrices"]);
+                Scene_data.context3D.renderContext.uniformMatrix4fv(this.shader.getWebGLUniformLocation("uShadowMatrices"), false, vfinfo["finalTransformBuffer"]);
                 Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
                 m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
                 m.uniformMatrix4fv(p.uSkyMatrix, !1, u);

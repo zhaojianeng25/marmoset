@@ -2557,12 +2557,13 @@ marmoset = {};
         materialsSp["uDiffuseCoefficients"] = e.diffuseCoefficients;
  
         materialsSp["uShadowMatrices"] = []
-        vfinfo["uShadowMatrices"] = []
+ 
         for (var kt = d.finalTransformBuffer.length - 16; kt < d.finalTransformBuffer.length; kt++) {
 
             materialsSp["uShadowMatrices"].push(d.finalTransformBuffer[kt])
         }
-     
+        vfinfo["finalTransformBuffer"] = d.finalTransformBuffer
+
         materialsSp["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
         vfinfo["uShadowTexelPadProjections"] = d.shadowTexelPadProjections;
 
