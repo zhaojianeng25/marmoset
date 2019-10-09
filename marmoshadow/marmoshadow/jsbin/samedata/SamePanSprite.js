@@ -85,6 +85,9 @@ var samepan;
                 "highp float G = hJ(texture2D(hL, hA.xy).xyz);" +
                 "return SHADOW_COMPARE(H,G);" +
                 "}" +
+                "highp vec4 h(highp mat4 i,highp vec3 p){" +
+                "return i[0] * p.x + (i[1] * p.y + (i[2] * p.z + i[3]));" +
+                "}" +
                 "highp float hN(sampler2D hL, highp vec3 hA, float hO) {\n" +
                 "highp vec2 l = uShadowKernelRotation * hO;\n" +
                 "float s;\n" +
@@ -102,9 +105,9 @@ var samepan;
                 "vec4 hQ = uShadowTexelPadProjections[k];" +
                 "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
                 "hR*=.0005+0.5 * hO;" +
-                "highp vec4 hS =uShadowMatrices[k]* vec4(dv, 1.0);" +
-                "hP[k]=hS.xyz/hS.w;" +
-                "ss.oT[2] =vec3(hP[k]);" +
+                "highp vec4 hS = h(uShadowMatrices[k], dv + hR * hu);" +
+                "hP[k] = hS.xyz / hS.w;" +
+                "ss.oT[2] = vec3(hP[k]);" +
                 "}" +
                 "float m;\n" +
                 "\n#if SHADOW_COUNT > 0 \n" +
@@ -118,6 +121,7 @@ var samepan;
                 "\n#if SHADOW_COUNT > 2\n" +
                 "m = hN(tDepth2, hP[2], hO);\n" +
                 "ss.eL[2] =0.2;\n" +
+                "ss.oT[2] = vec3(m,m,m);\n" +
                 "\n#endif\n" +
                 "}" +
                 "vec3 dJ(vec3 n) {" +
