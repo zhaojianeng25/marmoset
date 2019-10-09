@@ -121,10 +121,10 @@ module samepan {
                      "highp vec2 l = uShadowKernelRotation * hO;\n" +
                     "float s;\n" +
                     "s = hK(hL, hA.xy + l, hA.z);\n" +
-                    "s += hK(hL, hA.xy - l, hA.z);\n" +
-                    "s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
-                    "s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
-                    "s *= 0.25;\n" +
+                    //"s += hK(hL, hA.xy - l, hA.z);\n" +
+                    //"s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
+                    //"s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
+                    //"s *= 0.25;\n" +
                     "return s * s;\n" +
              
                 "}\n" +
