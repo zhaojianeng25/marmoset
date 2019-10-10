@@ -213,7 +213,9 @@ module samepan {
                 "gl_FragColor =vec4(eA.oT[2],1.0); " +
 
 
-                
+                "if (dv.z > 3.0) { " +
+                   "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); " +
+                "}  " +
 
 
 

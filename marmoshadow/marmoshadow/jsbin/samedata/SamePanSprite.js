@@ -157,6 +157,9 @@ var samepan;
                 "eB(eA,SHADOW_KERNEL);" +
                 "vec4 outcolor=vec4(eA.eL[2], eA.eL[2], eA.eL[2], 1.0);" +
                 "gl_FragColor =vec4(eA.oT[2],1.0); " +
+                "if (dv.z > 3.0) { " +
+                "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); " +
+                "}  " +
                 "}";
             return $str;
         };
