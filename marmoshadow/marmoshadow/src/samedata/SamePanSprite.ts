@@ -212,10 +212,7 @@ module samepan {
 
                 "gl_FragColor =vec4(eA.oT[2],1.0); " +
 
-
-                "if (dv.z > 3.0) { " +
-                   "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); " +
-                "}  " +
+ 
 
 
 
@@ -318,7 +315,7 @@ module samepan {
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
                 gl.clearColor(0, 0, 0, 1.0);
                 for (var i: number = 0; i < MarmosetModel.meshItem.length; i++) {
-                     this.drawBaseMesh(MarmosetModel.meshItem[i])
+                    this.drawBaseMesh(MarmosetModel.meshItem[i], MarmosetModel.meshRenderables[i])
                   
                 }
                // this.drawBaseMesh(MarmosetModel.meshItem[0])
@@ -387,7 +384,7 @@ module samepan {
         private mesh: Mars3Dmesh
         private indexCount: number
         private indexOffset: number
-        private drawBaseMesh(value: Mars3Dmesh): void {
+        private drawBaseMesh(value: Mars3Dmesh, meshRenderable: any): void {
 
             this.mesh = value
             Scene_data.context3D.setProgram(this.program);
@@ -403,7 +400,8 @@ module samepan {
             var c = this.mesh.stride;
 
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
-            b.bindBuffer(b.ARRAY_BUFFER, this.mesh.vertexBuffer);
+            console.log(meshRenderable)
+            b.bindBuffer(b.ARRAY_BUFFER, meshRenderable.mesh.vertexBuffer);
             b.enableVertexAttribArray(a.vPosition);
             b.enableVertexAttribArray(a.vTexCoord);
             b.enableVertexAttribArray(a.vTangent);

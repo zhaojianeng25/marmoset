@@ -157,9 +157,6 @@ var samepan;
                 "eB(eA,SHADOW_KERNEL);" +
                 "vec4 outcolor=vec4(eA.eL[2], eA.eL[2], eA.eL[2], 1.0);" +
                 "gl_FragColor =vec4(eA.oT[2],1.0); " +
-                "if (dv.z > 3.0) { " +
-                "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); " +
-                "}  " +
                 "}";
             return $str;
         };
@@ -237,7 +234,7 @@ var samepan;
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
                 gl.clearColor(0, 0, 0, 1.0);
                 for (var i = 0; i < MarmosetModel.meshItem.length; i++) {
-                    this.drawBaseMesh(MarmosetModel.meshItem[i]);
+                    this.drawBaseMesh(MarmosetModel.meshItem[i], MarmosetModel.meshRenderables[i]);
                 }
                 // this.drawBaseMesh(MarmosetModel.meshItem[0])
             }
@@ -277,7 +274,7 @@ var samepan;
                 m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
             }
         };
-        SamePanSprite.prototype.drawBaseMesh = function (value) {
+        SamePanSprite.prototype.drawBaseMesh = function (value, meshRenderable) {
             this.mesh = value;
             Scene_data.context3D.setProgram(this.program);
             this.materialbind(value);
@@ -287,7 +284,8 @@ var samepan;
             var b = Scene_data.context3D.renderContext;
             var c = this.mesh.stride;
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
-            b.bindBuffer(b.ARRAY_BUFFER, this.mesh.vertexBuffer);
+            console.log(meshRenderable);
+            b.bindBuffer(b.ARRAY_BUFFER, meshRenderable.mesh.vertexBuffer);
             b.enableVertexAttribArray(a.vPosition);
             b.enableVertexAttribArray(a.vTexCoord);
             b.enableVertexAttribArray(a.vTangent);

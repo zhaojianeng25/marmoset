@@ -44,6 +44,7 @@
             gl.bindTexture(gl.TEXTURE_2D, null)
  
         }
+        public static meshRenderables: any
         private overrideFun(): void {
             let marmosetFun = function (fun: Function, ...args): any {
                 let v = fun.apply(this, args);
@@ -74,6 +75,7 @@
                // console.log(window["specularTexturedata"])
 
                 MarmosetModel.makeSkyData(window["specularTexturedata"])
+                MarmosetModel.meshRenderables = this.meshRenderables
 
                 return tempBack;
             }

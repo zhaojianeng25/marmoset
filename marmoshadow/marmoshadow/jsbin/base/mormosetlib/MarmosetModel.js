@@ -67,6 +67,7 @@ var mars3D;
                 // sceneInfo.sky
                 // console.log(window["specularTexturedata"])
                 MarmosetModel.makeSkyData(window["specularTexturedata"]);
+                MarmosetModel.meshRenderables = this.meshRenderables;
                 return tempBack;
             };
             var TextureCache_parseFile = marmoset.TextureCache.parseFile;
