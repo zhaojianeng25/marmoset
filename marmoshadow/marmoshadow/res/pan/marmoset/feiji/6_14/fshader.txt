@@ -100,7 +100,7 @@ return G.x;
 #define SHADOW_COMPARE(a,b) ((a) < (b) ? 1.0 : 0.0)
  
  
-#define SHADOW_CLIP(c,ccav) ccav
+ 
  
 float hK(sampler2D hL,highp vec2 hA,highp float H){
 	highp float G=hJ(texture2D(hL,hA.xy).xyz);
@@ -131,9 +131,9 @@ void eB(out ev ss,float hO){
 		#else
 			hR*=.0005+0.5*hO;
 		#endif
-		highp vec4 hS=h(uShadowMatrices[k],dv+hR*hu);
+		highp vec4 hS=h(uShadowMatrices[k],dv );
 		hP[k]=hS.xyz/hS.w;
-		ss.oT[2] =vec3(hP[k]);
+ 
 	}
 	float m;
 	#if SHADOW_COUNT > 0
@@ -147,6 +147,7 @@ void eB(out ev ss,float hO){
 	#if SHADOW_COUNT > 2
 		m=hN(tDepth2,hP[2],hO);
 		ss.eL[2]=m;
+ 
 	#endif
  
 }
@@ -354,7 +355,7 @@ eu=min(eu,1.0e3);
  
 ev eA;
 eB(eA,SHADOW_KERNEL);
- 	   outcolor=vec4(eA.eL[2],eA.eL[2],eA.eL[2],1.0); //直接阴影
+ 	 outcolor=vec4(eA.eL[2],eA.eL[2],eA.eL[2],1.0); //直接阴影
  
  
 

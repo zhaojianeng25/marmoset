@@ -2570,6 +2570,7 @@ marmoset = {};
         materialsSp["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
         vfinfo["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
 
+ 
 
         0 < d.count && (m.uniform4fv(p.uLightPositions, d.positionBuffer),
             m.uniform3fv(p.uLightDirections, d.directionBuffer),
@@ -2578,8 +2579,10 @@ marmoset = {};
             m.uniform3fv(p.uLightSpot, d.spot),
 
             u = 0.392699 * a.postRender.currentSample(),
-            //  m.uniform2f(p.uShadowKernelRotation, 0.7853,0.7853),
-            m.uniform2f(p.uShadowKernelRotation, u, u),
+            m.uniform2f(p.uShadowKernelRotation, 0.7853,0.7853),
+           // m.uniform2f(p.uShadowKernelRotation, u, u),
+
+
 
             0 < d.shadowCount && (u = f.depthTextures[0].desc.width,
             m.uniform2f(p.uShadowMapSize, u, 1 / u),
@@ -2591,6 +2594,8 @@ marmoset = {};
                 f.bindDepthTexture(s.tDepth0, 0),
                 f.bindDepthTexture(s.tDepth1, 1),
                 f.bindDepthTexture(s.tDepth2, 2)));
+
+
         h && (m.uniform3fv(p.uSubdermisColor, h.subdermisColor),
             m.uniform4fv(p.uTransColor, h.transColor),
             m.uniform1f(p.uTransScatter, h.transScatter),

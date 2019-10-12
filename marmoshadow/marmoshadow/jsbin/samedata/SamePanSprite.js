@@ -105,9 +105,8 @@ var samepan;
                 "vec4 hQ = uShadowTexelPadProjections[k];" +
                 "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
                 "hR*=.0005+0.5 * hO;" +
-                "highp vec4 hS = h(uShadowMatrices[k], dv + hR * hu);" +
+                "highp vec4 hS = h(uShadowMatrices[k], dv );" +
                 "hP[k] = hS.xyz / hS.w;" +
-                "ss.oT[2] = vec3(hP[k]);" +
                 "}" +
                 "float m;\n" +
                 "\n#if SHADOW_COUNT > 0 \n" +
@@ -120,8 +119,7 @@ var samepan;
                 "\n#endif\n" +
                 "\n#if SHADOW_COUNT > 2\n" +
                 "m = hN(tDepth2, hP[2], hO);\n" +
-                "ss.eL[2] =0.2;\n" +
-                "ss.oT[2] = vec3(m,m,m);\n" +
+                "ss.eL[2] =m;\n" +
                 "\n#endif\n" +
                 "}" +
                 "vec3 dJ(vec3 n) {" +
@@ -156,7 +154,7 @@ var samepan;
                 "ev eA;" +
                 "eB(eA,SHADOW_KERNEL);" +
                 "vec4 outcolor=vec4(eA.eL[2], eA.eL[2], eA.eL[2], 1.0);" +
-                "gl_FragColor =vec4(eA.oT[2],1.0); " +
+                "gl_FragColor =outcolor; " +
                 "}";
             return $str;
         };
@@ -284,7 +282,6 @@ var samepan;
             var b = Scene_data.context3D.renderContext;
             var c = this.mesh.stride;
             b.bindBuffer(b.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
-            console.log(meshRenderable);
             b.bindBuffer(b.ARRAY_BUFFER, meshRenderable.mesh.vertexBuffer);
             b.enableVertexAttribArray(a.vPosition);
             b.enableVertexAttribArray(a.vTexCoord);
