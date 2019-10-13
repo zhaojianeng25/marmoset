@@ -4681,6 +4681,7 @@ marmoset = {};
                 var p = this.shaderSolid;
                 p.bind();
                 c.uniformMatrix4fv(p.params.uViewProjection, !1, l);
+                console.log(l)
                 c.uniformMatrix4fv(p.params.uMeshTransform, !1, Matrix.identity());
                 for (var r = 0; r < a.meshRenderables.length; ++r) {
                     var s = a.meshRenderables[r]

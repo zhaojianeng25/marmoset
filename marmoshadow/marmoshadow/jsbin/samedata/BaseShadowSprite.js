@@ -62,6 +62,7 @@ var sameshadow;
         __extends(BaseShadowSprite, _super);
         function BaseShadowSprite() {
             var _this = _super.call(this) || this;
+            _this.skipNum = 0;
             _this.initData();
             return _this;
         }
@@ -124,9 +125,11 @@ var sameshadow;
                 var mars3Dmesh = MarmosetModel.meshItem[0];
                 var vfinfo = mars3Dmesh.materials["vfinfo"];
                 var f = vfinfo["f"];
-                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[2].id, 0);
-                if (same.SamedataModel.baseShadowLightVo && same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture) {
-                    Scene_data.context3D.setRenderTexture(this.shader, "s_texture", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 0);
+                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[0].id, 0);
+                if (Math.floor(this.skipNum++ / 20) % 2 == 0) {
+                    if (same.SamedataModel.baseShadowLightVo && same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture) {
+                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 0);
+                    }
                 }
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
                 Scene_data.context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);

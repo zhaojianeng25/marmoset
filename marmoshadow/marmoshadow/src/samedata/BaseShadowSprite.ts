@@ -109,7 +109,7 @@
                 this.objData.indexBuffer = Scene_data.context3D.uploadIndexBuff3D(this.objData.indexs);
             }
         }
-    
+        private skipNum: number=0
         public update(): void {
             if (this.objData && this.objData.indexBuffer && this._uvTextureRes) {
                 Scene_data.context3D.setCullFaceModel(2)
@@ -130,13 +130,16 @@
                 var mars3Dmesh: Mars3Dmesh = MarmosetModel.meshItem[0]
                 var vfinfo: any = mars3Dmesh.materials["vfinfo"]
                 var f = vfinfo["f"];
-                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[2].id, 0);
+                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[0].id, 0);
+             
 
-
-
-                if (same.SamedataModel.baseShadowLightVo && same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture) {
-                    Scene_data.context3D.setRenderTexture(this.shader, "s_texture", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 0);
+                if (Math.floor(this.skipNum++ / 20) % 2 == 0) {
+                    if (same.SamedataModel.baseShadowLightVo && same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture) {
+                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 0);
+                    }
                 }
+
+              
 
 
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
