@@ -1,0 +1,7 @@
+E:\github\marmoset\marmobase\marmobase\bin\marmobase.dll.config
+E:\github\marmoset\marmobase\marmobase\bin\marmobase.dll
+E:\github\marmoset\marmobase\marmobase\bin\marmobase.pdb
+E:\github\marmoset\marmobase\marmobase\obj\Debug\marmobase.csprojAssemblyReference.cache
+E:\github\marmoset\marmobase\marmobase\obj\Debug\marmobase.csproj.CoreCompileInputs.cache
+E:\github\marmoset\marmobase\marmobase\obj\Debug\marmobase.dll
+E:\github\marmoset\marmobase\marmobase\obj\Debug\marmobase.pdb

@@ -1,0 +1,287 @@
+/***********************************************************************/
+/***************本代码由协议工具自动生成，请勿手动修改****************/
+/************************ 协议版本号:#类型名称，注释 ******************************/
+/***********************************************************************/
+#macro(pack_func_param_string $m)
+#foreach($i in $m.MsgParas)##
+#if($i.Type == "ByteArray")##
+$i.Name : ByteArray##
+#elseif($i.IsArray && $velocityCount==1)##
+#if($m.ClientType == "String")
+$i.Name : Array<string>##
+#elseif($str_tool.IsStruct($i.Type))
+$i.Name : Array<$i.Type#**#_t>##
+#else
+$i.Name : Array<number>##
+#end
+#elseif($velocityCount==1 && $i.Type == "String")##
+$i.Name : string ##
+#elseif($velocityCount==1)##
+$i.Name : number ##
+#elseif($i.IsArray)##
+#if($m.ClientType == "String")
+,$i.Name : Array<string>##
+#elseif($str_tool.IsStruct($i.Type))
+,$i.Name : Array<$i.Type#**#_t>##
+#else
+,$i.Name : Array<number>##
+#end
+#elseif($i.Type == "String")##
+,$i.Name : string##
+#else##
+,$i.Name : number ##
+#end##
+#end
+#end
+###
+#macro(outDebugParas $m)
+#foreach($i in $m.MsgParas)##
++"|$i.Name#**#"+v_$m.Name.$i.Name##
+#end
+#end
+###
+module hanlder{
+	export class Protocols  extends Laya.Socket {
+#foreach( $m in $msgs )
+#if($m.Name.Substring(0,2)!="__")
+		$m.Desc
+		public static  $str_tool.GetMsgType($m.Type)_$m.Name.ToUpper() :number = $m.Cmd;	//$m.Name
+#end	
+#end
+		private _FUNCS:Object = new Object();	
+		private _stream:ByteArray = new ByteArray;
+	
+		/**
+		* 发送明文数据包（自动加密） 
+		* @param stream
+		*/
+		constructor(){		
+			super();
+#foreach( $m in $msgs )
+#if($m.Name.Substring(0,2)!="__")
+			this._FUNCS[$m.Cmd] = "$m.Name";
+#end
+#end
+		}
+		/**
+		* 获取发送协议函数名称
+		* @param cmd:number
+		*/		
+		public getFuncName(cmd:number):string{
+			if(this._FUNCS.hasOwnProperty(cmd.toString())){
+				return this._FUNCS[cmd];
+			}
+			return null;
+		}
+		
+		public readPacket(optcode:number, bs:ByteArray):any
+		{
+			switch (optcode) {
+#foreach( $m in $msgs )
+#if($m.Name.Substring(0,2)!="__" && !$m.IsBinLog)
+				case Protocols.$str_tool.GetMsgType($m.Type)_$m.Name.ToUpper() :	//$m.Name
+					var obj_$m.Name:$m.Type#**#_$m.Name = new $m.Type#**#_$m.Name;
+#if($m.MsgParas.Count !=0)
+					$m.Type#**#_$m.Name .read(obj_$m.Name, bs);
+#end
+					return obj_$m.Name;
+#end	
+#end
+				default:
+					break;
+			}
+			return null;
+		}
+		
+		protected sendMsg(optcode:number, msg:any):void
+		{
+			throw Error("send msg not implementation.");
+		}
+
+		public call_rand_pkt():void{
+			this._stream.reset();
+			let optcode:number = MathU.parseInt(Math.random()*65535);
+			this._stream.writeUint16(optcode);
+			let count:number = Math.random()*100;
+			for (let i=0;i<count;i++){
+				this._stream.writeUint16(Math.random()*65535);
+			}
+			this.sendMsg(optcode, this._stream);
+		}
+		
+#foreach( $m in $msgs )
+#if($m.Name.Substring(0,2)!="__")
+#if($m.Type.ToString().ToUpper() == "C2S" || $m.Type.ToString().ToUpper() == "BOTH")
+		public call_$m.Name (#pack_func_param_string($m)):void{
+			this._stream.reset();
+			this._stream.writeUint16( $m.Cmd );
+#if($m.MsgParas.Count >0 )			
+#foreach( $i in $m.MsgParas)			
+			//$i.OnlyDescStr
+#if($i.Type == "ByteArray")
+			this._stream.writeUint16($i.Name .length);
+			this._stream.writeStream($i.Name);
+#elseif($i.IsArray && $str_tool.IsStruct($i.Type))
+			this._stream.writeUint16($i.Name .length);
+			for(var i:number=0;i<$i.Name .length;i++){
+				$i.Name [i].write(this._stream);
+			}
+#elseif($str_tool.IsStruct($i.Type))
+			$i.Name .write(this._stream);
+#elseif($i.IsArray)
+#if($i.Type == "string")
+			if($i.Name .length > 1000)
+				throw Error("StringArray::length max 1000");
+#end
+			this._stream.writeUint16($i.Name .length);
+			for(var i:number=0;i<$i.Name .length;i++){
+				this._stream#**#.$i.WriteStreamFuncName ($i.Name [i]);
+			}
+#else
+			this._stream#**#.$i.WriteStreamFuncName ($i.Name);
+#end
+#end
+#end
+			this.sendMsg( $m.Cmd , this._stream);
+			//Log.outDebug("CS====> cmd:$m.cmd $m.Name");
+		}
+#end
+#end
+#end
+	}
+
+#foreach( $j in $msgs)
+	export class $j.Type#**#_$j.Name
+	{
+		public optcode:number = 0;
+		public optname:string = "on$j.UpperName";
+	
+#foreach( $m in $j.MsgParas )
+		/**
+		* $m.OnlyDescStr
+		*/
+#if($m.Type == "ByteArray")
+		public $m.Name :ByteArray ;	//$m.Type	
+#elseif($m.IsArray )
+#if($str_tool.IsStruct($m.Type))
+		public $m.Name :Array<$m.Type#**#_t> = [];
+#elseif($m.ClientType == "String")
+		public $m.Name :Array<string> = []; //$m.Type
+#else
+		public $m.Name :Array<number> = []; //$m.Type
+#end
+#elseif($str_tool.IsStruct($m.Type))	
+		public $m.Name :$m.Type#**#_t;
+#elseif($m.ClientType == "String")
+		public $m.Name : string ;	//$m.Type
+#else
+		public $m.Name : number ;	//$m.Type
+#end
+#end	
+		public constructor()
+		{
+			
+		}
+#if($j.MsgParas.Count !=0)
+
+		/**
+		从输入二进制流中读取结构体
+		*/
+		public static read(self:$j.Type#**#_$j.Name, bytes:ByteArray):void
+		{
+			var parmLen:number;
+			var i:number;
+#foreach( $m in $j.MsgParas )			
+			//$m.OnlyDescStr
+#if($m.Type == "ByteArray")
+			self.$m.Name = ByteArray.malloc();
+			self.$m.Name .readStream(bytes);
+#elseif($m.IsArray&& $str_tool.IsStruct($m.Type))	
+			if( self.$m.Name .length ) 
+				throw Error("通讯对象池有异常");			
+			parmLen = bytes.readUint16();			
+			for(i=0;i<parmLen;i++){
+				var _$m.Name = new $m.Type#**#_t;
+				_$m.Name .read(bytes);
+				self.$m.Name .push(_$m.Name);
+			}
+#elseif($str_tool.IsStruct($m.Type))
+			self.$m.Name = new $m.Type#**#_t;
+			self.$m.Name .read(bytes);
+#elseif($m.IsArray)			
+			self.$m.Name .length = 0;		//清空数组				
+			parmLen = bytes.readUint16();
+			for(i=0;i<parmLen;i++){				
+				self.$m.Name .push( bytes.$m.ReadStreamFuncName ());
+			}
+#else
+			self.$m.Name = bytes#**#. $m.ReadStreamFuncName ();		
+#end
+#end
+		}
+#end
+	}
+#end
+
+
+##结构体
+#foreach( $s in $strus)
+	// $s.Desc
+	export class $s.Name#**#_t
+	{
+#foreach( $m in $s.Members)
+		// $m.OnlyDescStr
+#if($m.Type == "ByteArray")
+		$m.Name :ByteArray ;	//$m.Type	
+#elseif($m.IsArray )
+#if($m.ClientType == "String")
+		##字符串不支持数组
+		public $m.Name :string; //$m.Type
+#else
+		$m.Name :Array<number> = []; //$m.Type
+#end
+#elseif($m.ClientType == "String")
+		$m.Name : string ;	//$m.Type
+#else
+		$m.Name : number ;	//$m.Type
+#end
+#end	
+		// 从输入二进制流中读取结构体
+		read(input:ByteArray):void
+		{				
+#foreach( $m in $s.Members)			
+#if($m.ArrayLen > 0 && $m.Type!="String")
+			this.$m.Name. length = 0;
+			for(let i = 0; i < $m.ArrayLen; i ++){				
+				this.$m.Name. push( input#**#. $m.ReadStreamFuncName ());
+			}
+#else
+#if($m.Type=="String")			
+			this.$m.Name = input.readString();		
+#else	
+			this.$m.Name = input#**#. $m.ReadStreamFuncName ();
+#end
+#end			
+#end
+		}
+		
+		// 将结构体写入到输出二进制流中
+		write(output:ByteArray):void
+		{			
+#foreach( $m in $s.Members)			
+#if($m.ArrayLen > 0 && $m.Type!="String")
+			for(let i = 0; i < $m.ArrayLen; i ++){				
+				output#**#.$m.WriteStreamFuncName (this.$m.Name [i]);	
+			}
+#else
+#if($m.Type=="String")		
+			output.writeString(this.$m.Name);
+#else	
+			output#**#.$m.WriteStreamFuncName (this.$m.Name);	
+#end
+#end
+#end
+		}
+	}
+#end
+}
