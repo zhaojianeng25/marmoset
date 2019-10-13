@@ -58,7 +58,7 @@
 
             var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
             SceneManager.getInstance().addDisplay(_samePicSprite);
-            SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
+          SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
 
 
 

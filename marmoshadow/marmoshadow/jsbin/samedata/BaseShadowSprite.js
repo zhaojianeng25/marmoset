@@ -19,6 +19,7 @@ var sameshadow;
     var UIManager = Pan3d.UIManager;
     var Scene_data = Pan3d.Scene_data;
     var TextureManager = Pan3d.TextureManager;
+    var MarmosetModel = mars3D.MarmosetModel;
     var BaseShadowShader = /** @class */ (function (_super) {
         __extends(BaseShadowShader, _super);
         function BaseShadowShader() {
@@ -70,14 +71,14 @@ var sameshadow;
             this.program = this.shader.program;
             this.objData = new ObjData;
             this.objData.vertices = new Array();
-            var sizeNum = 0.399;
+            var sizeNum = 0.3;
             var tx = -0.6;
-            var ty = +0;
+            var ty = -0.3;
             var setDepth = 0.001;
-            this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, setDepth);
-            this.objData.vertices.push(+sizeNum + tx, +sizeNum + ty, 0.999);
-            this.objData.vertices.push(+sizeNum + tx, -sizeNum + ty, 0.999);
-            this.objData.vertices.push(-sizeNum + tx, -sizeNum + ty, setDepth);
+            this.objData.vertices.push(-sizeNum + tx, +sizeNum + ty, 0.001);
+            this.objData.vertices.push(+sizeNum + tx, +sizeNum + ty, 0.001);
+            this.objData.vertices.push(+sizeNum + tx, -sizeNum + ty, 0.001);
+            this.objData.vertices.push(-sizeNum + tx, -sizeNum + ty, 0.001);
             this.objData.uvs = new Array();
             this.objData.uvs.push(0, 1);
             this.objData.uvs.push(1, 1);
@@ -120,6 +121,10 @@ var sameshadow;
                         Scene_data.context3D.setRenderTexture(this.shader, "s_texture", temp.id, 0);
                     }
                 }
+                var mars3Dmesh = MarmosetModel.meshItem[0];
+                var vfinfo = mars3Dmesh.materials["vfinfo"];
+                var f = vfinfo["f"];
+                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[2].id, 0);
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
                 Scene_data.context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
             }
