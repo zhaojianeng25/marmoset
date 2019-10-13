@@ -57,6 +57,7 @@
     <TypeScriptCompile Include="src\samedata\BaseCavanRectSprite.ts" />
     <TypeScriptCompile Include="src\samedata\BaseSametRectSprite.ts" />
     <TypeScriptCompile Include="src\samedata\DrawRenderSprite.ts" />
+    <TypeScriptCompile Include="src\samedata\BaseShadowLightVo.ts" />
     <TypeScriptCompile Include="src\samedata\SamedataModel.ts" />
     <TypeScriptCompile Include="src\samedata\SamePanSprite.ts" />
     <TypeScriptCompile Include="src\samedata\SamePicSprite.ts" />

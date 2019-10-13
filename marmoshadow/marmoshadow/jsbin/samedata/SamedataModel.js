@@ -56,6 +56,7 @@ var same;
             var _samePicSprite = new same.BaseCavanRectSprite;
             SceneManager.getInstance().addDisplay(_samePicSprite);
             SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
+            this.baseShadowLightVo = new samedata.BaseShadowLightVo();
             SceneManager.getInstance().ready = true;
             MarmosetModel.getInstance().viewFileName = "karen1.mview";
             var rootpath = "pan/marmoset/feiji/6_14/";
@@ -83,6 +84,7 @@ var same;
         };
         SamedataModel.upDataLightShadow = function () {
             this.drawRenderSprite.update();
+            this.baseShadowLightVo.update(MarmosetModel.meshItem);
         };
         SamedataModel.addBaseRectSprite = function () {
             window["baseRect"] = new same.BaseSametRectSprite();

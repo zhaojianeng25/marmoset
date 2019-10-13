@@ -47,6 +47,7 @@
 
         }
         private static drawRenderSprite: DrawRenderSprite;
+        public static baseShadowLightVo: samedata.BaseShadowLightVo;
         private static initmosort(): void {
             window["webgl"] = Pan3d.Scene_data.context3D.renderContext
             mars3D.MarmosetModel.getInstance().initData();
@@ -58,8 +59,9 @@
 
             var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
             SceneManager.getInstance().addDisplay(_samePicSprite);
-          SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
+            SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
 
+            this.baseShadowLightVo = new samedata.BaseShadowLightVo();
 
 
             SceneManager.getInstance().ready = true
@@ -96,7 +98,8 @@
         }
         public static upDataLightShadow(): void {
             this.drawRenderSprite.update()
- 
+
+            this.baseShadowLightVo.update(MarmosetModel.meshItem)
 
         }
 
