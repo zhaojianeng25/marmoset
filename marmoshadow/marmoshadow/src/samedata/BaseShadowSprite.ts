@@ -135,12 +135,10 @@
 
                 if (Math.floor(this.skipNum++ / 20) % 2 == 0) {
                     if (same.SamedataModel.baseShadowLightVo && same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture) {
-                        Scene_data.context3D.setRenderTexture(this.shader, "s_texture", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 0);
+                           Scene_data.context3D.setRenderTexture(this.shader, "s_texture", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 0);
                     }
                 }
-
-              
-
+ 
 
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);
                 Scene_data.context3D.drawCall(this.objData.indexBuffer, this.objData.treNum);
