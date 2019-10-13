@@ -280,7 +280,7 @@ module mars3D {
 
                 "}  " +
 
-              "gl_FragColor =texture2D(tAlbedo,d); " +
+            //  "gl_FragColor =texture2D(tAlbedo,d); " +
  
  
 

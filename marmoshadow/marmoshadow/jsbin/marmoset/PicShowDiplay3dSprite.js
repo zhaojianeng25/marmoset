@@ -218,7 +218,7 @@ var mars3D;
                 "if (depthvinfo.z>(lightvo.z-0.00001)) { " +
                 "gl_FragColor =vec4(1.0,1.0,1.0,1.0); " +
                 "}  " +
-                "gl_FragColor =texture2D(tAlbedo,d); " +
+                //  "gl_FragColor =texture2D(tAlbedo,d); " +
                 "}";
             return $str;
         };
