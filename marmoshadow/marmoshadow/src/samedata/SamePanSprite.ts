@@ -347,8 +347,12 @@ module samepan {
                 Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", vfinfo["uShadowTexelPadProjections"]);
 
                 Scene_data.context3D.renderContext.uniformMatrix4fv(this.shader.getWebGLUniformLocation("uShadowMatrices"), false, vfinfo["finalTransformBuffer"]);
-  
- 
+
+                var tempFloat32Array: Float32Array = vfinfo["finalTransformBuffer"];
+
+                var tempBegin: number=32
+                console.log(tempFloat32Array.subarray(tempBegin, tempBegin+16))
+
                 Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
 
 
