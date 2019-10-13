@@ -54,12 +54,11 @@
           //  this.addBaseRectSprite()
          //   this.addInsetMarmosetSprite()
             this.drawRenderSprite = new DrawRenderSprite();
-
-            var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
-            _samePicSprite.otherSprite = this.drawRenderSprite;
             SceneManager.getInstance().addDisplay(new samepan.SamePanSprite());
 
+            var _samePicSprite: BaseCavanRectSprite = new BaseCavanRectSprite;
             SceneManager.getInstance().addDisplay(_samePicSprite);
+            SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
 
 
 

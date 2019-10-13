@@ -52,10 +52,10 @@ var same;
             //  this.addBaseRectSprite()
             //   this.addInsetMarmosetSprite()
             this.drawRenderSprite = new same.DrawRenderSprite();
-            var _samePicSprite = new same.BaseCavanRectSprite;
-            _samePicSprite.otherSprite = this.drawRenderSprite;
             SceneManager.getInstance().addDisplay(new samepan.SamePanSprite());
+            var _samePicSprite = new same.BaseCavanRectSprite;
             SceneManager.getInstance().addDisplay(_samePicSprite);
+            SceneManager.getInstance().addDisplay(new sameshadow.BaseShadowSprite());
             SceneManager.getInstance().ready = true;
             MarmosetModel.getInstance().viewFileName = "karen1.mview";
             var rootpath = "pan/marmoset/feiji/6_14/";
