@@ -207,6 +207,7 @@ var mars3D;
                 //   Pan3d.Scene_data.context3D.setDepthTest(true);
                 //  Pan3d.Scene_data.context3D.setBlendParticleFactors(0)
                 var gl = Scene_data.context3D.renderContext;
+                Scene_data.context3D.setCullFaceModel(1);
                 Scene_data.context3D.setWriteDepth(true);
                 Scene_data.context3D.setDepthTest(true);
                 //  Scene_data.context3D.setCullFaceModel(2);
@@ -223,7 +224,7 @@ var mars3D;
                         return;
                     }
                 }
-                var tempArr = [-2.399169445037842, 0.007191055919975042, 0.026615558192133904, 0.026615558192133904, 0.00008928590250434354, 2.9879062175750732, -0.08928610384464264, -0.08928610384464264, 0.06313783675432205, 0.26900720596313477, 0.9956503510475159, 0.9956503510475159, 0.7742966413497925, -2.6027095317840576, 27.5628662109375, 28.162866592407227];
+                var tempArr = [-0.8713266253471375, 0, 0.40336543321609497, 0.1891629546880722, 0, 0.8873469829559326, -1.1415002276748965e-8, -5.353198773150325e-9, 0.16785311698913574, 0, 2.093871831893921, 0.9819457530975342, 2.4669361114501953, -1.8852310180664062, 9.165491104125977, 20.56804656982422];
                 for (var kt = 0; kt < tempArr.length; kt++) {
                     this.depthFBO.depthViewMatrix3D[kt] = tempArr[kt];
                 }

@@ -8,6 +8,7 @@
     import TextureManager = Pan3d.TextureManager
     import Mars3Dmesh = mars3D.Mars3Dmesh
     import MarmosetModel = mars3D.MarmosetModel
+    import MarmosetLightVo = mars3D.MarmosetLightVo
     export class MarShadowShader extends Shader3D {
         static MarShadowShader: string = "MarShadowShader";
         constructor() {
@@ -121,7 +122,11 @@
                 Scene_data.context3D.setVa(1, 2, this.objData.uvBuffer);
 
                 Scene_data.context3D.setRenderTexture(this.shader, "s_texture", this._uvTextureRes.texture, 0);
-             
+                if (MarmosetLightVo.marmosetLightVo && MarmosetLightVo.marmosetLightVo.depthFBO && MarmosetLightVo.marmosetLightVo.depthFBO.texture) {
+              
+                    Scene_data.context3D.setRenderTexture(this.shader, "s_texture", MarmosetLightVo.marmosetLightVo.depthFBO.depthTexture, 0);
+
+                }
  
 
                 Scene_data.context3D.setVc4fv(this.shader, "fColor", [0.999, 0, 0, 1]);

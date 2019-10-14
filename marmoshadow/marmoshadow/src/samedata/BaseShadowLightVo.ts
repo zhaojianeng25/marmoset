@@ -300,8 +300,10 @@
                 var viewMatrix3DCone: Matrix3D = this.getViewMatrax3d(mesh.materials["vfinfo"]["uSkyMatrix"])
 
                 //console.log(viewMatrix3D.m)
-                //console.log(viewMatrix3DCone.m)
+               // console.log(viewMatrix3DCone.m)
                 //console.log("--------------------------")
+
+                
 
                 Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", viewMatrix3DCone.m);
 
