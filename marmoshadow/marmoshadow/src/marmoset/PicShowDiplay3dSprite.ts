@@ -142,51 +142,39 @@ module mars3D {
                 " } " +
 
                 "highp float hJ(highp vec3 G) {\n" +
-                      "return  G.x ;\n" +
+                    "return  G.x ;\n" +
                 "}\n" +
 
                 "float hK(sampler2D hL, highp vec2 hA, highp float H) {" +
                     "highp float G = hJ(texture2D(hL, hA.xy).xyz);" +
                     "return SHADOW_COMPARE(H,G);" +
+
                 "}" +
 
                 "highp float hN(sampler2D hL, highp vec3 hA, float hO) {\n" +
                     "highp vec2 l = uShadowKernelRotation * hO;\n" +
                     "float s;\n" +
                     "s = hK(hL, hA.xy + l, hA.z);\n" +
-                    "s += hK(hL, hA.xy - l, hA.z);\n" +
-                    "s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
-                    "s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
-                    "s *= 0.25;\n" +
+                    //"s += hK(hL, hA.xy - l, hA.z);\n" +
+                    //"s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
+                    //"s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
+                    //"s *= 0.25;\n" +
                     "return s * s;\n" +
+
                 "}\n" +
 
                 "void eB(out ev ss, float hO){" +
-                    "highp vec3 hP[SHADOW_COUNT];" +
+             
                     "vec3 hu = gl_FrontFacing ? dC : -dC;" +
-                    "for (int k = 0; k < SHADOW_COUNT; ++k) {" +
-                        "vec4 hQ = uShadowTexelPadProjections[k];" +
-                        "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
-                        "hR*=.0005+0.5 * hO;" +
-                  //      "highp vec4 hS = h(uShadowMatrices[2], dv);" +
-                        "highp vec4 hS =uShadowMatrices[2]* vec4(dv, 1.0);" +
-                         "hP[2] = hS.xyz / hS.w;" +
-                 
-                    "}" +
+
+                    "highp vec4 hS = h(depthViewMatrix3D, dv );" +
+                    "vec3 hP = hS.xyz / hS.w;" +
+
                     "float m;\n" +
-                     "\n#if SHADOW_COUNT > 0 \n" +
-                          "m = hN(tDepth0, hP[0], hO);" +
-                          "ss.eL[0] = m;" +
-                    "\n#endif\n" +
-                     "\n#if SHADOW_COUNT > 1\n" +
-                        "m = hN(tDepth1, hP[1], hO);" +
-                        "ss.eL[1] =m;" +
-                    "\n#endif\n" +
-                    "\n#if SHADOW_COUNT > 2\n" +
-                        "m = hN(tDepth2, hP[2], hO);\n" +
-                        "ss.eL[2] =m;\n" +
-                        "\n#endif\n" +
-                    "}" +
+                    "m = hN(tDepthTexture, hP, hO);\n" +
+
+
+                "}" +
 
                 "vec3 dG(vec3 c){return c*c;}" +
 
@@ -264,24 +252,21 @@ module mars3D {
                 "float eu = eo * (1.0 / (8.0 * 3.1415926)) + (4.0 / (8.0 * 3.1415926));" +
                 "eu = min(eu, 1.0e3);" +
 
-                "ev eA; \n" +
-                "eB(eA, 4.0 / 2048.0);"+
-         //   #define SHADOW_KERNEL(4.0 / 2048.0)
+
+
+                "vec3 hu = gl_FrontFacing ? dC : -dC;" +
+
+                "highp vec4 hS = h(depthViewMatrix3D, dv );" +
+
+                "vec3 hP = hS.xyz / hS.w;" +
+
+                "vec3 textvec3 =texture2D(tDepthTexture, hP.xy).xyz;" +
+            
+           
  
-                "vec4 depthvinfo=mathdepthuv(depthViewMatrix3D,vPos);" +
-                "vec4 lightvo=depthViewMatrix3D *vec4(vPos, 1.0);" +
-                
-                 "lightvo.xyz=lightvo.zzz/lightvo.w  ;\n " +
-                "depthvinfo.xyz=(depthvinfo.xxx-0.5)*2.0 ;\n " +
+                "gl_FragColor =vec4(textvec3,1.0); " +
 
-        
-                "gl_FragColor =vec4(0.5,0.5,0.5,1.0); " +
-                "if (depthvinfo.z>(lightvo.z-0.00001)) { " +
-                     "gl_FragColor =vec4(1.0,1.0,1.0,1.0); " +
-
-                "}  " +
-
-            //  "gl_FragColor =texture2D(tAlbedo,d); " +
+       
  
  
 
@@ -400,11 +385,18 @@ module mars3D {
                   //  console.log(MarmosetLightVo.marmosetLightVo.depthFBO.depthBuffer)
                  //   console.log(MarmosetLightVo.marmosetLightVo.depthFBO.texture)
 
+                    var baseArr: Array<number> = [-0.5565775632858276, -0.4951910376548767, -1.551121711730957, -0.9903820753097534, -2.6765993865751625e-9, 0.4436734914779663, -8.384100524949645e-9, -5.353198773150325e-9, -0.3702264428138733, 0.06917984038591385, 0.2166968584060669, 0.1383596807718277, 11.517491340637207, 9.341407775878906, 14.866768836975098, 20.56804656982422]
+                    var tempMatrx: Matrix3D = new Matrix3D()
+                    for (var i: number = 0; i < 16; i++) {
+                        tempMatrx.m[i] = baseArr[i];
+                
+                    }
+
                     Scene_data.context3D.setRenderTexture(this.shader, "tDepthTexture", MarmosetLightVo.marmosetLightVo.depthFBO.depthTexture, 4); //深度贴图
                     if (MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D) {
 
-                
-                        Scene_data.context3D.setVcMatrix4fv(this.shader, "depthViewMatrix3D", MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D);  //深度矩阵
+
+                        Scene_data.context3D.setVcMatrix4fv(this.shader, "depthViewMatrix3D", tempMatrx.m);  //深度矩阵
 
                       //  console.log(MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D)
                       //  console.log(materialsSp["finalTransformBuffer"])
