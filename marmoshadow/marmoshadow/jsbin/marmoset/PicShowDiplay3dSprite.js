@@ -195,6 +195,10 @@ var mars3D;
                 "vec3 hP = hS.xyz / hS.w;" +
                 "vec3 textvec3 =texture2D(tDepthTexture, hP.xy).xyz;" +
                 "gl_FragColor =vec4(textvec3,1.0); " +
+                "gl_FragColor =vec4(0.5,0.5,0.5,1.0); " +
+                "if (textvec3.x>(hP.z-0.00001)) { " +
+                "gl_FragColor =vec4(1.0,1.0,1.0,1.0); " +
+                "}  " +
                 "}";
             return $str;
         };
