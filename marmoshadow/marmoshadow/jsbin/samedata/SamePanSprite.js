@@ -92,7 +92,8 @@ var samepan;
                 "highp float hN(sampler2D hL, highp vec3 hA, float hO) {\n" +
                 "highp vec2 l = uShadowKernelRotation * hO;\n" +
                 "float s;\n" +
-                "s = hK(hL, hA.xy + l, hA.z);\n" +
+                "s = hK(hL, hA.xy +l, hA.z);\n" +
+                // "s = hK(hL, hA.xy + l, hA.z);\n" +
                 //"s += hK(hL, hA.xy - l, hA.z);\n" +
                 //"s += hK(hL, hA.xy + vec2(-l.y, l.x), hA.z);\n" +
                 //"s += hK(hL, hA.xy + vec2(l.y, -l.x), hA.z);\n" +
