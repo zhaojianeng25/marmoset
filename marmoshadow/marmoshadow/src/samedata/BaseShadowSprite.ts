@@ -130,7 +130,7 @@
                 var mars3Dmesh: Mars3Dmesh = MarmosetModel.meshItem[0]
                 var vfinfo: any = mars3Dmesh.materials["vfinfo"]
                 var f = vfinfo["f"];
-                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[0].id, 0);
+                Scene_data.context3D.setRenderTexture(this.shader, "s_texture", f.depthTextures[2].id, 0);
              
 
                 if (Math.floor(this.skipNum++ / 20) % 2 == 0) {

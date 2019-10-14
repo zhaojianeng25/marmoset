@@ -167,6 +167,7 @@ var samepan;
         __extends(SamePanSprite, _super);
         function SamePanSprite() {
             var _this = _super.call(this) || this;
+            _this.skipNum = 0;
             _this.initData();
             return _this;
         }
@@ -241,7 +242,7 @@ var samepan;
         SamePanSprite.prototype.getViewMatrax3d = function (temp) {
             var tempMatrx = new Matrix3D();
             var addOther = new Matrix3D();
-            var baseArr = [-0.8713266253471375, 8.985513999526518e-10, 0.40336546301841736, 0.1891629546880722, 0, 0.8873469829559326, -1.1415001388570545e-8, -5.353198773150325e-9, 0.16785317659378052, 4.664383990160559e-9, 2.093871831893921, 0.9819457530975342, 2.4669361114501953, -1.8852306604385376, 9.165491104125977, 20.56804656982422];
+            // var baseArr: Array<number> = [-0.8713266253471375, 8.985513999526518e-10, 0.40336546301841736, 0.1891629546880722, 0, 0.8873469829559326, -1.1415001388570545e-8, -5.353198773150325e-9, 0.16785317659378052, 4.664383990160559e-9, 2.093871831893921, 0.9819457530975342, 2.4669361114501953, -1.8852306604385376, 9.165491104125977, 20.56804656982422]
             //var baseArr: Array<number> = [0.6500183939933777, 0.3525499999523163, 0.867900013923645, 0.5527472496032715, 0, 0.7205265164375305, -0.9164319634437561, -0.5836562514305115, 0.6040370464324951, -0.3793872892856598, -0.9339674711227417, -0.5948242545127869, -5.183374404907227, -0.34626707434654236, 12.497532844543457, 20.049705505371094]
             // var baseArr: Array<number> = [-1.2446883916854858, 0.006111379712820053, -0.5838364362716675, -0.23012207448482513, 0, 1.278754711151123, 0.05266710743308067, 0.020759006962180138, -0.2943965494632721, -0.025838496163487434, 2.4684202671051025, 0.9729403257369995, 2.26643705368042, -10.048957824707031, 9.530219078063965, 25.643653869628906]
             //var baseArr: Array<number> = [-0.3008589744567871, -0.46715670824050903, -1.697446584701538, -0.95980304479599, 0.010379503481090069, 0.6497568488121033, 0.03671305626630783, 0.020759006962180138, -0.7538937330245972, -0.13623611629009247, -0.4950234591960907, -0.2799057364463806, 13.955045700073242, 7.7973480224609375, 17.586936950683594, 25.643653869628906]
@@ -266,7 +267,7 @@ var samepan;
                 var s = vfinfo["s"];
                 var f = vfinfo["f"];
                 var uUVOffset = vfinfo["uUVOffset"];
-                console.log(vfinfo["uSkyMatrix"]);
+                //   console.log(vfinfo["uSkyMatrix"])
                 p.uModelViewProjectionMatrix = gl.getUniformLocation(this.shader.program, "uModelViewProjectionMatrix");
                 p.uSkyMatrix = gl.getUniformLocation(this.shader.program, "uSkyMatrix");
                 p.uUVOffset = gl.getUniformLocation(this.shader.program, "uUVOffset");
@@ -276,7 +277,7 @@ var samepan;
                 var tempFloat32Array = vfinfo["finalTransformBuffer"];
                 var tempBegin = 32;
                 //     console.log(tempFloat32Array.subarray(tempBegin, tempBegin+16))
-                Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
+                Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.5, 0.5);
                 m.uniformMatrix4fv(p.uModelViewProjectionMatrix, !1, q);
                 m.uniformMatrix4fv(p.uSkyMatrix, !1, u);
                 var u = vfinfo["uCameraPosition"];
@@ -290,6 +291,10 @@ var samepan;
                 Scene_data.context3D.setRenderTexture(this.shader, "tDepth0", f.depthTextures[0].id, 3);
                 Scene_data.context3D.setRenderTexture(this.shader, "tDepth1", f.depthTextures[1].id, 4);
                 Scene_data.context3D.setRenderTexture(this.shader, "tDepth2", f.depthTextures[2].id, 5);
+                this.skipNum++;
+                if (same.SamedataModel.baseShadowLightVo && same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture && Math.floor(this.skipNum / 200) % 2 == 1) {
+                    Scene_data.context3D.setRenderTexture(this.shader, "tDepth2", same.SamedataModel.baseShadowLightVo.depthFBO.depthTexture, 5);
+                }
                 m.uniform2f(p.uUVOffset, uUVOffset.uOffset, uUVOffset.vOffset);
             }
         };
