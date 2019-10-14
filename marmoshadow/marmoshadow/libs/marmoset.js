@@ -2570,7 +2570,7 @@ marmoset = {};
         materialsSp["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
         vfinfo["uShadowKernelRotation"] = [0.392699 * a.postRender.currentSample(), 0.392699 * a.postRender.currentSample()];
 
-        console.log(a.postRender.currentSample())
+      //  console.log(a.postRender.currentSample())
  
 
         0 < d.count && (m.uniform4fv(p.uLightPositions, d.positionBuffer),

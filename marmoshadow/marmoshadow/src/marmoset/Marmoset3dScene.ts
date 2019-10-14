@@ -60,6 +60,7 @@ module mars3D {
             this.mianpian = new PicShowDiplay3dSprite()
             this.mianpian.scale = 2;
             this.sceneManager.addDisplay(this.mianpian)
+            this.sceneManager.addDisplay(new marmoset.MarShadowSprite)
 
 
 

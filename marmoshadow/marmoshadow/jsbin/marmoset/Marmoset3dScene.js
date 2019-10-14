@@ -59,6 +59,7 @@ var mars3D;
             this.mianpian = new mars3D.PicShowDiplay3dSprite();
             this.mianpian.scale = 2;
             this.sceneManager.addDisplay(this.mianpian);
+            this.sceneManager.addDisplay(new marmoset.MarShadowSprite);
             this.sceneManager.ready = true;
             this.sceneManager.cam3D = new Camera3D();
             this.sceneManager.cam3D.cavanRect = new Rectangle(0, 0, 512, 512);

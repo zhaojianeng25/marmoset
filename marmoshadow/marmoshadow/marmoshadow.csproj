@@ -46,6 +46,7 @@
     <TypeScriptCompile Include="src\base\dis\DepthRectSprite.ts" />
     <TypeScriptCompile Include="src\base\dis\DetphTestRectSprite.ts" />
     <TypeScriptCompile Include="src\base\mormosetlib\Marmoset.d.ts" />
+    <TypeScriptCompile Include="src\marmoset\MarShadowSprite.ts" />
     <TypeScriptCompile Include="src\marmoset\InsetMarmosetSprite.ts" />
     <TypeScriptCompile Include="src\marmoset\Marmoset3dScene.ts" />
     <TypeScriptCompile Include="src\marmoset\MarmosetLaunch.ts" />
