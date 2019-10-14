@@ -193,7 +193,7 @@ var mars3D;
                 "vec3 hu = gl_FrontFacing ? dC : -dC;" +
                 "highp vec4 hS = h(depthViewMatrix3D, dv );" +
                 "vec3 hP = hS.xyz / hS.w;" +
-                "float hO=4.0/1536.0;" +
+                "float hO=4.0/2048.0;" +
                 "highp vec2 l = uShadowKernelRotation * hO;\n" +
                 "vec3 textvec3 =texture2D(tDepthTexture, hP.xy+l).xyz;" +
                 "gl_FragColor =vec4(0.0,0.0,0.0,1.0); " +

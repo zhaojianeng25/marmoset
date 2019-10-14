@@ -260,7 +260,7 @@ module mars3D {
 
                 "vec3 hP = hS.xyz / hS.w;" +
 
-                "float hO=4.0/1536.0;" +
+                "float hO=4.0/2048.0;" +
                 "highp vec2 l = uShadowKernelRotation * hO;\n" +
 
 
