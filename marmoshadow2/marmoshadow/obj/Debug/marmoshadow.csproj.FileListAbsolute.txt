@@ -1,0 +1,7 @@
+E:\github\marmoset\marmoshadow\marmoshadow\bin\marmoshadow.dll.config
+E:\github\marmoset\marmoshadow\marmoshadow\bin\marmoshadow.dll
+E:\github\marmoset\marmoshadow\marmoshadow\bin\marmoshadow.pdb
+E:\github\marmoset\marmoshadow\marmoshadow\obj\Debug\marmoshadow.csproj.CoreCompileInputs.cache
+E:\github\marmoset\marmoshadow\marmoshadow\obj\Debug\marmoshadow.dll
+E:\github\marmoset\marmoshadow\marmoshadow\obj\Debug\marmoshadow.pdb
+E:\github\marmoset\marmoshadow\marmoshadow\obj\Debug\marmoshadow.csprojAssemblyReference.cache
