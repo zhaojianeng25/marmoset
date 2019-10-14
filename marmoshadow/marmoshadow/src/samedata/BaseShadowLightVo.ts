@@ -39,7 +39,7 @@
                 "vt0 = viewMatrix3D * vt0;" +
 
                 "jG=vt0.zw;" +
-          //      "vt0 = vec4( vt0.x, vt0.y,0.90,  vt0.w*2.0);" +
+                //      "vt0 = vec4( vt0.x, vt0.y,0.90,  vt0.w*2.0);" +
                 "gl_Position = vt0;" +
 
 
@@ -147,7 +147,7 @@
 
             gl.viewport(0, 0, fbo.width, fbo.height);
             gl.clearColor(fbo.color.x, fbo.color.y, fbo.color.z, fbo.color.w);
-            gl.clearColor(1,1,1,1);
+            gl.clearColor(1, 1, 1, 1);
             gl.clearDepth(1.0);
             gl.clearStencil(0.0);
             gl.enable(gl.DEPTH_TEST);
@@ -171,7 +171,7 @@
                 this.updateDepthTexture(this.depthFBO);
 
                 for (var i: number = 0; i < value.length; i++) {
-                     this.drawTempMesh(value[i]);
+                    this.drawTempMesh(value[i], mars3D.MarmosetModel.meshRenderables[i]);
                 }
 
                 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -179,7 +179,7 @@
                 //   gl.bindRenderbuffer(gl.RENDERBUFFER, null);
                 GlReset.resetBasePrarame(gl);
 
- 
+
             }
         }
 
@@ -242,26 +242,41 @@
             //    "return dot(rgbaDepth, bitShift);" 
             return outNum
         }
-        private drawTempMesh(mesh: Mars3Dmesh): void {
+        private getViewMatrax3d(temp: Float32Array): Matrix3D {
+            var tempMatrx: Matrix3D = new Matrix3D()
+            var addOther: Matrix3D = new Matrix3D()
+
+
+            var baseArr: Array<number> = [-0.3008589744567871, -0.46715670824050903, -1.697446584701538, -0.95980304479599, 0.010379503481090069, 0.6497568488121033, 0.03671305626630783, 0.020759006962180138, -0.7538937330245972, -0.13623611629009247, -0.4950234591960907, -0.2799057364463806, 13.955045700073242, 7.7973480224609375, 17.586936950683594, 25.643653869628906]
+            // var baseArr: Array<number> = [-0.03556060791015625, 0.46315664052963257, 0.7268134355545044, 0.5655789971351624, -0.29182812571525574, 0.06843513250350952, -0.7500441074371338, -0.5836562514305115, 0.6003482341766357, 0.47712552547454834, 0.7487342357635498, 0.5826369524002075, 7.433165550231934, 9.85171890258789, 16.273618698120117, 20.049705505371094]
+           // var baseArr: Array<number> = [-0.5565775632858276, -0.4951910376548767, -1.551121711730957, -0.9903820753097534, -2.6765993865751625e-9, 0.4436734914779663, -8.384100524949645e-9, -5.353198773150325e-9, -0.3702264428138733, 0.06917984038591385, 0.2166968584060669, 0.1383596807718277, 11.517491340637207, 9.341407775878906, 14.866768836975098, 20.56804656982422]
+
+            for (var i: number = 0; i < 16; i++) {
+                tempMatrx.m[i] = baseArr[i];
+                addOther.m[i] = temp[i];
+            }
+            tempMatrx.prepend(addOther);
+            tempMatrx.appendTranslation(-0.5, -0.5, -0.5);
+            tempMatrx.appendScale(2, 2, 2);
+
+
+
+            return tempMatrx
+        }
+        private drawTempMesh(mesh: Mars3Dmesh, meshRenderable: any): void {
             if (mesh.tAlbedo && mesh.tNormal && mesh.tReflectivity) {
 
-                //    Pan3d.Scene_data.context3D.setWriteDepth(true);
-                //   Pan3d.Scene_data.context3D.setDepthTest(true);
-                //  Pan3d.Scene_data.context3D.setBlendParticleFactors(0)
 
-                var gl = Scene_data.context3D.renderContext;
+                var b = Scene_data.context3D.renderContext;
 
                 Scene_data.context3D.setWriteDepth(true);
                 Scene_data.context3D.setDepthTest(true);
-                //  Scene_data.context3D.setCullFaceModel(2);
-                // Scene_data.context3D.setBlendParticleFactors(Math.floor(this.skipNum / 100)%6)
-                Scene_data.context3D.setBlendParticleFactors(Math.floor(this.skipNum / 100) % 6)
-                //console.log(Math.floor(this.skipNum / 100) % 6)
 
-                //  this.packdepth(0.91234)
+                Scene_data.context3D.setBlendParticleFactors(Math.floor(this.skipNum / 100) % 6)
+
 
                 Scene_data.context3D.setProgram(this.shader.program);
-               
+
                 if (!this.depthFBO.depthViewMatrix3D) {
                     if (mesh.materials["mview"]) {
                         this.depthFBO.depthViewMatrix3D = mesh.materials["mview"];
@@ -269,12 +284,11 @@
                         return
                     }
                 }
-             
 
-    
+
                 var tempArr: Array<number> = [-0.8713266253471375, 8.985513999526518e-10, 0.40336546301841736, 0.1891629546880722, 0, 0.8873469829559326, -1.1415001388570545e-8, -5.353198773150325e-9, 0.16785317659378052, 4.664383990160559e-9, 2.093871831893921, 0.9819457530975342, 2.4669361114501953, -1.8852306604385376, 9.165491104125977, 20.56804656982422]
                 //var tempArr: Array<number> = [0.6500183939933777, 0.3525499999523163, 0.867900013923645, 0.5527472496032715, 0, 0.7205265164375305, -0.9164319634437561, -0.5836562514305115, 0.6040370464324951, -0.3793872892856598, -0.9339674711227417, -0.5948242545127869, -5.183374404907227, -0.34626707434654236, 12.497532844543457, 20.049705505371094]
-               //  var tempArr: Array<number> = [-1.2446883916854858, 0.006111379712820053, -0.5838364362716675, -0.23012207448482513, 0, 1.278754711151123, 0.05266710743308067, 0.020759006962180138, -0.2943965494632721, -0.025838496163487434, 2.4684202671051025, 0.9729403257369995, 2.26643705368042, -10.048957824707031, 9.530219078063965, 25.643653869628906]
+                //  var tempArr: Array<number> = [-1.2446883916854858, 0.006111379712820053, -0.5838364362716675, -0.23012207448482513, 0, 1.278754711151123, 0.05266710743308067, 0.020759006962180138, -0.2943965494632721, -0.025838496163487434, 2.4684202671051025, 0.9729403257369995, 2.26643705368042, -10.048957824707031, 9.530219078063965, 25.643653869628906]
 
 
                 //var tempArr: Array<number> = [-0.3008589744567871, -0.46715670824050903, -1.697446584701538, -0.95980304479599, 0.010379503481090069, 0.6497568488121033, 0.03671305626630783, 0.020759006962180138, -0.7538937330245972, -0.13623611629009247, -0.4950234591960907, -0.2799057364463806, 13.955045700073242, 7.7973480224609375, 17.586936950683594, 25.643653869628906]
@@ -282,18 +296,35 @@
                 //var tempArr: Array<number> = [-0.5565775632858276, -0.4951910376548767, -1.551121711730957, -0.9903820753097534, -2.6765993865751625e-9, 0.4436734914779663, -8.384100524949645e-9, -5.353198773150325e-9, -0.3702264428138733, 0.06917984038591385, 0.2166968584060669, 0.1383596807718277, 11.517491340637207, 9.341407775878906, 14.866768836975098, 20.56804656982422]
 
 
-
+          
                 for (var kt: number = 0; kt < tempArr.length; kt++) {
-                     this.depthFBO.depthViewMatrix3D[kt] = tempArr[kt];
+                    this.depthFBO.depthViewMatrix3D[kt] = tempArr[kt];
+               
                 }
- 
 
+                var viewMatrix3DCone: Matrix3D = this.getViewMatrax3d(mesh.materials["vfinfo"]["uSkyMatrix"])
 
-                Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", this.depthFBO.depthViewMatrix3D);
+                //console.log(viewMatrix3D.m)
+                //console.log(viewMatrix3DCone.m)
+                //console.log("--------------------------")
+
+                Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", viewMatrix3DCone.m);
+
                 Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", mesh.tAlbedo.texture, 0);
 
-                Scene_data.context3D.setVa(0, 3, mesh.objData.vertexBuffer);
-                Scene_data.context3D.setVa(1, 2, mesh.objData.uvBuffer);
+                //    Scene_data.context3D.setVa(0, 3, mesh.objData.vertexBuffer);
+
+                //    Scene_data.context3D.setVa(1, 2, mesh.objData.uvBuffer);
+
+
+
+                b.enableVertexAttribArray(0);
+                b.enableVertexAttribArray(1);
+                b.bindBuffer(b.ARRAY_BUFFER, meshRenderable.mesh.vertexBuffer);
+                b.vertexAttribPointer(0, 3, b.FLOAT, !1, 32, 0);
+                b.vertexAttribPointer(1, 2, b.FLOAT, !1, 32, 12);
+
+
                 Scene_data.context3D.drawCall(mesh.objData.indexBuffer, mesh.objData.treNum);
                 this.skipNum++
             }

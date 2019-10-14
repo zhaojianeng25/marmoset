@@ -17,6 +17,7 @@ var samedata;
     var Shader3D = Pan3d.Shader3D;
     var ProgrmaManager = Pan3d.ProgrmaManager;
     var GlReset = Pan3d.GlReset;
+    var Matrix3D = Pan3d.Matrix3D;
     var MarFBO = /** @class */ (function (_super) {
         __extends(MarFBO, _super);
         function MarFBO(w, h) {
@@ -146,7 +147,7 @@ var samedata;
                 GlReset.saveBasePrarame(gl);
                 this.updateDepthTexture(this.depthFBO);
                 for (var i = 0; i < value.length; i++) {
-                    this.drawTempMesh(value[i]);
+                    this.drawTempMesh(value[i], mars3D.MarmosetModel.meshRenderables[i]);
                 }
                 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
                 gl.bindTexture(gl.TEXTURE_2D, null);
@@ -202,19 +203,27 @@ var samedata;
             //    "return dot(rgbaDepth, bitShift);" 
             return outNum;
         };
-        BaseShadowLightVo.prototype.drawTempMesh = function (mesh) {
+        BaseShadowLightVo.prototype.getViewMatrax3d = function (temp) {
+            var tempMatrx = new Matrix3D();
+            var addOther = new Matrix3D();
+            var baseArr = [-0.3008589744567871, -0.46715670824050903, -1.697446584701538, -0.95980304479599, 0.010379503481090069, 0.6497568488121033, 0.03671305626630783, 0.020759006962180138, -0.7538937330245972, -0.13623611629009247, -0.4950234591960907, -0.2799057364463806, 13.955045700073242, 7.7973480224609375, 17.586936950683594, 25.643653869628906];
+            // var baseArr: Array<number> = [-0.03556060791015625, 0.46315664052963257, 0.7268134355545044, 0.5655789971351624, -0.29182812571525574, 0.06843513250350952, -0.7500441074371338, -0.5836562514305115, 0.6003482341766357, 0.47712552547454834, 0.7487342357635498, 0.5826369524002075, 7.433165550231934, 9.85171890258789, 16.273618698120117, 20.049705505371094]
+            // var baseArr: Array<number> = [-0.5565775632858276, -0.4951910376548767, -1.551121711730957, -0.9903820753097534, -2.6765993865751625e-9, 0.4436734914779663, -8.384100524949645e-9, -5.353198773150325e-9, -0.3702264428138733, 0.06917984038591385, 0.2166968584060669, 0.1383596807718277, 11.517491340637207, 9.341407775878906, 14.866768836975098, 20.56804656982422]
+            for (var i = 0; i < 16; i++) {
+                tempMatrx.m[i] = baseArr[i];
+                addOther.m[i] = temp[i];
+            }
+            tempMatrx.prepend(addOther);
+            tempMatrx.appendTranslation(-0.5, -0.5, -0.5);
+            tempMatrx.appendScale(2, 2, 2);
+            return tempMatrx;
+        };
+        BaseShadowLightVo.prototype.drawTempMesh = function (mesh, meshRenderable) {
             if (mesh.tAlbedo && mesh.tNormal && mesh.tReflectivity) {
-                //    Pan3d.Scene_data.context3D.setWriteDepth(true);
-                //   Pan3d.Scene_data.context3D.setDepthTest(true);
-                //  Pan3d.Scene_data.context3D.setBlendParticleFactors(0)
-                var gl = Scene_data.context3D.renderContext;
+                var b = Scene_data.context3D.renderContext;
                 Scene_data.context3D.setWriteDepth(true);
                 Scene_data.context3D.setDepthTest(true);
-                //  Scene_data.context3D.setCullFaceModel(2);
-                // Scene_data.context3D.setBlendParticleFactors(Math.floor(this.skipNum / 100)%6)
                 Scene_data.context3D.setBlendParticleFactors(Math.floor(this.skipNum / 100) % 6);
-                //console.log(Math.floor(this.skipNum / 100) % 6)
-                //  this.packdepth(0.91234)
                 Scene_data.context3D.setProgram(this.shader.program);
                 if (!this.depthFBO.depthViewMatrix3D) {
                     if (mesh.materials["mview"]) {
@@ -233,10 +242,19 @@ var samedata;
                 for (var kt = 0; kt < tempArr.length; kt++) {
                     this.depthFBO.depthViewMatrix3D[kt] = tempArr[kt];
                 }
-                Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", this.depthFBO.depthViewMatrix3D);
+                var viewMatrix3DCone = this.getViewMatrax3d(mesh.materials["vfinfo"]["uSkyMatrix"]);
+                //console.log(viewMatrix3D.m)
+                //console.log(viewMatrix3DCone.m)
+                //console.log("--------------------------")
+                Scene_data.context3D.setVcMatrix4fv(this.shader, "viewMatrix3D", viewMatrix3DCone.m);
                 Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", mesh.tAlbedo.texture, 0);
-                Scene_data.context3D.setVa(0, 3, mesh.objData.vertexBuffer);
-                Scene_data.context3D.setVa(1, 2, mesh.objData.uvBuffer);
+                //    Scene_data.context3D.setVa(0, 3, mesh.objData.vertexBuffer);
+                //    Scene_data.context3D.setVa(1, 2, mesh.objData.uvBuffer);
+                b.enableVertexAttribArray(0);
+                b.enableVertexAttribArray(1);
+                b.bindBuffer(b.ARRAY_BUFFER, meshRenderable.mesh.vertexBuffer);
+                b.vertexAttribPointer(0, 3, b.FLOAT, !1, 32, 0);
+                b.vertexAttribPointer(1, 2, b.FLOAT, !1, 32, 12);
                 Scene_data.context3D.drawCall(mesh.objData.indexBuffer, mesh.objData.treNum);
                 this.skipNum++;
             }
