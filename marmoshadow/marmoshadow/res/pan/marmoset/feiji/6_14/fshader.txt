@@ -385,7 +385,7 @@ for(int k=0;k<LIGHT_COUNT;++k){
 
 	//   outcolor=vec4(el.xyz,1.0); //默认
 	//   outcolor=texture2D(tAlbedo,d); //默认
-	
+ 
 	   outcolor=vec4(eA.eL[2],eA.eL[2],eA.eL[2],1.0); //直接阴影
 	
 #endif

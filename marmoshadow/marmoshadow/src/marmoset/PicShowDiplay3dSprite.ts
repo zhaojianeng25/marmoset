@@ -375,7 +375,7 @@ module mars3D {
 
                 if (materialsSp["uShadowTexelPadProjections"]) {
                     Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", materialsSp["uShadowTexelPadProjections"]);
-                    console.log(materialsSp["uShadowTexelPadProjections"])
+                   // console.log(materialsSp["uShadowTexelPadProjections"])
                 }
                 if (materialsSp["uShadowMatrices"]) {
         

@@ -2090,7 +2090,7 @@ marmoset = {};
             Vect.cross(m, n, p);
             Vect.normalize(m, m);
             Matrix.set(g, p[0], p[1], p[2], -Vect.dot(p, l), m[0], m[1], m[2], -Vect.dot(m, l), n[0], n[1], n[2], -Vect.dot(n, l), 0, 0, 0, 1);
-            for (l = 0; 8 > l; ++l)
+            for (l = 0; 8 > l; ++l) {
                 e[0] = l & 1 ? b.max[0] : b.min[0],
                     e[1] = l & 2 ? b.max[1] : b.min[1],
                     e[2] = l & 4 ? b.max[2] : b.min[2],
@@ -2104,19 +2104,26 @@ marmoset = {};
                             s[0] = Math.max(s[0], e[0]),
                             s[1] = Math.max(s[1], e[1]),
                             s[2] = Math.max(s[2], e[2]));
-            var l = -r[2]
-                , n = -s[2]
-                , q = this.spot[3 * d];
-            0 < q ? (l = Math.min(l, 1 / this.parameters[3 * d + 2]),
-                n = Math.max(0.04 * l, n),
-                Matrix.perspective(h, q, 1, n, l),
-                d < this.shadowCount && (l = 2 * -Math.tan(0.00872664625 * q),
-                    this.shadowTexelPadProjections[4 * d + 0] = this.modelViewBuffer[16 * d + 2] * l,
-                    this.shadowTexelPadProjections[4 * d + 1] = this.modelViewBuffer[16 * d + 6] * l,
-                    this.shadowTexelPadProjections[4 * d + 2] = this.modelViewBuffer[16 * d + 10] * l,
-                    this.shadowTexelPadProjections[4 * d + 3] = this.modelViewBuffer[16 * d + 14] * l)) : (Matrix.ortho(h, r[0], s[0], r[1], s[1], n, l),
-                        d < this.shadowCount && (this.shadowTexelPadProjections[4 * d + 0] = this.shadowTexelPadProjections[4 * d + 1] = this.shadowTexelPadProjections[4 * d + 2] = 0,
-                            this.shadowTexelPadProjections[4 * d + 3] = Math.max(s[0] - r[0], s[1] - r[1])));
+            }
+            var l = -r[2]   , n = -s[2]  , q = this.spot[3 * d];
+
+       
+            l = Math.min(l, 1 / this.parameters[3 * d + 2]);
+            n = Math.max(0.04 * l, n);
+            Matrix.perspective(h, q, 1, n, l);
+        
+            if (d < this.shadowCount) {
+                l = 2 * -Math.tan(0.00872664625 * q);
+                this.shadowTexelPadProjections[4 * d + 0] = this.modelViewBuffer[16 * d + 2] * l;
+                this.shadowTexelPadProjections[4 * d + 1] = this.modelViewBuffer[16 * d + 6] * l;
+                this.shadowTexelPadProjections[4 * d + 2] = this.modelViewBuffer[16 * d + 10] * l;
+                this.shadowTexelPadProjections[4 * d + 3] = this.modelViewBuffer[16 * d + 14] * l;
+ 
+            }
+
+      
+
+
             Matrix.mul(k, h, g);
             Matrix.mul(k, u, k);
             Matrix.copyToBuffer(this.modelViewBuffer, 16 * d, g);
