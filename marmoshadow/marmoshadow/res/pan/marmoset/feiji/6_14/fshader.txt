@@ -125,11 +125,10 @@ void eB(out ev ss,float hO){
 	for(int k=0;k<SHADOW_COUNT;++k){
 		vec4 hQ=uShadowTexelPadProjections[k];
 		float hR=hQ.x*dv.x+(hQ.y*dv.y+(hQ.z*dv.z+hQ.w));
-		#ifdef MOBILE
-			hR*=.001+hO;
-		#else
+	 
 			hR*=.0005+0.5*hO;
-		#endif
+	 
+	 
 		highp vec4 hS=h(uShadowMatrices[k],dv+hR*hu);
 		hP[k]=hS.xyz/hS.w;
 	}

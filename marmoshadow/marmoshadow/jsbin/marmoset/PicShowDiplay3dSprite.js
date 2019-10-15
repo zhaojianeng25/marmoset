@@ -190,10 +190,13 @@ var mars3D;
                 "eo *= eo;" +
                 "float eu = eo * (1.0 / (8.0 * 3.1415926)) + (4.0 / (8.0 * 3.1415926));" +
                 "eu = min(eu, 1.0e3);" +
-                "vec3 hu = gl_FrontFacing ? dC : -dC;" +
-                "highp vec4 hS = h(depthViewMatrix3D, dv );" +
-                "vec3 hP = hS.xyz / hS.w;" +
                 "float hO=4.0/2048.0;" +
+                "vec3 hu = gl_FrontFacing ? dC : -dC;" +
+                "vec4 hQ = uShadowTexelPadProjections[2];" +
+                "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
+                "hR*=.0005 + 0.5 * hO;" +
+                "highp vec4 hS = h(depthViewMatrix3D, dv-hR*hu );" +
+                "vec3 hP = hS.xyz / hS.w;" +
                 "highp vec2 l = uShadowKernelRotation * hO;\n" +
                 "vec3 textvec3 =texture2D(tDepthTexture, hP.xy+l).xyz;" +
                 "gl_FragColor =vec4(0.0,0.0,0.0,1.0); " +
@@ -273,6 +276,7 @@ var mars3D;
                 }
                 if (materialsSp["uShadowTexelPadProjections"]) {
                     Scene_data.context3D.setVc4fv(this.shader, "uShadowTexelPadProjections", materialsSp["uShadowTexelPadProjections"]);
+                    console.log(materialsSp["uShadowTexelPadProjections"]);
                 }
                 if (materialsSp["uShadowMatrices"]) {
                     Scene_data.context3D.setVcMatrix4fv(this.shader, "uShadowMatrices", materialsSp["uShadowMatrices"]);
