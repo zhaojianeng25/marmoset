@@ -26,6 +26,7 @@ module mars3D {
             this.addEvents();
 
             MarmosetModel.getInstance().initData();
+   
             MarmosetModel.getInstance().viewFileName = "karen1.mview"
 
             var rootpath: string = "pan/marmoset/feiji/6_14/";

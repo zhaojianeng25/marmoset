@@ -106,7 +106,7 @@ module mars3D {
                 "uniform sampler2D tNormal;\n" +
                 "uniform sampler2D tReflectivity;\n" +
                 "uniform sampler2D tSkySpecular;\n" +
-
+                "uniform vec3 campos;" +
                 "uniform sampler2D tDepth0;\n" +
                 "uniform sampler2D tDepth1;\n" +
                 "uniform sampler2D tDepth2;\n" +
@@ -256,11 +256,13 @@ module mars3D {
                 "float hO=4.0/2048.0;" +
                 "vec3 hu = gl_FrontFacing ? dC : -dC;" +
 
+                "float otet = dot(campos,dC) ;" +
+
                 "vec4 hQ = uShadowTexelPadProjections[2];" +
                 "float hR = hQ.x * dv.x + (hQ.y * dv.y + (hQ.z * dv.z + hQ.w));" +
                 "hR*=.0005 + 0.5 * hO;" +
 
-                "highp vec4 hS = h(depthViewMatrix3D, dv-hR*hu );" +
+                "highp vec4 hS = h(depthViewMatrix3D, dv+hR*hu );" +
 
                 "vec3 hP = hS.xyz / hS.w;" +
 
@@ -268,18 +270,19 @@ module mars3D {
                 "highp vec2 l = uShadowKernelRotation * hO;\n" +
 
 
-                "vec3 textvec3 =texture2D(tDepthTexture, hP.xy+l).xyz;" +
-            
-           
- 
-   
+
+                "vec3 textvec3 =texture2D(tDepthTexture, hP.xy ).xyz;" +
+      
 
                 "gl_FragColor =vec4(0.0,0.0,0.0,1.0); " +
                 "if (textvec3.x>(hP.z-0.00001)) { " +
                      "gl_FragColor =vec4(1.0,1.0,1.0,1.0); " +
 
                 "}  " +
- 
+
+            
+
+            //    "gl_FragColor =vec4(otet,otet,otet,1.0); " +
  
 
                 "}"
@@ -335,8 +338,8 @@ module mars3D {
                 mesh.objData.bitangentBuffer = Scene_data.context3D.uploadBuff3D(mesh.objData.bitangents);
             }
         }
-     
 
+        private camposV3d: Vector3D
         private drawTempMesh(mesh: Mars3Dmesh): void {
             if (mesh.tAlbedo && mesh.tNormal && mesh.tReflectivity) {
       
@@ -344,6 +347,8 @@ module mars3D {
                 this.makeTbnBuff(mesh)
                 var gl = Scene_data.context3D.renderContext;
                 Scene_data.context3D.setProgram(this.program);
+
+                gl.frontFace(gl.CCW);
 
                 Scene_data.context3D.setVcMatrix4fv(this.shader, "posMatrix3D", this.posMatrix.m);
                 var viewM = Scene_data.viewMatrx3D.clone()
@@ -386,7 +391,8 @@ module mars3D {
                     Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.7853, 0.7853);
                 }
                 Scene_data.context3D.setVc2f(this.shader, "uShadowKernelRotation", 0.5, 0.5);
-            
+  
+           
 
                 Scene_data.context3D.setRenderTexture(this.shader, "tAlbedo", mesh.tAlbedo.texture, 0);
                 Scene_data.context3D.setRenderTexture(this.shader, "tNormal", mesh.tNormal.texture, 1);
@@ -400,32 +406,35 @@ module mars3D {
 
                     var baseArr: Array<number> = [-0.5565775632858276, -0.4951910376548767, -1.551121711730957, -0.9903820753097534, -2.6765993865751625e-9, 0.4436734914779663, -8.384100524949645e-9, -5.353198773150325e-9, -0.3702264428138733, 0.06917984038591385, 0.2166968584060669, 0.1383596807718277, 11.517491340637207, 9.341407775878906, 14.866768836975098, 20.56804656982422]
                     var tempMatrx: Matrix3D = new Matrix3D()
+                    var skym: Matrix3D = new Matrix3D
                     for (var i: number = 0; i < 16; i++) {
                         tempMatrx.m[i] = baseArr[i];
+
+                        if (materialsSp["uSkyMatrix"]) {
+                            skym.m[i] = materialsSp["uSkyMatrix"][i]
+                        }
+        
                 
                     }
 
                     Scene_data.context3D.setRenderTexture(this.shader, "tDepthTexture", MarmosetLightVo.marmosetLightVo.depthFBO.depthTexture, 4); //深度贴图
                     if (MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D) {
-
-
                         Scene_data.context3D.setVcMatrix4fv(this.shader, "depthViewMatrix3D", tempMatrx.m);  //深度矩阵
-
                       //  console.log(MarmosetLightVo.marmosetLightVo.depthFBO.depthViewMatrix3D)
                       //  console.log(materialsSp["finalTransformBuffer"])
                       //  console.log("-------")
-                   
 
                     }
-                  
+                    skym.invert()
+                    this.camposV3d = skym.transformVector(tempMatrx.position)
         
                 }
 
-               
+                Scene_data.context3D.setVc3fv(this.shader, "campos", [this.camposV3d.x, this.camposV3d.y, this.camposV3d.z]);
 
                 gl.disable(gl.CULL_FACE);
                 gl.cullFace(gl.FRONT);
-                Scene_data.context3D.setCullFaceModel(0)
+            //    Scene_data.context3D.setCullFaceModel(0)
 
                 Scene_data.context3D.setVa(0, 3, mesh.objData.vertexBuffer);
                 Scene_data.context3D.setVa(1, 2, mesh.objData.uvBuffer);
@@ -469,7 +478,17 @@ module mars3D {
             }
             this.isFinish = true
         }
+        private skipNum: number=0
         public update(): void {
+            this.camposV3d = new Vector3D(1, 0, 0);
+            this.skipNum++
+
+            var m: Matrix3D = new Matrix3D();
+            m.appendRotation(this.skipNum,Vector3D.Y_AXIS);
+            this.camposV3d = m.transformVector(this.camposV3d);
+           // console.log(this.camposV3d)
+
+
             if (MarmosetModel.meshItem && MarmosetModel.meshItem.length) {
                 if (!this.isFinish) {
                     this.makeMeshItemTexture()
@@ -481,6 +500,16 @@ module mars3D {
             } else {
                 super.update()
             }
+            /*
+            var hQ: Vector3D = new Vector3D(0, -0.001, 0);
+            var dv: Vector3D = new Vector3D(0, 1, 0);
+            hQ.normalize();
+            dv.normalize();
+            var te: number = hQ.x * dv.x + hQ.y * dv.y + hQ.z * dv.z;
+            console.log(te)
+            */
+
+       
 
         }
 
